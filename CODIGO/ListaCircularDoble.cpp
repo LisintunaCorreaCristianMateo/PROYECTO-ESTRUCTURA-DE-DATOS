@@ -59,39 +59,48 @@
     }
 
     // Función para dibujar el parqueadero en forma de anillo
-    void ListaCircularDoble::dibujarParqueadero() {
-        Nodo* actualIzquierda = cabezaIzquierda;
-        Nodo* actualDerecha = cabezaDerecha;
+void ListaCircularDoble::dibujarParqueadero() {
+    Nodo* actualIzquierda = cabezaIzquierda;
+    Nodo* actualDerecha = cabezaDerecha;
 
-        cout << "\n--- Estado del Parqueadero Circular ---\n";
-        // Dibujar la fila izquierda
-        do {
-            if (actualIzquierda->ocupado) {
-                cout << "[P" << setw(2) << actualIzquierda->puesto << ": " << actualIzquierda->placa << "]";
-            } else {
-                cout << "[P" << setw(2) << actualIzquierda->puesto << ": Libre ]";
-            }
-            actualIzquierda = actualIzquierda->siguiente;
-        } while (actualIzquierda != cabezaIzquierda);
-        cout << endl;
+    cout << "\n--- Estado del Parqueadero Circular ---\n";
 
-        // Dibujar la vía (línea de guiones)
-        for (int i = 0; i < puestosPorLado; i++) {
-            cout << "   ---   ";
+    // Dibujar la fila izquierda
+    do {
+        if (actualIzquierda->ocupado) {
+            // Cambiar color a rojo para los puestos ocupados
+            cout << "\033[1;31m"; // Rojo brillante
+            cout << "[P" << setw(2) << actualIzquierda->puesto << ": " << actualIzquierda->placa << "]  ";
+            cout << "\033[0m"; // Restablecer color
+        } else {
+            // Mostrar solo el número del puesto
+            cout << "[P" << setw(2) << actualIzquierda->puesto << "]  ";
         }
-        cout << endl;
+        actualIzquierda = actualIzquierda->siguiente;
+    } while (actualIzquierda != cabezaIzquierda);
+    cout << endl;
 
-        // Dibujar la fila derecha
-        do {
-            if (actualDerecha->ocupado) {
-                cout << "[P" << setw(2) << actualDerecha->puesto << ": " << actualDerecha->placa << "]";
-            } else {
-                cout << "[P" << setw(2) << actualDerecha->puesto << ": Libre ]";
-            }
-            actualDerecha = actualDerecha->siguiente;
-        } while (actualDerecha != cabezaDerecha);
-        cout << endl;
+    // Dibujar la vía (línea de guiones)
+    for (int i = 0; i < puestosPorLado; i++) {
+        cout << "   ---   ";
     }
+    cout << endl;
+
+    // Dibujar la fila derecha
+    do {
+        if (actualDerecha->ocupado) {
+            // Cambiar color a rojo para los puestos ocupados
+            cout << "\033[1;31m"; // Rojo brillante
+            cout << "[P" << setw(2) << actualDerecha->puesto << ": " << actualDerecha->placa << "]  ";
+            cout << "\033[0m"; // Restablecer color
+        } else {
+            // Mostrar solo el número del puesto
+            cout << "[P" << setw(2) << actualDerecha->puesto << "]  ";
+        }
+        actualDerecha = actualDerecha->siguiente;
+    } while (actualDerecha != cabezaDerecha);
+    cout << endl;
+}
 
     // Función para determinar los puestos vacíos
     void ListaCircularDoble:: mostrarPuestosLibres() {

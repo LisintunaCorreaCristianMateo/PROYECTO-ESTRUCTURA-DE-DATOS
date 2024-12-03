@@ -10,7 +10,9 @@
 
 using namespace std;
 
-
+		
+    int totalPuestos = 20; 
+    ListaCircularDoble parqueadero(totalPuestos);
 
 void menu(){
 
@@ -67,15 +69,16 @@ void mostrarMenu(int opcionSeleccionada, const string opciones[], int numOpcione
 
 // Función para procesar la selección de una opción
 void procesarSeleccion(const string& opcion) {
-		
-    int totalPuestos = 20; 
-    ListaCircularDoble parqueadero(totalPuestos);
+
     
 //	Archivotxt manejadorArchivos;
 	
     if (opcion == "Ver parqueadero") {
     	
     	 parqueadero.dibujarParqueadero();
+    	 cout<<endl;
+    	 cout<<endl;
+    	 parqueadero.mostrarPuestosLibres();
     	
         //manejadorArchivos.leerDesdeArchivo("estudiantes.txt",lista);
 
