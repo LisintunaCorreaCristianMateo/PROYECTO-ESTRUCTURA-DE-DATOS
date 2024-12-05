@@ -6,9 +6,9 @@
 
 using namespace std;
 
-// Función principal
+// Funciï¿½n principal
 int main() {
-	
+
 	menu();
 
     return 0;

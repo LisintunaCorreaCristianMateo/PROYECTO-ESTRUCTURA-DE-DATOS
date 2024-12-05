@@ -6,18 +6,51 @@ using namespace std;
 
 // Clase Nodo que representa cada espacio del parqueadero
 class Nodo {
-public:
-    int puesto;              // Número del puesto
-    bool ocupado;            // Si el puesto está ocupado o no
-    string placa;            // Placa del vehículo (si está ocupado)
+private:
+    int puesto;              // Nï¿½mero del puesto
+    bool ocupado;            // Si el puesto estï¿½ ocupado o no
+    string placa;            // Placa del vehï¿½culo (si estï¿½ ocupado)
+    string cedula;
+    string nombre;
+    string segundoNombre;
+    string apellido;
+    string segundoApellido;
+    string fecha;
+    string horaIngreso;
+    string horaSalida;
+    
     Nodo* siguiente;         // Apunta al siguiente nodo
     Nodo* anterior;          // Apunta al nodo anterior
 
-	//constructor
-	Nodo(int);
+public:
+	//constructor 1
+	Nodo(int _puesto, string _placa,string _cedula,string _nombre,string _segundoNombre, string _apellido, string _segundoApellido,string _fecha,string _horaIngreso,string _horaSalida);
+	//constructor2
+	Nodo(int puesto);
 	//Destructor
 	~Nodo();
     
+        // Getters
+    int getPuesto();
+
+    bool isOcupado();
+
+    string getPlaca();
+
+    Nodo* getSiguiente();
+
+    Nodo* getAnterior();
+
+    // Setters
+    void setOcupado(bool value);
+
+    void setPlaca( string value);
+
+    void setSiguiente(Nodo* nodo);
+
+    void setAnterior(Nodo* nodo);
+
+
 };
 #endif
 

@@ -19,21 +19,21 @@ void menu(){
 	
 	
 	const int numOpciones = 4;
-    string opciones[numOpciones] = {"Ver parqueadero", "Ingresar vehículo", "Retirar vehículo", "Salir"};
-    int opcionSeleccionada = 0; // Inicializamos la opción seleccionada en 0
+    string opciones[numOpciones] = {"Ver parqueadero", "Ingresar vehiculo", "Retirar vehiculo", "Salir"};
+    int opcionSeleccionada = 0; // Inicializamos la opciï¿½n seleccionada en 0
 
     while (true) {
         mostrarMenu(opcionSeleccionada, opciones, numOpciones);
         char tecla = _getch(); // Captura una tecla
 
-        if (tecla == 13) { // Detecta Enter (código ASCII 13)
+        if (tecla == 13) { // Detecta Enter (cï¿½digo ASCII 13)
             system("cls"); // Limpia la consola
-            procesarSeleccion(opciones[opcionSeleccionada]); // Procesa la opción seleccionada
+            procesarSeleccion(opciones[opcionSeleccionada]); // Procesa la opciï¿½n seleccionada
             if (opciones[opcionSeleccionada] == "Salir") {
-                break; // Termina el programa si la opción es "Salir"
+                break; // Termina el programa si la opciï¿½n es "Salir"
             }
         } else if (tecla == -32) { // Detecta teclas especiales (como flechas)
-            tecla = _getch(); // Captura la segunda parte del código de la tecla
+            tecla = _getch(); // Captura la segunda parte del cï¿½digo de la tecla
             if (tecla == 72) { // Flecha arriba
                 opcionSeleccionada = (opcionSeleccionada - 1 + numOpciones) % numOpciones;
             } else if (tecla == 80) { // Flecha abajo
@@ -46,19 +46,19 @@ void menu(){
 
 
 
-// Función para cambiar el color de la consola
+// Funciï¿½n para cambiar el color de la consola
 void cambiarColor(int color) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-// Función para mostrar el menú
+// Funciï¿½n para mostrar el menï¿½
 void mostrarMenu(int opcionSeleccionada, const string opciones[], int numOpciones) {
     system("cls"); // Limpia la consola
     cout << "===  MENU ===\n";
     for (int i = 0; i < numOpciones; ++i) {
         if (i == opcionSeleccionada) {
-            cambiarColor(3); // Cambiar el color de la opción seleccionada (verde)
-            cout << " " << opciones[i] << " \n"; // Opción seleccionada resaltada
+            cambiarColor(3); // Cambiar el color de la opciï¿½n seleccionada (verde)
+            cout << " " << opciones[i] << " \n"; // Opciï¿½n seleccionada resaltada
             cambiarColor(7);  // Volver al color normal (blanco)
         } else {
             cambiarColor(7);  // Color normal para las otras opciones
@@ -67,7 +67,7 @@ void mostrarMenu(int opcionSeleccionada, const string opciones[], int numOpcione
     }
 }
 
-// Función para procesar la selección de una opción
+// Funciï¿½n para procesar la selecciï¿½n de una opciï¿½n
 void procesarSeleccion(const string& opcion) {
 
     
@@ -88,12 +88,24 @@ void procesarSeleccion(const string& opcion) {
     //	manejadorArchivos.guardarEnArchivo("estudiantes.txt",lista);
     } 
     
-	else if (opcion == "Ingresar vehículo") {
+	else if (opcion == "Ingresar vehiculo") {
 		
-            string placa;
-            cout << "Ingrese la placa del vehículo: ";
+            string placa,cedula,nombre,nombre2,apellido,apellido2;
+            cout << "Ingrese la placa del vehiculo: ";
             cin >> placa;
-            parqueadero.ingresarVehiculo(placa);
+            cout << "Ingrese la cedula: ";
+            cin>>cedula;
+            cout<<"Ingrese el primer nombre: ";
+            cin>>nombre;
+            cout<<"Ingrese el Segundo nombre: ";
+            cin>>nombre2;
+            cout<<"Ingrese el primer Apellido: ";
+            cin>>apellido;
+            cout<<"Ingrese el Segundo Apellido: ";
+            cin>>apellido2;
+
+
+            parqueadero.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2);
         //manejadorArchivos.leerDesdeArchivo("estudiantes.txt",lista);
             	
 
@@ -101,10 +113,10 @@ void procesarSeleccion(const string& opcion) {
     	system("cls");
     
 	}
-	 else if (opcion == "Retirar vehículo") {
+	 else if (opcion == "Retirar vehiculo") {
 	 	 int puesto;
         //manejadorArchivos.leerDesdeArchivo("estudiantes.txt",lista);
-	        cout << "Ingrese el número del puesto a liberar: ";
+	        cout << "Ingrese el numero del puesto a liberar: ";
             cin >> puesto;
             parqueadero.retirarVehiculo(puesto);
 			

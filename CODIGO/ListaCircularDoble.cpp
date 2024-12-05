@@ -3,6 +3,7 @@
 	#include <vector>
 	#include <ctime>
 	#include <iomanip>
+	#include <string>
 	using namespace std;
 
 	//constructor
@@ -28,37 +29,60 @@
     	
 	}
 
-    // Función para insertar un nodo en la lista circular
-    void ListaCircularDoble::insertarNodo(int puesto, bool esIzquierda) {
-        Nodo* nuevo = new Nodo(puesto);
-        if (esIzquierda) {
-            if (!cabezaIzquierda) { // Si la lista izquierda está vacía
-                cabezaIzquierda = nuevo;
-                cabezaIzquierda->siguiente = cabezaIzquierda;
-                cabezaIzquierda->anterior = cabezaIzquierda;
-            } else { // Agregar al final de la lista izquierda
-                Nodo* ultimo = cabezaIzquierda->anterior;
-                ultimo->siguiente = nuevo;
-                nuevo->anterior = ultimo;
-                nuevo->siguiente = cabezaIzquierda;
-                cabezaIzquierda->anterior = nuevo;
-            }
-        } else {
-            if (!cabezaDerecha) { // Si la lista derecha está vacía
-                cabezaDerecha = nuevo;
-                cabezaDerecha->siguiente = cabezaDerecha;
-                cabezaDerecha->anterior = cabezaDerecha;
-            } else { // Agregar al final de la lista derecha
-                Nodo* ultimo = cabezaDerecha->anterior;
-                ultimo->siguiente = nuevo;
-                nuevo->anterior = ultimo;
-                nuevo->siguiente = cabezaDerecha;
-                cabezaDerecha->anterior = nuevo;
-            }
+    // FunciÃ³n para obtener la fecha actual
+string obtenerFechaActual() {
+    time_t tiempoActual = time(nullptr);
+    tm* fechaLocal = localtime(&tiempoActual);
+
+    char buffer[20]; // Buffer para almacenar la fecha
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y", fechaLocal);
+
+    return string(buffer);
+}
+
+// FunciÃ³n para obtener la hora actual
+string obtenerHoraActual() {
+    time_t tiempoActual = time(nullptr);
+    tm* horaLocal = localtime(&tiempoActual);
+
+    char buffer[20]; // Buffer para almacenar la hora
+    strftime(buffer, sizeof(buffer), "%H:%M:%S", horaLocal);
+
+    return string(buffer);
+}
+
+    // Funciï¿½n para insertar un nodo en la lista circular
+void ListaCircularDoble::insertarNodo(int puesto, bool esIzquierda) {
+    Nodo* nuevo = new Nodo(puesto);
+    if (esIzquierda) {
+        if (!cabezaIzquierda) { // Si la lista izquierda estÃ¡ vacÃ­a
+            cabezaIzquierda = nuevo;
+            cabezaIzquierda->setSiguiente(cabezaIzquierda);
+            cabezaIzquierda->setAnterior(cabezaIzquierda);
+        } else { // Agregar al final de la lista izquierda
+            Nodo* ultimo = cabezaIzquierda->getAnterior();
+            ultimo->setSiguiente(nuevo);
+            nuevo->setAnterior(ultimo);
+            nuevo->setSiguiente(cabezaIzquierda);
+            cabezaIzquierda->setAnterior(nuevo);
+        }
+    } else {
+        if (!cabezaDerecha) { // Si la lista derecha estÃ¡ vacÃ­a
+            cabezaDerecha = nuevo;
+            cabezaDerecha->setSiguiente(cabezaDerecha);
+            cabezaDerecha->setAnterior(cabezaDerecha);
+        } else { // Agregar al final de la lista derecha
+            Nodo* ultimo = cabezaDerecha->getAnterior();
+            ultimo->setSiguiente(nuevo);
+            nuevo->setAnterior(ultimo);
+            nuevo->setSiguiente(cabezaDerecha);
+            cabezaDerecha->setAnterior(nuevo);
         }
     }
+}
 
-    // Función para dibujar el parqueadero en forma de anillo
+
+    // Funciï¿½n para dibujar el parqueadero en forma de anillo
 void ListaCircularDoble::dibujarParqueadero() {
     Nodo* actualIzquierda = cabezaIzquierda;
     Nodo* actualDerecha = cabezaDerecha;
@@ -67,20 +91,18 @@ void ListaCircularDoble::dibujarParqueadero() {
 
     // Dibujar la fila izquierda
     do {
-        if (actualIzquierda->ocupado) {
-            // Cambiar color a rojo para los puestos ocupados
+        if (actualIzquierda->isOcupado()) {
             cout << "\033[1;31m"; // Rojo brillante
-            cout << "[P" << setw(2) << actualIzquierda->puesto << ": " << actualIzquierda->placa << "]  ";
+            cout << "[P" << setw(2) << actualIzquierda->getPuesto() 
+                 << ": " << actualIzquierda->getPlaca() << "]  ";
             cout << "\033[0m"; // Restablecer color
         } else {
-            // Mostrar solo el número del puesto
-            cout << "[P" << setw(2) << actualIzquierda->puesto << "]  ";
+            cout << "[P" << setw(2) << actualIzquierda->getPuesto() << "]  ";
         }
-        actualIzquierda = actualIzquierda->siguiente;
+        actualIzquierda = actualIzquierda->getSiguiente();
     } while (actualIzquierda != cabezaIzquierda);
     cout << endl;
 
-    // Dibujar la vía (línea de guiones)
     for (int i = 0; i < puestosPorLado; i++) {
         cout << "   ---   ";
     }
@@ -88,117 +110,116 @@ void ListaCircularDoble::dibujarParqueadero() {
 
     // Dibujar la fila derecha
     do {
-        if (actualDerecha->ocupado) {
-            // Cambiar color a rojo para los puestos ocupados
-            cout << "\033[1;31m"; // Rojo brillante
-            cout << "[P" << setw(2) << actualDerecha->puesto << ": " << actualDerecha->placa << "]  ";
-            cout << "\033[0m"; // Restablecer color
+        if (actualDerecha->isOcupado()) {
+            cout << "\033[1;31m";
+            cout << "[P" << setw(2) << actualDerecha->getPuesto() 
+                 << ": " << actualDerecha->getPlaca() << "]  ";
+            cout << "\033[0m";
         } else {
-            // Mostrar solo el número del puesto
-            cout << "[P" << setw(2) << actualDerecha->puesto << "]  ";
+            cout << "[P" << setw(2) << actualDerecha->getPuesto() << "]  ";
         }
-        actualDerecha = actualDerecha->siguiente;
+        actualDerecha = actualDerecha->getSiguiente();
     } while (actualDerecha != cabezaDerecha);
     cout << endl;
 }
 
-    // Función para determinar los puestos vacíos
-    void ListaCircularDoble:: mostrarPuestosLibres() {
-        Nodo* actual = cabezaIzquierda;
-        cout << "Puestos libres (Izquierda): ";
-        do {
-            if (!actual->ocupado) {
-                cout << actual->puesto << " ";
-            }
-            actual = actual->siguiente;
-        } while (actual != cabezaIzquierda);
-        cout << endl;
 
-        actual = cabezaDerecha;
-        cout << "Puestos libres (Derecha): ";
-        do {
-            if (!actual->ocupado) {
-                cout << actual->puesto << " ";
-            }
-            actual = actual->siguiente;
-        } while (actual != cabezaDerecha);
-        cout << endl;
+    // Funciï¿½n para determinar los puestos vacï¿½os
+void ListaCircularDoble::mostrarPuestosLibres() {
+    Nodo* actual = cabezaIzquierda;
+    cout << "Puestos libres (Izquierda): ";
+    do {
+        if (!actual->isOcupado()) {
+            cout << actual->getPuesto() << " ";
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaIzquierda);
+    cout << endl;
+
+    actual = cabezaDerecha;
+    cout << "Puestos libres (Derecha): ";
+    do {
+        if (!actual->isOcupado()) {
+            cout << actual->getPuesto() << " ";
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaDerecha);
+    cout << endl;
+}
+
+    // Funciï¿½n para ingresar un vehï¿½culo en un puesto vacï¿½o aleatorio
+void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string nombre, 
+                                          string nombre2, string apellido, string apellido2) {
+    vector<Nodo*> puestosLibres;
+    Nodo* actual = cabezaIzquierda;
+
+    do {
+        if (!actual->isOcupado()) {
+            puestosLibres.push_back(actual);
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaIzquierda);
+
+    actual = cabezaDerecha;
+    do {
+        if (!actual->isOcupado()) {
+            puestosLibres.push_back(actual);
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaDerecha);
+
+    if (puestosLibres.empty()) {
+        cout << "No hay puestos disponibles." << endl;
+        return;
     }
 
-    // Función para ingresar un vehículo en un puesto vacío aleatorio
-    void ListaCircularDoble::ingresarVehiculo(string placa) {
-        vector<Nodo*> puestosLibres;
-        Nodo* actual = cabezaIzquierda;
+    srand(time(0));
+    int indiceAleatorio = rand() % puestosLibres.size();
+    Nodo* puestoSeleccionado = puestosLibres[indiceAleatorio];
 
-        // Recopilar todos los puestos libres en la fila izquierda
-        do {
-            if (!actual->ocupado) {
-                puestosLibres.push_back(actual);
+    puestoSeleccionado->setOcupado(true);
+    puestoSeleccionado->setPlaca(placa);
+
+    cout << "VehÃ­culo con placa " << placa << " ingresado en el puesto " << puestoSeleccionado->getPuesto() << "." << endl;
+}
+
+
+    // Funciï¿½n para eliminar un vehï¿½culo
+void ListaCircularDoble::retirarVehiculo(int puesto) {
+    Nodo* actual = cabezaIzquierda;
+
+    do {
+        if (actual->getPuesto() == puesto) {
+            if (actual->isOcupado()) {
+                cout << "VehÃ­culo con placa " << actual->getPlaca() 
+                     << " retirado del puesto " << puesto << "." << endl;
+                actual->setOcupado(false);
+                actual->setPlaca(string(""));
+            } else {
+                cout << "El puesto " << puesto << " estÃ¡ libre." << endl;
             }
-            actual = actual->siguiente;
-        } while (actual != cabezaIzquierda);
-
-        // Recopilar todos los puestos libres en la fila derecha
-        actual = cabezaDerecha;
-        do {
-            if (!actual->ocupado) {
-                puestosLibres.push_back(actual);
-            }
-            actual = actual->siguiente;
-        } while (actual != cabezaDerecha);
-
-        if (puestosLibres.empty()) {
-            cout << "No hay puestos disponibles." << endl;
             return;
         }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaIzquierda);
 
-        // Seleccionar un puesto vacío aleatorio
-        srand(time(0));
-        int indiceAleatorio = rand() % puestosLibres.size();
-        Nodo* puestoSeleccionado = puestosLibres[indiceAleatorio];
-
-        // Asignar el vehículo al puesto seleccionado
-        puestoSeleccionado->ocupado = true;
-        puestoSeleccionado->placa = placa;
-
-        cout << "Vehículo con placa " << placa << " ingresado en el puesto " << puestoSeleccionado->puesto << "." << endl;
-    }
-
-    // Función para eliminar un vehículo
-    void ListaCircularDoble::retirarVehiculo(int puesto) {
-        Nodo* actual = cabezaIzquierda;
-
-        // Buscar en la fila izquierda
-        do {
-            if (actual->puesto == puesto) {
-                if (actual->ocupado) {
-                    cout << "Vehículo con placa " << actual->placa << " retirado del puesto " << puesto << "." << endl;
-                    actual->ocupado = false;
-                    actual->placa = "";
-                } else {
-                    cout << "El puesto " << puesto << " está libre." << endl;
-                }
-                return;
+    actual = cabezaDerecha;
+    do {
+        if (actual->getPuesto() == puesto) {
+            if (actual->isOcupado()) {
+                cout << "VehÃ­culo con placa " << actual->getPlaca() 
+                     << " retirado del puesto " << puesto << "." << endl;
+                actual->setOcupado(false);
+                actual->setPlaca("");
+            } else {
+                cout << "El puesto " << puesto << " estÃ¡ libre." << endl;
             }
-            actual = actual->siguiente;
-        } while (actual != cabezaIzquierda);
+            return;
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaDerecha);
 
-        // Buscar en la fila derecha
-        actual = cabezaDerecha;
-        do {
-            if (actual->puesto == puesto) {
-                if (actual->ocupado) {
-                    cout << "Vehículo con placa " << actual->placa << " retirado del puesto " << puesto << "." << endl;
-                    actual->ocupado = false;
-                    actual->placa = "";
-                } else {
-                    cout << "El puesto " << puesto << " está libre." << endl;
-                }
-                return;
-            }
-            actual = actual->siguiente;
-        } while (actual != cabezaDerecha);
+    cout << "El puesto " << puesto << " no existe." << endl;
+}
 
-        cout << "El puesto " << puesto << " no existe." << endl;
-    }
 
