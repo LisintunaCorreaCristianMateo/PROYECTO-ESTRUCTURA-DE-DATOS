@@ -221,5 +221,97 @@ void ListaCircularDoble::retirarVehiculo(int puesto) {
 
     cout << "El puesto " << puesto << " no existe." << endl;
 }
+// metodos para la impresion
+void ListaCircularDoble::mostrarDatos() {
+    Nodo* actual = cabezaIzquierda;
+
+    cout << "--- Datos de los Propietarios ---" << endl;
+
+    if (!cabezaIzquierda && !cabezaDerecha) {
+        cout << "No hay datos disponibles en el parqueadero." << endl;
+        return;
+    }
+
+    // Recorrer todos los nodos en la lista circular
+    do {
+        if (actual->isOcupado()) { // Verifica si el puesto est� ocupado
+            cout << "Puesto " << actual->getPuesto() << ": " << endl;
+            cout << "  Nombre: " << actual->getNombre() << " " << actual->getApellido() << endl;
+            cout << "  Cedula: " << actual->getCedula() << endl;
+            cout << "  Placa: " << actual->getPlaca() << endl;
+            cout << "------------------------------------" << endl;
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaIzquierda); // Continuar hasta dar la vuelta completa
+
+    cout << endl;
+}
+
+
+void ListaCircularDoble::mostrarAutos() {
+    Nodo* actual = cabezaIzquierda;
+
+    cout << "--- Autos Registrados en el Parqueadero ---" << endl;
+
+    if (!cabezaIzquierda) { // Verifica si hay nodos en la lista
+        cout << "No hay autos en el parqueadero." << endl;
+        return;
+    }
+
+    bool autosEncontrados = false;
+
+    // Recorrer todos los nodos en la lista circular
+    do {
+        if (actual->isOcupado()) { // Verifica si el puesto está ocupado
+            cout << "Puesto " << actual->getPuesto() << ": " << actual->getPlaca() << endl;
+            autosEncontrados = true;
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaIzquierda);
+
+    if (!autosEncontrados) {
+        cout << "No hay autos registrados en este momento." << endl;
+    }
+
+    cout << endl;
+}
+
+
+
+
+void ListaCircularDoble::mostrarHistorial() {
+    Nodo* actual = cabezaIzquierda;
+
+    cout << "--- Historial de Vehiculos ---" << endl;
+
+    if (!cabezaIzquierda) { // Verifica si hay nodos en la lista
+        cout << "No hay historial en el parqueadero." << endl;
+        return;
+    }
+
+    bool historialEncontrado = false;
+
+    // Recorrer todos los nodos en la lista circular
+    do {
+        if (actual->isOcupado() || (!actual->gethoraIngreso().empty() && !actual->gethoraSalida().empty())) { 
+            // Mostrar historial solo si hay registro de entrada y salida
+            cout << "Puesto " << actual->getPuesto() << ": " << actual->getPlaca() << endl;
+            cout << "  Entrada: " << actual->gethoraIngreso() << endl;
+            cout << "  Salida: " << actual->gethoraSalida() << endl;
+            historialEncontrado = true;
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaIzquierda);
+
+    if (!historialEncontrado) {
+        cout << "No se ha registrado historial en el parqueadero." << endl;
+    }
+
+    cout << endl;
+}
+
+
+
+
 
 

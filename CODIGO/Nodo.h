@@ -37,6 +37,10 @@ public:
 
     string getPlaca();
 
+    string gethoraIngreso();
+
+    string gethoraSalida();
+
     Nodo* getSiguiente();
 
     Nodo* getAnterior();

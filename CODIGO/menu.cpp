@@ -18,8 +18,8 @@ void menu(){
 
 	
 	
-	const int numOpciones = 4;
-    string opciones[numOpciones] = {"Ver parqueadero", "Ingresar vehiculo", "Retirar vehiculo", "Salir"};
+	const int numOpciones = 7;
+    string opciones[numOpciones] = {"Ver parqueadero", "Ingresar vehiculo", "Retirar vehiculo","Ver Datos","Ver Vehiculos","Ver Historial", "Salir"};
     int opcionSeleccionada = 0; // Inicializamos la opci�n seleccionada en 0
 
     while (true) {
@@ -124,7 +124,19 @@ void procesarSeleccion(const string& opcion) {
 		    
 	//	manejadorArchivos.guardarEnArchivo("estudiantes.txt",lista);
 		    
-    } 
+    }
+    else if(opcion =="Ver Datos"){
+        parqueadero.mostrarDatos();
+
+    }
+    else if(opcion=="Ver Vehiculos"){
+        parqueadero.mostrarAutos();
+
+    }
+    else if(opcion=="Ver Historial"){
+         parqueadero.mostrarHistorial();
+
+    }
 	else if (opcion == "Salir") {
         cout << "Saliendo del programa...\n";
     } else {

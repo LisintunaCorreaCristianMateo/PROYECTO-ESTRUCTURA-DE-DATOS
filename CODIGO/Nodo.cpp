@@ -27,19 +27,26 @@ Nodo::~Nodo(){
 
         // Getters
     int Nodo::getPuesto() {
-         return puesto; }
+     return puesto; }
 
     bool Nodo::isOcupado()  {
-         return ocupado; }
+     return ocupado; }
 
     string Nodo::getPlaca()  {
-         return placa; }
+     return placa; }
+
+    string Nodo::gethoraIngreso()  {
+     return horaIngreso; }
+
+    string Nodo::gethoraSalida()  {
+     return horaSalida; }
+         
 
     Nodo* Nodo::getSiguiente()  {
-         return siguiente; }
+     return siguiente; }
 
     Nodo* Nodo::getAnterior()  {
-         return anterior; }
+     return anterior; }
 
     // Setters
     void Nodo::setOcupado(bool value) {
