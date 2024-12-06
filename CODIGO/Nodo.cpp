@@ -18,9 +18,6 @@ Nodo::Nodo(int _puesto, string _placa,string _cedula,string _nombre,string _segu
 	siguiente=NULL;
 	anterior=NULL;
 }
-Nodo::Nodo(int _puesto){
-    puesto=_puesto;
-}
 Nodo::~Nodo(){
 	
 }
@@ -40,7 +37,17 @@ Nodo::~Nodo(){
 
     string Nodo::gethoraSalida()  {
      return horaSalida; }
-         
+
+    string Nodo::getNombre(){
+    return nombre;
+    }
+    string Nodo::getApellido(){
+    return apellido;
+    }
+    
+    string Nodo::getCedula(){
+    return cedula;
+    }
 
     Nodo* Nodo::getSiguiente()  {
      return siguiente; }
@@ -60,3 +67,27 @@ Nodo::~Nodo(){
         
     void Nodo::setAnterior(Nodo* nodo) { 
         anterior = nodo; }
+
+    void Nodo::setNombre(string _nombre){
+        nombre=_nombre;
+    }
+
+    void Nodo::setSegundoNombre(string _segundoNombre){
+        segundoNombre=_segundoNombre;
+    }
+
+    void Nodo::setApellido(string _apellido){
+        apellido=_apellido;
+    }
+
+    void Nodo::setSegundoApellido(string _segundoApellido){
+        segundoApellido=_segundoApellido;
+    }
+
+    void Nodo::setHoraIngreso(string _horaIngreso){
+        horaIngreso=horaIngreso;
+    }
+
+    void Nodo::setFecha(string _fecha){
+        fecha=_fecha;
+    }

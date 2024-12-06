@@ -4,6 +4,7 @@
 	#include <ctime>
 	#include <iomanip>
 	#include <string>
+	
 	using namespace std;
 
 	//constructor
@@ -53,7 +54,7 @@ string obtenerHoraActual() {
 
     // Funci�n para insertar un nodo en la lista circular
 void ListaCircularDoble::insertarNodo(int puesto, bool esIzquierda) {
-    Nodo* nuevo = new Nodo(puesto);
+    Nodo* nuevo = new Nodo(puesto,"","","","","","","","","");
     if (esIzquierda) {
         if (!cabezaIzquierda) { // Si la lista izquierda está vacía
             cabezaIzquierda = nuevo;
@@ -148,11 +149,12 @@ void ListaCircularDoble::mostrarPuestosLibres() {
 }
 
     // Funci�n para ingresar un veh�culo en un puesto vac�o aleatorio
-void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string nombre, 
-                                          string nombre2, string apellido, string apellido2) {
+
+void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string nombre, string segundoNombre, string apellido, string segundoApellido) {
     vector<Nodo*> puestosLibres;
     Nodo* actual = cabezaIzquierda;
 
+    // Recopilar todos los puestos libres en la fila izquierda
     do {
         if (!actual->isOcupado()) {
             puestosLibres.push_back(actual);
@@ -160,6 +162,7 @@ void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string no
         actual = actual->getSiguiente();
     } while (actual != cabezaIzquierda);
 
+    // Recopilar todos los puestos libres en la fila derecha
     actual = cabezaDerecha;
     do {
         if (!actual->isOcupado()) {
@@ -173,14 +176,32 @@ void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string no
         return;
     }
 
+    // Seleccionar un puesto vac�o aleatorio
     srand(time(0));
     int indiceAleatorio = rand() % puestosLibres.size();
     Nodo* puestoSeleccionado = puestosLibres[indiceAleatorio];
 
-    puestoSeleccionado->setOcupado(true);
-    puestoSeleccionado->setPlaca(placa);
+    // Crear un nuevo objeto Nodo con los datos
+    Nodo* nuevoVehiculo = new Nodo(
+        puestoSeleccionado->getPuesto(), // El n�mero de puesto permanece igual
+        placa, cedula, nombre, segundoNombre, apellido, segundoApellido,
+        obtenerFechaActual(), obtenerHoraActual(), "" // HoraSalida vac�a
+    );
 
-    cout << "Vehículo con placa " << placa << " ingresado en el puesto " << puestoSeleccionado->getPuesto() << "." << endl;
+      // Actualizar los datos del puesto seleccionado
+    puestoSeleccionado->setPlaca(placa);
+    puestoSeleccionado->setOcupado(true);
+    puestoSeleccionado->setNombre(nombre);
+    puestoSeleccionado->setSegundoNombre(segundoNombre);
+    puestoSeleccionado->setApellido(apellido);
+    puestoSeleccionado->setSegundoApellido(segundoApellido);
+    puestoSeleccionado->setHoraIngreso(obtenerHoraActual());
+    puestoSeleccionado->setFecha(obtenerFechaActual());
+
+    cout << "Veh�culo con placa " << placa << " ingresado en el puesto " << puestoSeleccionado->getPuesto() << "." << endl;
+
+    // Liberar memoria del objeto temporal
+    delete nuevoVehiculo;
 }
 
 
@@ -222,8 +243,11 @@ void ListaCircularDoble::retirarVehiculo(int puesto) {
     cout << "El puesto " << puesto << " no existe." << endl;
 }
 // metodos para la impresion
+
+
 void ListaCircularDoble::mostrarDatos() {
-    Nodo* actual = cabezaIzquierda;
+    Nodo* actualIzquierda = cabezaIzquierda;
+    Nodo* actualDerecha = cabezaDerecha;
 
     cout << "--- Datos de los Propietarios ---" << endl;
 
@@ -232,21 +256,34 @@ void ListaCircularDoble::mostrarDatos() {
         return;
     }
 
-    // Recorrer todos los nodos en la lista circular
+    // Establecer ancho de columnas
+    cout << left << setw(20) << "Nombre" << setw(20) << "Apellido" << setw(15) << "C�dula" << setw(10) << "Placa" << endl;
+    cout << "-----------------------------------------------------------------" << endl;
+
+    // Recorrer todos los nodos en la fila izquierda
     do {
-        if (actual->isOcupado()) { // Verifica si el puesto est� ocupado
-            cout << "Puesto " << actual->getPuesto() << ": " << endl;
-            cout << "  Nombre: " << actual->getNombre() << " " << actual->getApellido() << endl;
-            cout << "  Cedula: " << actual->getCedula() << endl;
-            cout << "  Placa: " << actual->getPlaca() << endl;
-            cout << "------------------------------------" << endl;
+        if (actualIzquierda->isOcupado()) { // Verifica si el puesto est� ocupado
+            cout << left << setw(20) << actualIzquierda->getNombre()
+                 << setw(20) << actualIzquierda->getApellido()
+                 << setw(15) << actualIzquierda->getCedula()
+                 << setw(10) << actualIzquierda->getPlaca() << endl;
         }
-        actual = actual->getSiguiente();
-    } while (actual != cabezaIzquierda); // Continuar hasta dar la vuelta completa
+        actualIzquierda = actualIzquierda->getSiguiente();
+    } while (actualIzquierda != cabezaIzquierda); // Continuar hasta dar la vuelta completa
+
+    // Recorrer todos los nodos en la fila derecha
+    do {
+        if (actualDerecha->isOcupado()) { // Verifica si el puesto est� ocupado
+            cout << left << setw(20) << actualDerecha->getNombre()
+                 << setw(20) << actualDerecha->getApellido()
+                 << setw(15) << actualDerecha->getCedula()
+                 << setw(10) << actualDerecha->getPlaca() << endl;
+        }
+        actualDerecha = actualDerecha->getSiguiente();
+    } while (actualDerecha != cabezaDerecha); // Continuar hasta dar la vuelta completa
 
     cout << endl;
 }
-
 
 void ListaCircularDoble::mostrarAutos() {
     Nodo* actual = cabezaIzquierda;
@@ -260,10 +297,15 @@ void ListaCircularDoble::mostrarAutos() {
 
     bool autosEncontrados = false;
 
+    // Establecer encabezados de columnas
+    cout << left << setw(15) << "Placa" << setw(10) << "Puesto" << endl;
+    cout << "-----------------------------" << endl;
+
     // Recorrer todos los nodos en la lista circular
     do {
-        if (actual->isOcupado()) { // Verifica si el puesto está ocupado
-            cout << "Puesto " << actual->getPuesto() << ": " << actual->getPlaca() << endl;
+        if (actual->isOcupado()) { // Verifica si el puesto est� ocupado
+            cout << left << setw(15) << actual->getPlaca()   // Columna de placa
+                 << setw(10) << actual->getPuesto() << endl; // Columna de puesto
             autosEncontrados = true;
         }
         actual = actual->getSiguiente();
@@ -275,6 +317,7 @@ void ListaCircularDoble::mostrarAutos() {
 
     cout << endl;
 }
+
 
 
 

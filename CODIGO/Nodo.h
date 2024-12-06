@@ -25,8 +25,7 @@ private:
 public:
 	//constructor 1
 	Nodo(int _puesto, string _placa,string _cedula,string _nombre,string _segundoNombre, string _apellido, string _segundoApellido,string _fecha,string _horaIngreso,string _horaSalida);
-	//constructor2
-	Nodo(int puesto);
+
 	//Destructor
 	~Nodo();
     
@@ -41,6 +40,12 @@ public:
 
     string gethoraSalida();
 
+    string getNombre();
+    
+    string getApellido();
+    
+    string getCedula();
+
     Nodo* getSiguiente();
 
     Nodo* getAnterior();
@@ -49,6 +54,20 @@ public:
     void setOcupado(bool value);
 
     void setPlaca( string value);
+    
+    void setNombre(string);
+
+    void setSegundoNombre(string);
+
+    void setApellido(string);
+
+    void setSegundoApellido(string);
+
+    void setHoraIngreso(string);
+
+    void setFecha(string);
+
+
 
     void setSiguiente(Nodo* nodo);
 
