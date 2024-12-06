@@ -68,6 +68,9 @@ Nodo::~Nodo(){
     void Nodo::setAnterior(Nodo* nodo) { 
         anterior = nodo; }
 
+    void Nodo::setCedula(string _cedula ){
+        cedula=_cedula;
+    }
     void Nodo::setNombre(string _nombre){
         nombre=_nombre;
     }

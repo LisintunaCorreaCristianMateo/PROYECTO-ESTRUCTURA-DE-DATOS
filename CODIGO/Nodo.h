@@ -54,6 +54,8 @@ public:
     void setOcupado(bool value);
 
     void setPlaca( string value);
+
+    void setCedula(string );
     
     void setNombre(string);
 

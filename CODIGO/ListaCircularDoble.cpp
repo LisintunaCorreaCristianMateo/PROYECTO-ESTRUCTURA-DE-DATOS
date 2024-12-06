@@ -149,7 +149,6 @@ void ListaCircularDoble::mostrarPuestosLibres() {
 }
 
     // Funciï¿½n para ingresar un vehï¿½culo en un puesto vacï¿½o aleatorio
-
 void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string nombre, string segundoNombre, string apellido, string segundoApellido) {
     vector<Nodo*> puestosLibres;
     Nodo* actual = cabezaIzquierda;
@@ -171,38 +170,33 @@ void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string no
         actual = actual->getSiguiente();
     } while (actual != cabezaDerecha);
 
+    // Verificar si hay puestos disponibles
     if (puestosLibres.empty()) {
         cout << "No hay puestos disponibles." << endl;
         return;
     }
 
-    // Seleccionar un puesto vacï¿½o aleatorio
+    // Seleccionar un puesto vacío aleatorio
     srand(time(0));
     int indiceAleatorio = rand() % puestosLibres.size();
     Nodo* puestoSeleccionado = puestosLibres[indiceAleatorio];
 
-    // Crear un nuevo objeto Nodo con los datos
-    Nodo* nuevoVehiculo = new Nodo(
-        puestoSeleccionado->getPuesto(), // El nï¿½mero de puesto permanece igual
-        placa, cedula, nombre, segundoNombre, apellido, segundoApellido,
-        obtenerFechaActual(), obtenerHoraActual(), "" // HoraSalida vacï¿½a
-    );
-
-      // Actualizar los datos del puesto seleccionado
+    // Actualizar los datos directamente en el nodo seleccionado
     puestoSeleccionado->setPlaca(placa);
-    puestoSeleccionado->setOcupado(true);
+    puestoSeleccionado->setCedula(cedula);
     puestoSeleccionado->setNombre(nombre);
     puestoSeleccionado->setSegundoNombre(segundoNombre);
     puestoSeleccionado->setApellido(apellido);
     puestoSeleccionado->setSegundoApellido(segundoApellido);
     puestoSeleccionado->setHoraIngreso(obtenerHoraActual());
     puestoSeleccionado->setFecha(obtenerFechaActual());
+    //puestoSeleccionado->setHoraSalida(""); // Inicializar vacío
+    puestoSeleccionado->setOcupado(true);
 
-    cout << "Vehï¿½culo con placa " << placa << " ingresado en el puesto " << puestoSeleccionado->getPuesto() << "." << endl;
-
-    // Liberar memoria del objeto temporal
-    delete nuevoVehiculo;
+    // Confirmación de ingreso
+    cout << "Vehículo con placa " << placa << " ingresado en el puesto " << puestoSeleccionado->getPuesto() << "." << endl;
 }
+
 
 
     // Funciï¿½n para eliminar un vehï¿½culo
@@ -286,11 +280,9 @@ void ListaCircularDoble::mostrarDatos() {
 }
 
 void ListaCircularDoble::mostrarAutos() {
-    Nodo* actual = cabezaIzquierda;
-
     cout << "--- Autos Registrados en el Parqueadero ---" << endl;
 
-    if (!cabezaIzquierda) { // Verifica si hay nodos en la lista
+    if (!cabezaIzquierda && !cabezaDerecha) { // Verifica si ambas listas están vacías
         cout << "No hay autos en el parqueadero." << endl;
         return;
     }
@@ -301,15 +293,31 @@ void ListaCircularDoble::mostrarAutos() {
     cout << left << setw(15) << "Placa" << setw(10) << "Puesto" << endl;
     cout << "-----------------------------" << endl;
 
-    // Recorrer todos los nodos en la lista circular
-    do {
-        if (actual->isOcupado()) { // Verifica si el puesto estï¿½ ocupado
-            cout << left << setw(15) << actual->getPlaca()   // Columna de placa
-                 << setw(10) << actual->getPuesto() << endl; // Columna de puesto
-            autosEncontrados = true;
-        }
-        actual = actual->getSiguiente();
-    } while (actual != cabezaIzquierda);
+    // Recorrer la lista izquierda
+    if (cabezaIzquierda) {
+        Nodo* actualIzquierda = cabezaIzquierda;
+        do {
+            if (actualIzquierda->isOcupado()) {
+                cout << left << setw(15) << actualIzquierda->getPlaca() 
+                     << setw(10) << actualIzquierda->getPuesto() << endl;
+                autosEncontrados = true;
+            }
+            actualIzquierda = actualIzquierda->getSiguiente();
+        } while (actualIzquierda != cabezaIzquierda);
+    }
+
+    // Recorrer la lista derecha
+    if (cabezaDerecha) {
+        Nodo* actualDerecha = cabezaDerecha;
+        do {
+            if (actualDerecha->isOcupado()) {
+                cout << left << setw(15) << actualDerecha->getPlaca() 
+                     << setw(10) << actualDerecha->getPuesto() << endl;
+                autosEncontrados = true;
+            }
+            actualDerecha = actualDerecha->getSiguiente();
+        } while (actualDerecha != cabezaDerecha);
+    }
 
     if (!autosEncontrados) {
         cout << "No hay autos registrados en este momento." << endl;
@@ -320,27 +328,40 @@ void ListaCircularDoble::mostrarAutos() {
 
 
 
-
-
 void ListaCircularDoble::mostrarHistorial() {
     Nodo* actual = cabezaIzquierda;
 
-    cout << "--- Historial de Vehiculos ---" << endl;
+    cout << "--- Historial de Vehículos ---" << endl;
 
-    if (!cabezaIzquierda) { // Verifica si hay nodos en la lista
+    if (!cabezaIzquierda) {
         cout << "No hay historial en el parqueadero." << endl;
         return;
     }
 
+    // Encabezados de columnas
+    cout << left << setw(10) << "Puesto" 
+         << setw(15) << "Placa" 
+         << setw(20) << "Hora Ingreso" 
+         << setw(20) << "Hora Salida" << endl;
+    cout << string(65, '-') << endl;
+
     bool historialEncontrado = false;
 
-    // Recorrer todos los nodos en la lista circular
+    // Recorrer todos los nodos de la lista circular
     do {
-        if (actual->isOcupado() || (!actual->gethoraIngreso().empty() && !actual->gethoraSalida().empty())) { 
-            // Mostrar historial solo si hay registro de entrada y salida
-            cout << "Puesto " << actual->getPuesto() << ": " << actual->getPlaca() << endl;
-            cout << "  Entrada: " << actual->gethoraIngreso() << endl;
-            cout << "  Salida: " << actual->gethoraSalida() << endl;
+        if (!actual->gethoraIngreso().empty() || actual->isOcupado()) {
+            cout << setw(10) << actual->getPuesto()
+                 << setw(15) << actual->getPlaca()
+                 << setw(20) << actual->gethoraIngreso();
+
+            // Mostrar la hora de salida si existe, de lo contrario "Vehículo en uso"
+            if (actual->gethoraSalida().empty()) {
+                cout << setw(20) << "Vehículo en uso";
+            } else {
+                cout << setw(20) << actual->gethoraSalida();
+            }
+
+            cout << endl;
             historialEncontrado = true;
         }
         actual = actual->getSiguiente();
@@ -349,9 +370,11 @@ void ListaCircularDoble::mostrarHistorial() {
     if (!historialEncontrado) {
         cout << "No se ha registrado historial en el parqueadero." << endl;
     }
-
     cout << endl;
 }
+
+
+
 
 
 
