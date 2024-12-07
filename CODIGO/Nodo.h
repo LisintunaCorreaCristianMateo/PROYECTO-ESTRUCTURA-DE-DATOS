@@ -41,10 +41,16 @@ public:
     string gethoraSalida();
 
     string getNombre();
+
+    string getSegundoNombre();
     
     string getApellido();
     
+    string getSegundoApellido();
+    
     string getCedula();
+    
+    string getFecha();
 
     Nodo* getSiguiente();
 

@@ -41,12 +41,24 @@ Nodo::~Nodo(){
     string Nodo::getNombre(){
     return nombre;
     }
+
+    string Nodo::getSegundoNombre(){
+    return segundoNombre;
+    }
+
     string Nodo::getApellido(){
     return apellido;
     }
     
+    string Nodo::getSegundoApellido(){
+    return segundoApellido;
+    }
+
     string Nodo::getCedula(){
     return cedula;
+    }
+    string Nodo::getFecha(){
+    return fecha;
     }
 
     Nodo* Nodo::getSiguiente()  {
@@ -88,7 +100,7 @@ Nodo::~Nodo(){
     }
 
     void Nodo::setHoraIngreso(string _horaIngreso){
-        horaIngreso=horaIngreso;
+        horaIngreso=_horaIngreso;
     }
 
     void Nodo::setFecha(string _fecha){
