@@ -1,10 +1,11 @@
-	#include "ListaCircularDoble.h"
+    #include "ListaCircularDoble.h"
 	#include<iostream>
 	#include <vector>
 	#include <ctime>
 	#include <iomanip>
 	#include <string>
-	
+    #include <fstream>
+
 	using namespace std;
 
 	//constructor
@@ -30,27 +31,29 @@
     	
 	}
 
-    // FunciÃ³n para obtener la fecha actual
-string obtenerFechaActual() {
-    time_t tiempoActual = time(nullptr);
-    tm* fechaLocal = localtime(&tiempoActual);
+    // Función para obtener la fecha actual
+    string obtenerFechaActual() {
+        time_t tiempoActual = time(nullptr);
+        struct tm* fechaLocal = new tm();
+        localtime_s(fechaLocal, &tiempoActual);
+        char buffer[20]; // Buffer para almacenar la fecha
+        strftime(buffer, sizeof(buffer), "%d/%m/%Y", fechaLocal);
+        string fecha(buffer);
+        delete fechaLocal;  // Importante liberar la memoria
+        return fecha;
+    }
 
-    char buffer[20]; // Buffer para almacenar la fecha
-    strftime(buffer, sizeof(buffer), "%d/%m/%Y", fechaLocal);
-
-    return string(buffer);
-}
-
-// FunciÃ³n para obtener la hora actual
-string obtenerHoraActual() {
-    time_t tiempoActual = time(nullptr);
-    tm* horaLocal = localtime(&tiempoActual);
-
-    char buffer[20]; // Buffer para almacenar la hora
-    strftime(buffer, sizeof(buffer), "%H:%M:%S", horaLocal);
-
-    return string(buffer);
-}
+    // Función para obtener la hora actual
+    string obtenerHoraActual() {
+        time_t tiempoActual = time(nullptr);
+        struct tm* horaLocal = new tm();
+        localtime_s(horaLocal, &tiempoActual);
+        char buffer[20]; // Buffer para almacenar la hora
+        strftime(buffer, sizeof(buffer), "%H:%M:%S", horaLocal);
+        string hora(buffer);
+        delete horaLocal;  // Importante liberar la memoria
+        return hora;
+    }
 
     // Funciï¿½n para insertar un nodo en la lista circular
 void ListaCircularDoble::insertarNodo(int puesto, bool esIzquierda) {
@@ -407,6 +410,121 @@ void ListaCircularDoble::mostrarHistorial() {
         cout << "No se ha registrado historial en el parqueadero." << endl;
     }
     cout << endl;
+}
+void ListaCircularDoble::guardarDatosSinPlaca() {
+    ofstream archivo("DatosSinPlaca.txt");
+
+    if (!archivo) {
+        cout << "Error al abrir el archivo para guardar los datos sin placa." << endl;
+        return;
+    }
+
+    Nodo* actualIzquierda = cabezaIzquierda;
+    Nodo* actualDerecha = cabezaDerecha;
+
+    // Recorrer la lista izquierda
+    do {
+        if (actualIzquierda->isOcupado()) {
+            archivo << actualIzquierda->getNombre() << ","
+                    << actualIzquierda->getSegundoNombre() << ","
+                    << actualIzquierda->getApellido() << ","
+                    << actualIzquierda->getSegundoApellido() << ","
+                    << actualIzquierda->getCedula() << endl;
+        }
+        actualIzquierda = actualIzquierda->getSiguiente();
+    } while (actualIzquierda != cabezaIzquierda);
+
+    // Recorrer la lista derecha
+    do {
+        if (actualDerecha->isOcupado()) {
+            archivo << actualDerecha->getNombre() << ","
+                    << actualDerecha->getSegundoNombre() << ","
+                    << actualDerecha->getApellido() << ","
+                    << actualDerecha->getSegundoApellido() << ","
+                    << actualDerecha->getCedula() << endl;
+        }
+        actualDerecha = actualDerecha->getSiguiente();
+    } while (actualDerecha != cabezaDerecha);
+
+    archivo.close();
+    cout << "Datos sin placa guardados en 'DatosSinPlaca.txt'." << endl;
+}
+void ListaCircularDoble::guardarPlacas() {
+    ofstream archivo("Placas.txt");
+
+    if (!archivo) {
+        cout << "Error al abrir el archivo para guardar las placas." << endl;
+        return;
+    }
+
+    Nodo* actualIzquierda = cabezaIzquierda;
+    Nodo* actualDerecha = cabezaDerecha;
+
+    // Recorrer la lista izquierda
+    do {
+        if (actualIzquierda->isOcupado()) {
+            archivo << actualIzquierda->getPlaca() << endl;
+        }
+        actualIzquierda = actualIzquierda->getSiguiente();
+    } while (actualIzquierda != cabezaIzquierda);
+
+    // Recorrer la lista derecha
+    do {
+        if (actualDerecha->isOcupado()) {
+            archivo << actualDerecha->getPlaca() << endl;
+        }
+        actualDerecha = actualDerecha->getSiguiente();
+    } while (actualDerecha != cabezaDerecha);
+
+    archivo.close();
+    cout << "Placas guardadas en 'Placas.txt'." << endl;
+}
+void ListaCircularDoble::guardarHistorial() {
+    ofstream archivo("Historial.txt");
+
+    if (!archivo) {
+        cout << "Error al abrir el archivo para guardar el historial." << endl;
+        return;
+    }
+
+    Nodo* actualIzquierda = cabezaIzquierda;
+    Nodo* actualDerecha = cabezaDerecha;
+
+    // Encabezados del historial
+    archivo << "Puesto,Placa,Hora Ingreso,Hora Salida" << endl;
+
+    // Recorrer la lista izquierda
+    do {
+        if (!actualIzquierda->gethoraIngreso().empty() || actualIzquierda->isOcupado()) {
+            archivo << actualIzquierda->getPuesto() << ","
+                    << actualIzquierda->getPlaca() << ","
+                    << actualIzquierda->gethoraIngreso() << ",";
+            if (actualIzquierda->gethoraSalida().empty()) {
+                archivo << "Vehiculo parqueado" << endl;
+            } else {
+                archivo << actualIzquierda->gethoraSalida() << endl;
+            }
+        }
+        actualIzquierda = actualIzquierda->getSiguiente();
+    } while (actualIzquierda != cabezaIzquierda);
+
+    // Recorrer la lista derecha
+    do {
+        if (!actualDerecha->gethoraIngreso().empty() || actualDerecha->isOcupado()) {
+            archivo << actualDerecha->getPuesto() << ","
+                    << actualDerecha->getPlaca() << ","
+                    << actualDerecha->gethoraIngreso() << ",";
+            if (actualDerecha->gethoraSalida().empty()) {
+                archivo << "Vehiculo parqueado" << endl;
+            } else {
+                archivo << actualDerecha->gethoraSalida() << endl;
+            }
+        }
+        actualDerecha = actualDerecha->getSiguiente();
+    } while (actualDerecha != cabezaDerecha);
+
+    archivo.close();
+    cout << "Historial guardado en 'Historial.txt'." << endl;
 }
 
 

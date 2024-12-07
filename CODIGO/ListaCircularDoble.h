@@ -1,3 +1,4 @@
+
 #ifndef LISTACIRCULARDOBLE_H
 #define LISTACIRCULARDOBLE_H
 #include "Nodo.h"
@@ -29,6 +30,9 @@ public:
 	void mostrarDatos();
 	void mostrarAutos();
 	void mostrarHistorial();
+	void guardarDatosSinPlaca();
+	void guardarPlacas();
+	void guardarHistorial();
 };
 
 #endif
