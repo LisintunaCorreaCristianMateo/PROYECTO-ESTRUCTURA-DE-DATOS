@@ -102,6 +102,10 @@ Nodo::~Nodo(){
     void Nodo::setHoraIngreso(string _horaIngreso){
         horaIngreso=_horaIngreso;
     }
+    void Nodo::setHoraSalida(string _horaSalida){
+       horaSalida=_horaSalida;
+      
+    }
 
     void Nodo::setFecha(string _fecha){
         fecha=_fecha;

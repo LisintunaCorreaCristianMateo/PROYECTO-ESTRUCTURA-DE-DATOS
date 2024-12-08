@@ -112,29 +112,29 @@ string validarPlaca() {
 
         // Verificar longitud
         if (placa.length() != 7) {
-            cout << "Placa inválida. Debe tener exactamente 7 caracteres.\n";
+            cout << "Placa invï¿½lida. Debe tener exactamente 7 caracteres.\n";
             continue;
         }
 
-        // Validar formato: 3 letras seguidas de 4 números
+        // Validar formato: 3 letras seguidas de 4 nï¿½meros
         bool valido = true;
         for (int i = 0; i < 3; i++) {
-            if (!isalpha(placa[i]) || !isupper(placa[i])) { // Las primeras 3 deben ser letras mayúsculas
+            if (!isalpha(placa[i]) || !isupper(placa[i])) { // Las primeras 3 deben ser letras mayï¿½sculas
                 valido = false;
                 break;
             }
         }
         for (int i = 3; i < 7; i++) {
-            if (!isdigit(placa[i])) { // Las siguientes 4 deben ser números
+            if (!isdigit(placa[i])) { // Las siguientes 4 deben ser nï¿½meros
                 valido = false;
                 break;
             }
         }
 
         if (valido) {
-            break; // Placa válida, salir del bucle
+            break; // Placa vï¿½lida, salir del bucle
         } else {
-            cout << "Placa inválida. Debe tener 3 letras mayúsculas seguidas de 4 números (ejemplo: ABC1234).\n";
+            cout << "Placa invï¿½lida. Debe tener 3 letras mayï¿½sculas seguidas de 4 nï¿½meros (ejemplo: ABC1234).\n";
         }
     }
     return placa;
@@ -191,11 +191,15 @@ string ingresar_string(const char* mensaje) {
 // Funciï¿½n para procesar la selecciï¿½n de una opciï¿½n
 void procesarSeleccion(const string& opcion) {
 
-    
-//	Archivotxt manejadorArchivos;
+            //metodos para la lectura txt
+            manejadorArchivos.leerPlacas(parqueadero);
+            manejadorArchivos.leerDatos(parqueadero);
+            manejadorArchivos.leerHistorial(parqueadero);
+
 	
     if (opcion == "Ver parqueadero") {
-    	
+    	    //metodos para la lectura txt
+
     	 parqueadero.dibujarParqueadero();
     	 cout<<endl;
     	 cout<<endl;
@@ -206,59 +210,55 @@ void procesarSeleccion(const string& opcion) {
     
 	else if (opcion == "Ingresar vehiculo") {
 		
+
+
+
 			string placa = validarPlaca();
-			
-            //string nombre,nombre2,apellido,apellido2;
-            //cout << "Ingrese la placa del vehiculo: ";
-            //cin >> placa;
-            
-            string cedula = ingresar_cedula("Ingrese la cedula (10 dígitos): ");
-            //cout << "Ingrese la cedula: ";
-            //cin>>cedula;
+
+            string cedula = ingresar_cedula("Ingrese la cedula (10 dï¿½gitos): ");
             
             string nombre = ingresar_string("Ingrese Primer Nombre: ");
-            //cout<<"Ingrese el primer nombre: ";
-            //cin>>nombre;
             
             string nombre2 = ingresar_string("Ingrese Segundo Nombre: ");
             
-            //cout<<"Ingrese el Segundo nombre: ";
-            //cin>>nombre2;
-            
             string apellido = ingresar_string("Ingrese Primer Apellido: ");
-            //cout<<"Ingrese el primer Apellido: ";
-            //cin>>apellido;
-            
-            string apellido2 = ingresar_string("Ingrese Segundo Apellido: ");
-            //cout<<"Ingrese el Segundo Apellido: ";
-            //cin>>apellido2;
 
-			
+            string apellido2 = ingresar_string("Ingrese Segundo Apellido: ");
+     
             parqueadero.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2);
             
-            //metodos de txt
+            //metodos de txt para guardar en el txt
             
         	manejadorArchivos.guardarDatos(parqueadero);
         	manejadorArchivos.guardarPlacas(parqueadero);
-            manejadorArchivos.guardarHistorial(parqueadero);	
+            manejadorArchivos.guardarHistorial(parqueadero);
+        
+
 
         system("pause");
     	system("cls");
     
 	}
 	 else if (opcion == "Retirar vehiculo") {
+
 	 	 int puesto;
         //manejadorArchivos.leerDesdeArchivo("estudiantes.txt",lista);
 	        cout << "Ingrese el numero del puesto a liberar: ";
             cin >> puesto;
             parqueadero.retirarVehiculo(puesto);
-		    
+		                
+        	manejadorArchivos.guardarDatos(parqueadero);
+        	manejadorArchivos.guardarPlacas(parqueadero);
+            manejadorArchivos.guardarHistorial(parqueadero);
     }
     else if(opcion =="Ver Datos"){
+
         parqueadero.mostrarDatos();
 
     }
     else if(opcion=="Ver Vehiculos"){
+
+
         parqueadero.mostrarAutos();
 
     }

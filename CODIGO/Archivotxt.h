@@ -1,6 +1,5 @@
-#ifndef ARCHIVOSTXT_H  // Cambié ArchivosTXT a ARCHIVOSTXT_H para mantener consistencia
+#ifndef ARCHIVOSTXT_H  // Cambiï¿½ ArchivosTXT a ARCHIVOSTXT_H para mantener consistencia
 #define ARCHIVOSTXT_H
-
 #include "ListaCircularDoble.h"
 #include <string>
 
@@ -10,10 +9,16 @@ public:
     Archivotxt() = default;
     ~Archivotxt() = default;
 
-    // Métodos
+    // Mï¿½todos
     void guardarDatos(ListaCircularDoble &parqueadero);
     void guardarPlacas(ListaCircularDoble &parqueadero);
     void guardarHistorial(ListaCircularDoble &parqueadero);
+    
+    //Metodos lecturas txt
+    void leerPlacas(ListaCircularDoble &parqueadero);
+    void leerDatos(ListaCircularDoble &parqueadero);
+    void leerHistorial(ListaCircularDoble &parqueadero);
+    
 };
 
 #endif

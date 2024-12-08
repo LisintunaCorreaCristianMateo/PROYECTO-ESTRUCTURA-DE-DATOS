@@ -72,6 +72,8 @@ public:
     void setSegundoApellido(string);
 
     void setHoraIngreso(string);
+    
+    void setHoraSalida(string);
 
     void setFecha(string);
 

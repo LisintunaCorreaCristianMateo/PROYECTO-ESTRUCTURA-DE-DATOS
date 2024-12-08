@@ -26,6 +26,7 @@
             insertarNodo(i, false);
         }
     }
+    
 	//destructor
     ListaCircularDoble::~ListaCircularDoble(){
     	
@@ -350,9 +351,11 @@ void ListaCircularDoble::mostrarHistorial() {
     // Encabezados de columnas
     cout << left << setw(10) << "Puesto" 
          << setw(15) << "Placa" 
+         << setw(20) << "Fecha"
          << setw(20) << "Hora Ingreso" 
-         << setw(20) << "Hora Salida" << endl;
-    cout << string(65, '-') << endl;
+         << setw(20) << "Hora Salida"<< endl;
+         
+    cout << string(86, '-') << endl;
 
     bool historialEncontrado = false;
 
@@ -363,7 +366,9 @@ void ListaCircularDoble::mostrarHistorial() {
             if (!actualIzquierda->gethoraIngreso().empty() || actualIzquierda->isOcupado()) {
                 cout << setw(10) << actualIzquierda->getPuesto()
                      << setw(15) << actualIzquierda->getPlaca()
+                     << setw(20) << actualIzquierda->getFecha()
                      << setw(20) << actualIzquierda->gethoraIngreso();
+                     
 
                 // Mostrar la hora de salida si existe, de lo contrario "Veh�culo en uso"
                 if (actualIzquierda->gethoraSalida().empty()) {
@@ -386,7 +391,9 @@ void ListaCircularDoble::mostrarHistorial() {
             if (!actualDerecha->gethoraIngreso().empty() || actualDerecha->isOcupado()) {
                 cout << setw(10) << actualDerecha->getPuesto()
                      << setw(15) << actualDerecha->getPlaca()
+                     << setw(20) << actualDerecha->getFecha()
                      << setw(20) << actualDerecha->gethoraIngreso();
+                     
 
                 // Mostrar la hora de salida si existe, de lo contrario "Veh�culo en uso"
                 if (actualDerecha->gethoraSalida().empty()) {
