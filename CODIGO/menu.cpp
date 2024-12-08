@@ -1,7 +1,7 @@
 #include "ListaCircularDoble.h"
 #include "menu.h"
 //#include"Validaciones.h"
-//#include "Archivotxt.h"
+#include "Archivotxt.h"
 #include <iostream>
 #include <conio.h>  // Para _getch()
 #include <windows.h> // Para cambiar colores en la consola
@@ -13,6 +13,7 @@ using namespace std;
 		
     int totalPuestos = 20; 
     ListaCircularDoble parqueadero(totalPuestos);
+    Archivotxt manejadorArchivos;
 
 void menu(){
 
@@ -80,12 +81,7 @@ void procesarSeleccion(const string& opcion) {
     	 cout<<endl;
     	 parqueadero.mostrarPuestosLibres();
     	
-        //manejadorArchivos.leerDesdeArchivo("estudiantes.txt",lista);
 
-                
-               
-        //Guarda en el txt
-    //	manejadorArchivos.guardarEnArchivo("estudiantes.txt",lista);
     } 
     
 	else if (opcion == "Ingresar vehiculo") {
@@ -108,9 +104,10 @@ void procesarSeleccion(const string& opcion) {
             parqueadero.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2);
             
             //metodos de txt
-        	parqueadero.guardarDatosSinPlaca();
-        	parqueadero.guardarPlacas();
-            parqueadero.guardarHistorial();	
+            
+        	manejadorArchivos.guardarDatos(parqueadero);
+        	manejadorArchivos.guardarPlacas(parqueadero);
+            manejadorArchivos.guardarHistorial(parqueadero);	
 
         system("pause");
     	system("cls");

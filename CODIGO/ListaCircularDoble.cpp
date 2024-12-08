@@ -30,7 +30,7 @@
     ListaCircularDoble::~ListaCircularDoble(){
     	
 	}
-    // Función para obtener la fecha actual
+    // Funciï¿½n para obtener la fecha actual
 string obtenerFechaActual() {
     time_t tiempoActual = time(nullptr);
     tm* fechaLocal = localtime(&tiempoActual);
@@ -40,7 +40,7 @@ string obtenerFechaActual() {
 
     return string(buffer);
 }
-// Función para obtener la hora actual
+// Funciï¿½n para obtener la hora actual
 string obtenerHoraActual() {
     time_t tiempoActual = time(nullptr);
     tm* horaLocal = localtime(&tiempoActual);
@@ -177,7 +177,7 @@ void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string no
         return;
     }
 
-    // Seleccionar un puesto vacío aleatorio
+    // Seleccionar un puesto vacï¿½o aleatorio
     srand(time(0));
     int indiceAleatorio = rand() % puestosLibres.size();
     Nodo* puestoSeleccionado = puestosLibres[indiceAleatorio];
@@ -191,11 +191,11 @@ void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string no
     puestoSeleccionado->setSegundoApellido(segundoApellido);
     puestoSeleccionado->setHoraIngreso(obtenerHoraActual());
     puestoSeleccionado->setFecha(obtenerFechaActual());
-    //puestoSeleccionado->setHoraSalida(""); // Inicializar vacío
+    //puestoSeleccionado->setHoraSalida(""); // Inicializar vacï¿½o
     puestoSeleccionado->setOcupado(true);
 
-    // Confirmación de ingreso
-    cout << "Vehículo con placa " << placa << " ingresado en el puesto " << puestoSeleccionado->getPuesto() << "." << endl;
+    // Confirmaciï¿½n de ingreso
+    cout << "Vehï¿½culo con placa " << placa << " ingresado en el puesto " << puestoSeleccionado->getPuesto() << "." << endl;
 }
 
 
@@ -212,7 +212,7 @@ void ListaCircularDoble::retirarVehiculo(int puesto) {
                 actual->setOcupado(false);
                 actual->setPlaca(string(""));
             } else {
-                cout << "El puesto " << puesto << " esta¡ libre." << endl;
+                cout << "El puesto " << puesto << " estaï¿½ libre." << endl;
             }
             return;
         }
@@ -228,7 +228,7 @@ void ListaCircularDoble::retirarVehiculo(int puesto) {
                 actual->setOcupado(false);
                 actual->setPlaca("");
             } else {
-                cout << "El puesto " << puesto << " esta¡ libre." << endl;
+                cout << "El puesto " << puesto << " estaï¿½ libre." << endl;
             }
             return;
         }
@@ -256,13 +256,13 @@ void ListaCircularDoble::mostrarDatos() {
          << setw(20) << "Segundo Nombre" 
          << setw(15) << "Apellido" 
          << setw(20) << "Segundo Apellido" 
-         << setw(15) << "Cédula" 
+         << setw(15) << "Cï¿½dula" 
          << setw(10) << "Placa" << endl;
     cout << string(95, '-') << endl;
 
     // Recorrer todos los nodos en la fila izquierda
     do {
-        if (actualIzquierda->isOcupado()) { // Verifica si el puesto está ocupado
+        if (actualIzquierda->isOcupado()) { // Verifica si el puesto estï¿½ ocupado
             cout << left << setw(15) << actualIzquierda->getNombre()
                  << setw(20) << actualIzquierda->getSegundoNombre()
                  << setw(15) << actualIzquierda->getApellido()
@@ -275,7 +275,7 @@ void ListaCircularDoble::mostrarDatos() {
 
     // Recorrer todos los nodos en la fila derecha
     do {
-        if (actualDerecha->isOcupado()) { // Verifica si el puesto está ocupado
+        if (actualDerecha->isOcupado()) { // Verifica si el puesto estï¿½ ocupado
             cout << left << setw(15) << actualDerecha->getNombre()
                  << setw(20) << actualDerecha->getSegundoNombre()
                  << setw(15) << actualDerecha->getApellido()
@@ -293,7 +293,7 @@ void ListaCircularDoble::mostrarDatos() {
 void ListaCircularDoble::mostrarAutos() {
     cout << "--- Autos Registrados en el Parqueadero ---" << endl;
 
-    if (!cabezaIzquierda && !cabezaDerecha) { // Verifica si ambas listas están vacías
+    if (!cabezaIzquierda && !cabezaDerecha) { // Verifica si ambas listas estï¿½n vacï¿½as
         cout << "No hay autos en el parqueadero." << endl;
         return;
     }
@@ -342,7 +342,7 @@ void ListaCircularDoble::mostrarAutos() {
 void ListaCircularDoble::mostrarHistorial() {
     cout << "--- Historial de Vehiculos ---" << endl;
 
-    if (!cabezaIzquierda && !cabezaDerecha) { // Verifica si ambas listas están vacías
+    if (!cabezaIzquierda && !cabezaDerecha) { // Verifica si ambas listas estï¿½n vacï¿½as
         cout << "No hay historial en el parqueadero." << endl;
         return;
     }
@@ -365,9 +365,9 @@ void ListaCircularDoble::mostrarHistorial() {
                      << setw(15) << actualIzquierda->getPlaca()
                      << setw(20) << actualIzquierda->gethoraIngreso();
 
-                // Mostrar la hora de salida si existe, de lo contrario "Vehículo en uso"
+                // Mostrar la hora de salida si existe, de lo contrario "Vehï¿½culo en uso"
                 if (actualIzquierda->gethoraSalida().empty()) {
-                    cout << setw(20) << "Vehículo parqueado";
+                    cout << setw(20) << "Vehï¿½culo parqueado";
                 } else {
                     cout << setw(20) << actualIzquierda->gethoraSalida();
                 }
@@ -388,7 +388,7 @@ void ListaCircularDoble::mostrarHistorial() {
                      << setw(15) << actualDerecha->getPlaca()
                      << setw(20) << actualDerecha->gethoraIngreso();
 
-                // Mostrar la hora de salida si existe, de lo contrario "Vehículo en uso"
+                // Mostrar la hora de salida si existe, de lo contrario "Vehï¿½culo en uso"
                 if (actualDerecha->gethoraSalida().empty()) {
                     cout << setw(20) << "Vehiculo parqueado";
                 } else {
@@ -407,128 +407,3 @@ void ListaCircularDoble::mostrarHistorial() {
     }
     cout << endl;
 }
-void ListaCircularDoble::guardarDatosSinPlaca() {
-    ofstream archivo("DatosSinPlaca.txt");
-
-    if (!archivo) {
-        cout << "Error al abrir el archivo para guardar los datos sin placa." << endl;
-        return;
-    }
-
-    Nodo* actualIzquierda = cabezaIzquierda;
-    Nodo* actualDerecha = cabezaDerecha;
-
-    // Recorrer la lista izquierda
-    do {
-        if (actualIzquierda->isOcupado()) {
-            archivo << actualIzquierda->getNombre() << ","
-                    << actualIzquierda->getSegundoNombre() << ","
-                    << actualIzquierda->getApellido() << ","
-                    << actualIzquierda->getSegundoApellido() << ","
-                    << actualIzquierda->getCedula() << endl;
-        }
-        actualIzquierda = actualIzquierda->getSiguiente();
-    } while (actualIzquierda != cabezaIzquierda);
-
-    // Recorrer la lista derecha
-    do {
-        if (actualDerecha->isOcupado()) {
-            archivo << actualDerecha->getNombre() << ","
-                    << actualDerecha->getSegundoNombre() << ","
-                    << actualDerecha->getApellido() << ","
-                    << actualDerecha->getSegundoApellido() << ","
-                    << actualDerecha->getCedula() << endl;
-        }
-        actualDerecha = actualDerecha->getSiguiente();
-    } while (actualDerecha != cabezaDerecha);
-
-    archivo.close();
-    cout << "Datos sin placa guardados en 'DatosSinPlaca.txt'." << endl;
-}
-void ListaCircularDoble::guardarPlacas() {
-    ofstream archivo("Placas.txt");
-
-    if (!archivo) {
-        cout << "Error al abrir el archivo para guardar las placas." << endl;
-        return;
-    }
-
-    Nodo* actualIzquierda = cabezaIzquierda;
-    Nodo* actualDerecha = cabezaDerecha;
-
-    // Recorrer la lista izquierda
-    do {
-        if (actualIzquierda->isOcupado()) {
-            archivo << actualIzquierda->getPlaca() << endl;
-        }
-        actualIzquierda = actualIzquierda->getSiguiente();
-    } while (actualIzquierda != cabezaIzquierda);
-
-    // Recorrer la lista derecha
-    do {
-        if (actualDerecha->isOcupado()) {
-            archivo << actualDerecha->getPlaca() << endl;
-        }
-        actualDerecha = actualDerecha->getSiguiente();
-    } while (actualDerecha != cabezaDerecha);
-
-    archivo.close();
-    cout << "Placas guardadas en 'Placas.txt'." << endl;
-}
-void ListaCircularDoble::guardarHistorial() {
-    ofstream archivo("Historial.txt");
-
-    if (!archivo) {
-        cout << "Error al abrir el archivo para guardar el historial." << endl;
-        return;
-    }
-
-    Nodo* actualIzquierda = cabezaIzquierda;
-    Nodo* actualDerecha = cabezaDerecha;
-
-    // Encabezados del historial
-    archivo << "Puesto,Placa,Hora Ingreso,Hora Salida" << endl;
-
-    // Recorrer la lista izquierda
-    do {
-        if (!actualIzquierda->gethoraIngreso().empty() || actualIzquierda->isOcupado()) {
-            archivo << actualIzquierda->getPuesto() << ","
-                    << actualIzquierda->getPlaca() << ","
-                    << actualIzquierda->gethoraIngreso() << ",";
-            if (actualIzquierda->gethoraSalida().empty()) {
-                archivo << "Vehiculo parqueado" << endl;
-            } else {
-                archivo << actualIzquierda->gethoraSalida() << endl;
-            }
-        }
-        actualIzquierda = actualIzquierda->getSiguiente();
-    } while (actualIzquierda != cabezaIzquierda);
-
-    // Recorrer la lista derecha
-    do {
-        if (!actualDerecha->gethoraIngreso().empty() || actualDerecha->isOcupado()) {
-            archivo << actualDerecha->getPuesto() << ","
-                    << actualDerecha->getPlaca() << ","
-                    << actualDerecha->gethoraIngreso() << ",";
-            if (actualDerecha->gethoraSalida().empty()) {
-                archivo << "Vehiculo parqueado" << endl;
-            } else {
-                archivo << actualDerecha->gethoraSalida() << endl;
-            }
-        }
-        actualDerecha = actualDerecha->getSiguiente();
-    } while (actualDerecha != cabezaDerecha);
-
-    archivo.close();
-    cout << "Historial guardado en 'Historial.txt'." << endl;
-}
-
-
-
-
-
-
-
-
-
-

@@ -1,4 +1,3 @@
-
 #ifndef LISTACIRCULARDOBLE_H
 #define LISTACIRCULARDOBLE_H
 #include "Nodo.h"
@@ -19,6 +18,17 @@ public:
 	
 	//Destructor
 	~ListaCircularDoble();
+
+	//geter
+
+	Nodo* getCabezaIzquierda(){
+		return cabezaIzquierda;
+	}
+	
+	Nodo* getCabezaDerecha(){
+		return cabezaDerecha;
+	}
+
 	
 	//Metodos
 	void insertarNodo(int puesto, bool esIzquierda);
@@ -30,10 +40,7 @@ public:
 	void mostrarDatos();
 	void mostrarAutos();
 	void mostrarHistorial();
-	//Metodos txt
-	void guardarDatosSinPlaca();
-	void guardarPlacas();
-	void guardarHistorial();
+
 };
 
 #endif
