@@ -30,30 +30,26 @@
     ListaCircularDoble::~ListaCircularDoble(){
     	
 	}
-
     // Función para obtener la fecha actual
-    string obtenerFechaActual() {
-        time_t tiempoActual = time(nullptr);
-        struct tm* fechaLocal = new tm();
-        localtime_s(fechaLocal, &tiempoActual);
-        char buffer[20]; // Buffer para almacenar la fecha
-        strftime(buffer, sizeof(buffer), "%d/%m/%Y", fechaLocal);
-        string fecha(buffer);
-        delete fechaLocal;  // Importante liberar la memoria
-        return fecha;
-    }
+string obtenerFechaActual() {
+    time_t tiempoActual = time(nullptr);
+    tm* fechaLocal = localtime(&tiempoActual);
 
-    // Función para obtener la hora actual
-    string obtenerHoraActual() {
-        time_t tiempoActual = time(nullptr);
-        struct tm* horaLocal = new tm();
-        localtime_s(horaLocal, &tiempoActual);
-        char buffer[20]; // Buffer para almacenar la hora
-        strftime(buffer, sizeof(buffer), "%H:%M:%S", horaLocal);
-        string hora(buffer);
-        delete horaLocal;  // Importante liberar la memoria
-        return hora;
-    }
+    char buffer[20]; // Buffer para almacenar la fecha
+    strftime(buffer, sizeof(buffer), "%d/%m/%Y", fechaLocal);
+
+    return string(buffer);
+}
+// Función para obtener la hora actual
+string obtenerHoraActual() {
+    time_t tiempoActual = time(nullptr);
+    tm* horaLocal = localtime(&tiempoActual);
+
+    char buffer[20]; // Buffer para almacenar la hora
+    strftime(buffer, sizeof(buffer), "%H:%M:%S", horaLocal);
+
+    return string(buffer);
+}
 
     // Funciï¿½n para insertar un nodo en la lista circular
 void ListaCircularDoble::insertarNodo(int puesto, bool esIzquierda) {

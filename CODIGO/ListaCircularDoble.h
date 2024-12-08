@@ -30,6 +30,7 @@ public:
 	void mostrarDatos();
 	void mostrarAutos();
 	void mostrarHistorial();
+	//Metodos txt
 	void guardarDatosSinPlaca();
 	void guardarPlacas();
 	void guardarHistorial();

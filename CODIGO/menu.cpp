@@ -18,9 +18,8 @@ void menu(){
 
 	
 	
-	const int numOpciones = 10;
-    string opciones[numOpciones] = {"Ver parqueadero", "Ingresar vehiculo", "Retirar vehiculo","Ver Datos","Ver Vehiculos","Ver Historial", "Guardar Datos",
-    "Guardar la placa", "Guardar el historial", "Salir"};
+	const int numOpciones = 7;
+    string opciones[numOpciones] = {"Ver parqueadero", "Ingresar vehiculo", "Retirar vehiculo","Ver Datos","Ver Vehiculos","Ver Historial", "Salir"};
     int opcionSeleccionada = 0; // Inicializamos la opci�n seleccionada en 0
 
     while (true) {
@@ -105,10 +104,13 @@ void procesarSeleccion(const string& opcion) {
             cout<<"Ingrese el Segundo Apellido: ";
             cin>>apellido2;
 
-
+			
             parqueadero.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2);
-        //manejadorArchivos.leerDesdeArchivo("estudiantes.txt",lista);
-            	
+            
+            //metodos de txt
+        	parqueadero.guardarDatosSinPlaca();
+        	parqueadero.guardarPlacas();
+            parqueadero.guardarHistorial();	
 
         system("pause");
     	system("cls");
@@ -120,10 +122,6 @@ void procesarSeleccion(const string& opcion) {
 	        cout << "Ingrese el numero del puesto a liberar: ";
             cin >> puesto;
             parqueadero.retirarVehiculo(puesto);
-			
-	
-		    
-	//	manejadorArchivos.guardarEnArchivo("estudiantes.txt",lista);
 		    
     }
     else if(opcion =="Ver Datos"){
@@ -137,16 +135,7 @@ void procesarSeleccion(const string& opcion) {
     else if(opcion=="Ver Historial"){
          parqueadero.mostrarHistorial();
     }
-    else if(opcion=="Guardar Datos"){
-         parqueadero.guardarDatosSinPlaca();
-    }
-    else if(opcion=="Guardar la placa"){
-         parqueadero.guardarPlacas();
-    }
-    else if(opcion=="Guardar el historial"){
-         parqueadero.guardarHistorial();
-    }
-    
+
 	else if (opcion == "Salir") {
         cout << "Saliendo del programa...\n";
     } else {
