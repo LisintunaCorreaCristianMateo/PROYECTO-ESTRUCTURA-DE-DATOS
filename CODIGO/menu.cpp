@@ -6,6 +6,8 @@
 #include <conio.h>  // Para _getch()
 #include <windows.h> // Para cambiar colores en la consola
 #include <limits>
+#include <string>
+#include <cctype>
 
 
 using namespace std;
@@ -68,6 +70,124 @@ void mostrarMenu(int opcionSeleccionada, const string opciones[], int numOpcione
     }
 }
 
+string ingresar_cedula(const char* mensaje) {
+    char cedula[11]; // Buffer para 10 d?gitos m?s el null terminator
+    char c;
+    int i = 0;
+
+    cout << mensaje;
+
+    while (true) {
+        c = _getch();
+
+        if (c >= '0' && c <= '9') { // Si es un n?mero
+            if (i < 10) { // Permitir hasta 10 d?gitos
+                cout << c; // Mostrar el car?cter en pantalla
+                cedula[i++] = c; // Agregar al arreglo
+            }
+        } else if (c == 8 && i > 0) { // Si se presiona Backspace y hay algo que borrar
+            cout << "\b \b"; // Retrocede y borra el car?cter en pantalla
+            i--; // Reduce el ?ndice
+        } else if (c == 13) { // Si se presiona Enter
+            if (i == 10) { // Permitir Enter solo si se ingresaron 10 d?gitos
+                break;
+            } else {
+                // Emitir un sonido para indicar que no se permite Enter
+                cout << '\a'; // Beep para indicar error
+            }
+        }
+    }
+
+    cedula[i] = '\0'; // Termina la cadena con el null terminator
+    cout << endl; // Salto de l?nea al finalizar
+
+    return string(cedula); // Retorna como un objeto string
+}
+
+string validarPlaca() {
+    string placa;
+    while (true) {
+        cout << "Ingrese la placa del vehiculo (formato: ABC1234): ";
+        cin >> placa;
+
+        // Verificar longitud
+        if (placa.length() != 7) {
+            cout << "Placa inválida. Debe tener exactamente 7 caracteres.\n";
+            continue;
+        }
+
+        // Validar formato: 3 letras seguidas de 4 números
+        bool valido = true;
+        for (int i = 0; i < 3; i++) {
+            if (!isalpha(placa[i]) || !isupper(placa[i])) { // Las primeras 3 deben ser letras mayúsculas
+                valido = false;
+                break;
+            }
+        }
+        for (int i = 3; i < 7; i++) {
+            if (!isdigit(placa[i])) { // Las siguientes 4 deben ser números
+                valido = false;
+                break;
+            }
+        }
+
+        if (valido) {
+            break; // Placa válida, salir del bucle
+        } else {
+            cout << "Placa inválida. Debe tener 3 letras mayúsculas seguidas de 4 números (ejemplo: ABC1234).\n";
+        }
+    }
+    return placa;
+}
+
+string ingresar_string(const char* mensaje) {
+    char cadena[100]; // Buffer para la cadena
+    char c;
+    int i = 0;
+    bool tiene_letra = false; // Bandera para verificar si se ingres? al menos una letra
+
+    cout << mensaje;
+
+    while (true) {
+        c = _getch();
+
+        if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == ' ') {
+            if (i < 99) { // Verificar que no exceda el tama?o del buffer
+                cout << c; // Muestra el car?cter
+                cadena[i++] = c; // Agrega el car?cter al arreglo
+                if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
+                    tiene_letra = true; // Marca que se ingres? al menos una letra
+                }
+            }
+        } else if (c == 8 && i > 0) { // Si se presiona Backspace y hay algo que borrar
+            cout << "\b \b"; // Retrocede y borra el car?cter en pantalla
+            if ((cadena[i - 1] >= 'A' && cadena[i - 1] <= 'Z') || 
+                (cadena[i - 1] >= 'a' && cadena[i - 1] <= 'z')) {
+                tiene_letra = false; // Puede ser necesario revisar si quedan letras
+                for (int j = 0; j < i - 1; j++) {
+                    if ((cadena[j] >= 'A' && cadena[j] <= 'Z') || 
+                        (cadena[j] >= 'a' && cadena[j] <= 'z')) {
+                        tiene_letra = true;
+                        break;
+                    }
+                }
+            }
+            i--; // Reduce el ?ndice
+        } else if (c == 13) { // Si se presiona Enter
+            if (tiene_letra) { // Permitir Enter solo si se ingres? al menos una letra
+                break;
+            } else {
+                cout << '\a'; // Beep para indicar error
+            }
+        }
+    }
+
+    cadena[i] = '\0'; // Termina la cadena con el null terminator
+    cout << endl; // Salto de l?nea al finalizar
+
+    return string(cadena); // Retorna como un objeto de tipo string
+}
+
 // Funciï¿½n para procesar la selecciï¿½n de una opciï¿½n
 void procesarSeleccion(const string& opcion) {
 
@@ -86,19 +206,32 @@ void procesarSeleccion(const string& opcion) {
     
 	else if (opcion == "Ingresar vehiculo") {
 		
-            string placa,cedula,nombre,nombre2,apellido,apellido2;
-            cout << "Ingrese la placa del vehiculo: ";
-            cin >> placa;
-            cout << "Ingrese la cedula: ";
-            cin>>cedula;
-            cout<<"Ingrese el primer nombre: ";
-            cin>>nombre;
-            cout<<"Ingrese el Segundo nombre: ";
-            cin>>nombre2;
-            cout<<"Ingrese el primer Apellido: ";
-            cin>>apellido;
-            cout<<"Ingrese el Segundo Apellido: ";
-            cin>>apellido2;
+			string placa = validarPlaca();
+			
+            //string nombre,nombre2,apellido,apellido2;
+            //cout << "Ingrese la placa del vehiculo: ";
+            //cin >> placa;
+            
+            string cedula = ingresar_cedula("Ingrese la cedula (10 dígitos): ");
+            //cout << "Ingrese la cedula: ";
+            //cin>>cedula;
+            
+            string nombre = ingresar_string("Ingrese Primer Nombre: ");
+            //cout<<"Ingrese el primer nombre: ";
+            //cin>>nombre;
+            
+            string nombre2 = ingresar_string("Ingrese Segundo Nombre: ");
+            
+            //cout<<"Ingrese el Segundo nombre: ";
+            //cin>>nombre2;
+            
+            string apellido = ingresar_string("Ingrese Primer Apellido: ");
+            //cout<<"Ingrese el primer Apellido: ";
+            //cin>>apellido;
+            
+            string apellido2 = ingresar_string("Ingrese Segundo Apellido: ");
+            //cout<<"Ingrese el Segundo Apellido: ";
+            //cin>>apellido2;
 
 			
             parqueadero.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2);
