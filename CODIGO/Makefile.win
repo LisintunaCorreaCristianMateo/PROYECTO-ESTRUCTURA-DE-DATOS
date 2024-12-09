@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = Nodo.o ListaCircularDoble.o menu.o Archivotxt.o main.o Historial.o ListaCircularHistorial.o
-LINKOBJ  = Nodo.o ListaCircularDoble.o menu.o Archivotxt.o main.o Historial.o ListaCircularHistorial.o
+OBJ      = Nodo.o ListaCircularDoble.o menu.o Archivotxt.o main.o Historial.o ListaCircularHistorial.o Archivotxt2.o Manual.o
+LINKOBJ  = Nodo.o ListaCircularDoble.o menu.o Archivotxt.o main.o Historial.o ListaCircularHistorial.o Archivotxt2.o Manual.o
 LIBS     = -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib" -L"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -lgdi32
 INCS     = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"C:/Program Files (x86)/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
@@ -44,3 +44,9 @@ Historial.o: Historial.cpp
 
 ListaCircularHistorial.o: ListaCircularHistorial.cpp
 	$(CPP) -c ListaCircularHistorial.cpp -o ListaCircularHistorial.o $(CXXFLAGS)
+
+Archivotxt2.o: Archivotxt2.cpp
+	$(CPP) -c Archivotxt2.cpp -o Archivotxt2.o $(CXXFLAGS)
+
+Manual.o: Manual.cpp
+	$(CPP) -c Manual.cpp -o Manual.o $(CXXFLAGS)

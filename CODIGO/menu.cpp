@@ -190,6 +190,29 @@ string validarPlaca() {
     return placa;
 }
 
+bool ListaCircularDoble::existePlaca(const string& placa) {
+    Nodo* actual = cabezaIzquierda;
+
+    // Verificar en la fila izquierda
+    do {
+        if (actual->getPlaca() == placa) {
+            return true; // Placa encontrada
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaIzquierda);
+
+    // Verificar en la fila derecha
+    actual = cabezaDerecha;
+    do {
+        if (actual->getPlaca() == placa) {
+            return true; // Placa encontrada
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabezaDerecha);
+
+    return false; // Placa no encontrada
+}
+
 string ingresar_string(const char* mensaje) {
     char cadena[100]; // Buffer para la cadena
     char c;
@@ -260,35 +283,30 @@ void procesarSeleccion(const string& opcion) {
     } 
     
 	else if (opcion == "Ingresar vehiculo") {
-		
-			
+    while (true) {
+        string placa = validarPlaca();
 
-
-			string placa = validarPlaca();
-
-            string cedula = ingresar_cedula("Ingrese la cedula (10 dï¿½gitos): ");
-            
+        // Validar que la placa no exista en el parqueadero
+        if (parqueadero.existePlaca(placa)) {
+            cout << "La placa " << placa << " ya está registrada en el parqueadero. Intente con otra.\n";
+        } else {
+            string cedula = ingresar_cedula("Ingrese la cedula (10 dígitos): ");
             string nombre = ingresar_string("Ingrese Primer Nombre: ");
-            
             string nombre2 = ingresar_string("Ingrese Segundo Nombre: ");
-            
             string apellido = ingresar_string("Ingrese Primer Apellido: ");
-
             string apellido2 = ingresar_string("Ingrese Segundo Apellido: ");
-     
-           parqueadero.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2);
-           // Historial.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2)
-            //metodos de txt para guardar en el txt
             
-        	manejadorArchivos.guardarDatos(parqueadero);
-        	manejadorArchivos.guardarPlacas(parqueadero);
-            //manejadorArchivos.guardarHistorial(parqueadero);
-        
-
-
-        system("pause");
+            // Proceder con el ingreso del vehículo
+            parqueadero.ingresarVehiculo(placa, cedula, nombre, nombre2, apellido, apellido2);
+            
+            // Guardar los datos en los archivos
+            manejadorArchivos.guardarDatos(parqueadero);
+            manejadorArchivos.guardarPlacas(parqueadero);
+            break; // Salir del bucle una vez que se haya ingresado el vehículo
+        	}
+    	}
+    	system("pause");
     	system("cls");
-    
 	}
 	 else if (opcion == "Retirar vehiculo") {
 
