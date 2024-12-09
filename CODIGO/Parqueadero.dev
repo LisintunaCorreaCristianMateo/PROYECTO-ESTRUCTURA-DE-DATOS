@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000000000000
-UnitCount=11
+UnitCount=13
 
 [VersionInfo]
 Major=1
@@ -121,7 +121,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=..\..\..\OneDrive\Attachments\Escritorio\CopiaProyecto\CODIGO\Manual.cpp
+FileName=main.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -131,7 +131,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit10]
-FileName=..\..\..\OneDrive\Attachments\Escritorio\CopiaProyecto\CODIGO\Manual.h
+FileName=Historial.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -141,7 +141,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit11]
-FileName=..\..\..\OneDrive\Attachments\Escritorio\CopiaProyecto\CODIGO\main.cpp
+FileName=Historial.h
 CompileCpp=1
 Folder=
 Compile=1
@@ -152,6 +152,26 @@ BuildCmd=
 
 [Unit1]
 FileName=Nodo.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit12]
+FileName=ListaCircularHistorial.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit13]
+FileName=ListaCircularHistorial.h
 CompileCpp=1
 Folder=
 Compile=1
