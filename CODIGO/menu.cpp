@@ -153,29 +153,38 @@ string validarPlaca() {
 
         // Verificar longitud
         if (placa.length() != 7) {
-            cout << "Placa invï¿½lida. Debe tener exactamente 7 caracteres.\n";
+            cout << "Placa inválida. Debe tener exactamente 7 caracteres.\n";
             continue;
         }
 
-        // Validar formato: 3 letras seguidas de 4 nï¿½meros
+        // Validar que la placa comience con letras permitidas
+        char primeraLetra = placa[0];
+        string letrasPermitidas = "ABUCOEXHOWGILRMVNSPKQTZY";
+        if (letrasPermitidas.find(primeraLetra) == string::npos) {
+            cout << "Placa inválida. La primera letra debe ser una de las siguientes: "
+                 << "A, B, U, C, X, H, O, E, W, G, I, L, R, M, V, N, S, P, K, Q, T, Z, Y.\n";
+            continue;
+        }
+
+        // Validar formato: 3 letras seguidas de 4 números
         bool valido = true;
         for (int i = 0; i < 3; i++) {
-            if (!isalpha(placa[i]) || !isupper(placa[i])) { // Las primeras 3 deben ser letras mayï¿½sculas
+            if (!isalpha(placa[i]) || !isupper(placa[i])) { // Las primeras 3 deben ser letras mayúsculas
                 valido = false;
                 break;
             }
         }
         for (int i = 3; i < 7; i++) {
-            if (!isdigit(placa[i])) { // Las siguientes 4 deben ser nï¿½meros
+            if (!isdigit(placa[i])) { // Las siguientes 4 deben ser números
                 valido = false;
                 break;
             }
         }
 
         if (valido) {
-            break; // Placa vï¿½lida, salir del bucle
+            break; // Placa válida, salir del bucle
         } else {
-            cout << "Placa invï¿½lida. Debe tener 3 letras mayï¿½sculas seguidas de 4 nï¿½meros (ejemplo: ABC1234).\n";
+            cout << "Placa inválida. Debe tener 3 letras mayúsculas seguidas de 4 números (ejemplo: ABC1234).\n";
         }
     }
     return placa;
