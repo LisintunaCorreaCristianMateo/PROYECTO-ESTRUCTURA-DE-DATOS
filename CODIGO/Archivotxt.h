@@ -12,7 +12,7 @@ public:
     // M�todos
     void guardarDatos(ListaCircularDoble &parqueadero);
     void guardarPlacas(ListaCircularDoble &parqueadero);
-    void guardarHistorial(ListaCircularDoble &parqueadero);
+    //void guardarHistorial(ListaCircularDoble &parqueadero);
     
     //Metodos lecturas txt
     void leerPlacas(ListaCircularDoble &parqueadero);

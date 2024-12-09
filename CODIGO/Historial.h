@@ -1,5 +1,8 @@
 #ifndef HISTORIAL_H
 #define HISTORIAL_H
+#include <iostream>
+#include <string>
+using namespace std;
 
 class Historial{
 	private:
@@ -13,18 +16,17 @@ class Historial{
 		string fecha;
 		string horaIngreso;
 		string horaSalida;
-
 		   
-		Nodo* siguiente;         // Apunta al siguiente nodo
-		Nodo* anterior;
+		Historial* siguiente;         // Apunta al siguiente nodo
+		Historial* anterior;
 
 	public :
 	//constructor
-	Nodo(int _puesto, string _placa,string _cedula,string _nombre,string _segundoNombre, string _apellido, string _segundoApellido,string _fecha,string _horaIngreso,string _horaSalida);
+	Historial(int _puesto, string _placa,string _cedula,string _nombre,string _segundoNombre, string _apellido, string _segundoApellido,string _fecha,string _horaIngreso);
 
 	
 		//Destructor
-	~Nodo();
+	~Historial();
     
         // Getters
     int getPuesto();
@@ -49,9 +51,9 @@ class Historial{
     
     string getFecha();
 
-    Nodo* getSiguiente();
+    Historial* getSiguiente();
 
-    Nodo* getAnterior();
+    Historial* getAnterior();
 
     // Setters
 
@@ -76,9 +78,9 @@ class Historial{
 
 
 
-    void setSiguiente(Nodo* nodo);
+    void setSiguiente(Historial* nodo);
 
-    void setAnterior(Nodo* nodo);
+    void setAnterior(Historial* nodo);
 
 };
 

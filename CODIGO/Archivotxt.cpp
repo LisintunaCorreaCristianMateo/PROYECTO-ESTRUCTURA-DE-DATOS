@@ -80,60 +80,6 @@ do {
 
 
 
-void Archivotxt::guardarHistorial(ListaCircularDoble &parqueadero) {
-    ofstream archivo("Historial.txt");
-
-    if (!archivo) {
-        cout << "Error al abrir el archivo para guardar el historial." << endl;
-        return;
-    }
-
-    Nodo* actualIzquierda = parqueadero.getCabezaIzquierda();
-    Nodo* actualDerecha = parqueadero.getCabezaDerecha();
-
-    // Recorrer la lista izquierda
-    do {
-        if (!actualIzquierda->gethoraIngreso().empty() || actualIzquierda->isOcupado()) {
-            archivo << actualIzquierda->getPuesto() << ","
-                    << actualIzquierda->getPlaca() << ","
-                    << actualIzquierda->getFecha()<<","
-                    << actualIzquierda->gethoraIngreso() << ",";
-                    
-            if (actualIzquierda->gethoraSalida().empty()) {
-                archivo << "Vehiculo parqueado" << endl;
-            } else {
-                archivo << actualIzquierda->gethoraSalida() << endl;
-            }
-        }
-        actualIzquierda = actualIzquierda->getSiguiente();
-    } while (actualIzquierda != parqueadero.getCabezaIzquierda());
-    							
-    
-    							
-
-    // Recorrer la lista derecha
-    do {
-        if (!actualDerecha->gethoraIngreso().empty() || actualDerecha->isOcupado()) {
-            archivo << actualDerecha->getPuesto() << ","
-                    << actualDerecha->getPlaca() << ","
-                    << actualDerecha->getFecha()<<","
-                    << actualDerecha->gethoraIngreso() << ",";
-                    
-
-            if (actualDerecha->gethoraSalida().empty()) {
-                archivo << "Vehiculo parqueado" << endl;
-            } else {
-                archivo << actualDerecha->gethoraSalida() << endl;
-            }
-        }
-        actualDerecha = actualDerecha->getSiguiente();
-    } while (actualDerecha != parqueadero.getCabezaDerecha());
-    							
-
-    archivo.close();
-   // cout << "Historial guardado en 'Historial.txt'." << endl;
-}
-
 // Lectura
 
 
@@ -261,68 +207,7 @@ void Archivotxt::leerDatos(ListaCircularDoble &parqueadero) {
     //cout << "Datos cargados correctamente desde el archivo: " << "Propietarios.txt" << endl;
 }
 
-void Archivotxt::leerHistorial(ListaCircularDoble &parqueadero) {
-    ifstream archivo("Historial.txt");
 
-    if (!archivo.is_open()) {
-        cout << "Error al abrir el archivo: " << "Historial.txt" << endl;
-        return;
-    }
-
-    string linea;
-    while (getline(archivo, linea)) {
-        
-
-        // Parsear cada línea del archivo
-        stringstream ss(linea);
-        string puesto, placa, fecha, horaIngreso, horaSalida;
-
-        // Leer los valores separados por comas
-        getline(ss, puesto, ',');
-        getline(ss, placa, ',');
-        getline(ss, fecha, ',');
-        getline(ss, horaIngreso, ',');
-        getline(ss, horaSalida, ',');
-
-
-        // Buscar el nodo correspondiente a la placa
-        Nodo* actual = parqueadero.getCabezaIzquierda();
-        bool encontrado = false;
-
-        // Buscar en la fila izquierda
-        do {
-            if (actual->getPlaca() == placa) {
-                encontrado = true;
-                break;
-            }
-            actual = actual->getSiguiente();
-        } while (actual != parqueadero.getCabezaIzquierda());
-
-        // Buscar en la fila derecha si no se encuentra en la izquierda
-        if (!encontrado) {
-            actual = parqueadero.getCabezaDerecha();
-            do {
-                if (actual->getPlaca() == placa) {
-                    encontrado = true;
-                    break;
-                }
-                actual = actual->getSiguiente();
-            } while (actual != parqueadero.getCabezaDerecha());
-        }
-
-        // Si la placa se encontró, actualizar sus datos
-        if (encontrado) {
-            actual->setFecha(fecha);
-            actual->setHoraIngreso(horaIngreso);
-            actual->setHoraSalida(horaSalida);
-        } else {
-            cout << "No se encontró la placa: " << placa << endl;
-        }
-    }
-
-    archivo.close();
-   // cout << "Datos cargados correctamente desde el archivo: " << "Historial.txt" << endl;
-}
 
 
 

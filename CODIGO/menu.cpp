@@ -1,4 +1,5 @@
 #include "ListaCircularDoble.h"
+#include "ListaCircularHistorial.h"
 #include "menu.h"
 //#include"Validaciones.h"
 #include "Archivotxt.h"
@@ -15,6 +16,7 @@ using namespace std;
 		
     int totalPuestos = 20; 
     ListaCircularDoble parqueadero(totalPuestos);
+    ListaCircularHistorial Historial;
     Archivotxt manejadorArchivos;
 
 void menu(){
@@ -194,7 +196,8 @@ void procesarSeleccion(const string& opcion) {
             //metodos para la lectura txt
             manejadorArchivos.leerPlacas(parqueadero);
             manejadorArchivos.leerDatos(parqueadero);
-            manejadorArchivos.leerHistorial(parqueadero);
+           	Historial.leerHistorial();
+            
 
 	
     if (opcion == "Ver parqueadero") {
@@ -210,7 +213,7 @@ void procesarSeleccion(const string& opcion) {
     
 	else if (opcion == "Ingresar vehiculo") {
 		
-
+			
 
 
 			string placa = validarPlaca();
@@ -231,7 +234,7 @@ void procesarSeleccion(const string& opcion) {
             
         	manejadorArchivos.guardarDatos(parqueadero);
         	manejadorArchivos.guardarPlacas(parqueadero);
-            manejadorArchivos.guardarHistorial(parqueadero);
+            //manejadorArchivos.guardarHistorial(parqueadero);
         
 
 
@@ -249,7 +252,7 @@ void procesarSeleccion(const string& opcion) {
 		                
         	manejadorArchivos.guardarDatos(parqueadero);
         	manejadorArchivos.guardarPlacas(parqueadero);
-            manejadorArchivos.guardarHistorial(parqueadero);
+            //manejadorArchivos.guardarHistorial(parqueadero);
     }
     else if(opcion =="Ver Datos"){
 
@@ -263,7 +266,8 @@ void procesarSeleccion(const string& opcion) {
 
     }
     else if(opcion=="Ver Historial"){
-         parqueadero.mostrarHistorial();
+    	
+         Historial.mostrarHistorial();
     }
 
 	else if (opcion == "Salir") {

@@ -39,7 +39,7 @@ public:
     //Metodos para imprimir
 	void mostrarDatos();
 	void mostrarAutos();
-	void mostrarHistorial();
+	//void mostrarHistorial();
 
 };
 
