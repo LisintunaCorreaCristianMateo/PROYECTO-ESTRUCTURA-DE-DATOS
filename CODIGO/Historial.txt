@@ -3,3 +3,6 @@ rrrr,rrr,rrrr,rrrr,3333333333,15,HHH1111,09/12/2024,03:37:15,parqueado
 gffgfg,fgfgf,fgfg,fgfgf,4444444444,9,JJJ9999,09/12/2024,03:37:42,parqueado
 lllll,lllll,llllll,llllllll,0000000000,10,VVV9852,09/12/2024,03:54:55,parqueado
 Juan,Estiven,Segundo,Novoa,0255050505,3,FFF5621,09/12/2024,03:56:21,parqueado
+ceara,casda,asdadas,asdasdas,1234567890,20,ADC1234,09/12/2024,07:42:15,parqueado
+asdasdsa,asdasdas,asdadas,asdadas,1234567890,19,ABC1234,09/12/2024,07:43:22,parqueado
+asdasd,a,sdasdsadsa,dsadasdasda,1725914236,8,ADC1234,09/12/2024,07:47:51,parqueado

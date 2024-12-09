@@ -74,38 +74,75 @@ void mostrarMenu(int opcionSeleccionada, const string opciones[], int numOpcione
     }
 }
 
+// Declaración e implementación de validarCedulaEcuatoriana
+bool validarCedulaEcuatoriana(const std::string& cedula) {
+    // Verificar que la longitud sea exactamente 10
+    if (cedula.length() != 10) return false;
+
+    // Verificar que los primeros dos dígitos (código de provincia) estén en el rango 01-24
+    int provincia = stoi(cedula.substr(0, 2));
+    if (provincia < 1 || provincia > 24) return false;
+
+    // Algoritmo de validación del dígito verificador
+    int suma = 0;
+    for (int i = 0; i < 9; ++i) {
+        int num = cedula[i] - '0';
+        if (i % 2 == 0) { // Si el índice es par
+            num *= 2;
+            if (num > 9) num -= 9;
+        }
+        suma += num;
+    }
+
+    // Cálculo del dígito verificador
+    int digitoVerificador = (10 - (suma % 10)) % 10;
+
+    // Comparar con el último dígito de la cédula
+    return (cedula[9] - '0') == digitoVerificador;
+}
+
+// Función ingresar_cedula que usa validarCedulaEcuatoriana
 string ingresar_cedula(const char* mensaje) {
-    char cedula[11]; // Buffer para 10 d?gitos m?s el null terminator
+    char cedula[11]; // Buffer para 10 dígitos más el null terminator
     char c;
     int i = 0;
 
-    cout << mensaje;
-
     while (true) {
-        c = _getch();
+        i = 0; // Reiniciar índice
+        cout << mensaje;
 
-        if (c >= '0' && c <= '9') { // Si es un n?mero
-            if (i < 10) { // Permitir hasta 10 d?gitos
-                cout << c; // Mostrar el car?cter en pantalla
-                cedula[i++] = c; // Agregar al arreglo
-            }
-        } else if (c == 8 && i > 0) { // Si se presiona Backspace y hay algo que borrar
-            cout << "\b \b"; // Retrocede y borra el car?cter en pantalla
-            i--; // Reduce el ?ndice
-        } else if (c == 13) { // Si se presiona Enter
-            if (i == 10) { // Permitir Enter solo si se ingresaron 10 d?gitos
-                break;
-            } else {
-                // Emitir un sonido para indicar que no se permite Enter
-                cout << '\a'; // Beep para indicar error
+        // Capturar los 10 dígitos de la cédula
+        while (true) {
+            c = _getch();
+
+            if (c >= '0' && c <= '9') { // Si es un número
+                if (i < 10) { // Permitir hasta 10 dígitos
+                    cout << c; // Mostrar el carácter en pantalla
+                    cedula[i++] = c; // Agregar al arreglo
+                }
+            } else if (c == 8 && i > 0) { // Si se presiona Backspace y hay algo que borrar
+                cout << "\b \b"; // Retrocede y borra el carácter en pantalla
+                i--; // Reduce el índice
+            } else if (c == 13) { // Si se presiona Enter
+                if (i == 10) { // Permitir Enter solo si se ingresaron 10 dígitos
+                    break;
+                } else {
+                    // Emitir un sonido para indicar que no se permite Enter
+                    cout << '\a'; // Beep para indicar error
+                }
             }
         }
+
+        cedula[i] = '\0'; // Termina la cadena con el null terminator
+        cout << endl; // Salto de línea al finalizar
+
+        // Validar la cédula ecuatoriana
+        if (validarCedulaEcuatoriana(cedula)) {
+            return string(cedula); // Si la cédula es válida, retornarla
+        } else {
+            cout << "Cédula inválida. Por favor, intente nuevamente.\n";
+        }
     }
-
-    cedula[i] = '\0'; // Termina la cadena con el null terminator
-    cout << endl; // Salto de l?nea al finalizar
-
-    return string(cedula); // Retorna como un objeto string
 }
 
 string validarPlaca() {
