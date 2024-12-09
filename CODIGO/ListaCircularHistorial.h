@@ -20,7 +20,10 @@ public:
     Historial* getCabeza() {
         return cabeza;
     }
-
+    
+void setCabeza(Historial* _cabeza) {
+    cabeza = _cabeza;
+}
 
     void ingresarVehiculo(int puesto,string placa, string cedula, string nombre, 
                           string nombre2, string apellido, string apellido2,string fecha, string horaIngreso);
@@ -30,11 +33,8 @@ public:
 
     void mostrarHistorial();
 
-    //metodos de txt
-    void guardarHistorial();
-    void leerHistorial();
-    void limpiarLista();
-    
+   
+
 };
 
 #endif

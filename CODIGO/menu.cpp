@@ -3,6 +3,7 @@
 #include "menu.h"
 //#include"Validaciones.h"
 #include "Archivotxt.h"
+#include "Archivotxt2.h"
 #include <iostream>
 #include <conio.h>  // Para _getch()
 #include <windows.h> // Para cambiar colores en la consola
@@ -18,6 +19,7 @@ using namespace std;
     ListaCircularDoble parqueadero(totalPuestos);
     ListaCircularHistorial Historial;
     Archivotxt manejadorArchivos;
+    Archivotxt2 manejadorArchivosHistorial;
 
 void menu(){
 
@@ -196,7 +198,7 @@ void procesarSeleccion(const string& opcion) {
             //metodos para la lectura txt
             manejadorArchivos.leerPlacas(parqueadero);
             manejadorArchivos.leerDatos(parqueadero);
-           	Historial.leerHistorial();
+           manejadorArchivosHistorial.leerHistorial(Historial);
             
 
 	
@@ -228,8 +230,8 @@ void procesarSeleccion(const string& opcion) {
 
             string apellido2 = ingresar_string("Ingrese Segundo Apellido: ");
      
-            parqueadero.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2);
-            
+           parqueadero.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2);
+           // Historial.ingresarVehiculo(placa,cedula,nombre,nombre2,apellido,apellido2)
             //metodos de txt para guardar en el txt
             
         	manejadorArchivos.guardarDatos(parqueadero);

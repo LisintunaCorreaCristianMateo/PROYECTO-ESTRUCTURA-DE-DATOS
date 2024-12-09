@@ -1,5 +1,6 @@
     #include "ListaCircularDoble.h"
     #include "ListaCircularHistorial.h"
+    #include "Archivotxt2.h"
 	#include<iostream>
 	#include <vector>
 	#include <ctime>
@@ -10,6 +11,7 @@
 	using namespace std;
 
     ListaCircularHistorial historial;
+    Archivotxt2 manejadorArchivosHistorial2;
 
 
 	//constructor
@@ -207,7 +209,7 @@ void ListaCircularDoble::ingresarVehiculo(string placa, string cedula, string no
     historial.ingresarVehiculo(puestoSeleccionado->getPuesto() ,placa,cedula,nombre,segundoNombre,apellido,segundoApellido,fecha,horaIngreso);
     
     //historial.leerHistorial();
-    historial.guardarHistorial();
+    manejadorArchivosHistorial2.guardarHistorial(historial);
     // Confirmaci�n de ingreso
     cout << "Vehiculo con placa " << placa << " ingresado en el puesto " << puestoSeleccionado->getPuesto() << "." << endl;
 }

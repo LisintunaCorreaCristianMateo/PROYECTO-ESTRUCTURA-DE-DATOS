@@ -17,7 +17,7 @@ public:
     //Metodos lecturas txt
     void leerPlacas(ListaCircularDoble &parqueadero);
     void leerDatos(ListaCircularDoble &parqueadero);
-    void leerHistorial(ListaCircularDoble &parqueadero);
+   
     
 };
 
