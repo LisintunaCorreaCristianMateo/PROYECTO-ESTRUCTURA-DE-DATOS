@@ -26,7 +26,7 @@ void menu(){
 	
 	
 	const int numOpciones = 7;
-    string opciones[numOpciones] = {"Ver parqueadero", "Ingresar vehiculo", "Retirar vehiculo","Ver Datos","Ver Vehiculos","Ver Historial", "Salir"};
+    string opciones[numOpciones] = {"Ver parqueadero", "Ingresar vehiculo", "Retirar vehiculo","Ver Datos","Ver Vehiculos","Ver Historial","Buscar por Hora", "Salir"};
     int opcionSeleccionada = 0; // Inicializamos la opciï¿½n seleccionada en 0
 
     while (true) {
@@ -352,6 +352,24 @@ void procesarSeleccion(const string& opcion) {
     	
          Historial.mostrarHistorial();
     }
+    else if (opcion == "Buscar por Hora") {
+        // Buscar por hora
+        string fechaInicio, horaInicio, fechaFin, horaFin;
+
+        cout << "Ingrese la fecha de inicio (formato: YYYY-MM-DD): ";
+        cin >> fechaInicio;
+        cout << "Ingrese la hora de inicio (formato: HH:MM): ";
+        cin >> horaInicio;
+
+        cout << "Ingrese la fecha de fin (formato: YYYY-MM-DD): ";
+        cin >> fechaFin;
+        cout << "Ingrese la hora de fin (formato: HH:MM): ";
+        cin >> horaFin;
+
+        // Función lambda para búsqueda por hora
+        auto buscarPorHora = [&Historial](const string& fechaInicio, const string& horaInicio, const string& fechaFin, const string& horaFin) {
+            Historial.buscarPorHora(fechaInicio, horaInicio, fechaFin, horaFin);
+        };
 
 	else if (opcion == "Salir") {
         cout << "Saliendo del programa...\n";
@@ -360,4 +378,4 @@ void procesarSeleccion(const string& opcion) {
     }
     system("pause"); // Pausa para permitir que el usuario lea el mensaje
 }
-
+}
