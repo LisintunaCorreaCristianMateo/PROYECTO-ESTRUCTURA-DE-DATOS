@@ -292,9 +292,26 @@ void procesarSeleccion(const string& opcion) {
         } else {
             string cedula = ingresar_cedula("Ingrese la cedula (10 dígitos): ");
             string nombre = ingresar_string("Ingrese Primer Nombre: ");
-            string nombre2 = ingresar_string("Ingrese Segundo Nombre: ");
+            
+            // Hacer el segundo nombre opcional
+            cout << "Ingrese Segundo Nombre (opcional, presione Enter para omitir): ";
+            cin.ignore(); // Limpiar el buffer de entrada
+            string nombre2;
+            getline(cin, nombre2); // Leer línea completa
+            if (nombre2.empty()) {
+                nombre2 = ""; // Si está vacío, asignar un valor en blanco
+            }
+            
             string apellido = ingresar_string("Ingrese Primer Apellido: ");
-            string apellido2 = ingresar_string("Ingrese Segundo Apellido: ");
+            
+            // Hacer el segundo apellido opcional
+            cout << "Ingrese Segundo Apellido (opcional, presione Enter para omitir): ";
+            cin.ignore(); // Limpiar el buffer de entrada
+            string apellido2;
+            getline(cin, apellido2); // Leer línea completa
+            if (apellido2.empty()) {
+                apellido2 = ""; // Si está vacío, asignar un valor en blanco
+            }
             
             // Proceder con el ingreso del vehículo
             parqueadero.ingresarVehiculo(placa, cedula, nombre, nombre2, apellido, apellido2);
