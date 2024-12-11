@@ -121,28 +121,31 @@ void ListaCircularHistorial::cambiarFechaSalida(string placa, string hora) {
         cout << "La placa " << placa << " no fue encontrada en el historial." << endl;
     }
 }
-bool existeVehiculoHistorial(string placa,ListaCircularDoble &parqueadero) {
-    if (!cabeza) { // Verifica si la lista estÃ¡ vacÃ­a
-        cout << "Lista historial vacÃ­a." << endl;
+bool ListaCircularHistorial::existeVehiculoHistorial(string placa, ListaCircularDoble& parqueadero) {
+    if (!cabeza) { // Verificar si la lista está vacía
+        std::cout << "Lista historial vacía.\n";
         return false;
     }
 
     Historial* actual = cabeza;
 
     do {
-        cout << "Revisando placa: " << actual->getPlaca() << endl;
         if (actual->getPlaca() == placa) {
-            cout << "Placa encontrada: " << actual->getPlaca() << endl;
-            
-            // Espacio para tu cÃ³digo
-            parqueadero.ingresarVehiculo(actual->getPlaca,actual->getCedula,actual->getNombre,actual->getSegundoNombre,actual->getApellido,actual->getSegundoApellido);
-            
+            // Agregar el vehículo al parqueadero
+            parqueadero.ingresarVehiculo(
+                actual->getPlaca(),
+                actual->getCedula(),
+                actual->getNombre(),
+                actual->getSegundoNombre(),
+                actual->getApellido(),
+                actual->getSegundoApellido()
+            );
             return true;
         }
         actual = actual->getSiguiente();
     } while (actual != cabeza);
 
-    cout << "La placa " << placa << " no fue encontrada en el historial." << endl;
+    std::cout << "La placa " << placa << " no fue encontrada en el historial.\n";
     return false;
 }
 
@@ -194,5 +197,33 @@ void ListaCircularHistorial::buscarPorFecha(const string& fechaBuscada) {
         cout << "No se encontrÃ³ historial para la fecha: " << fechaBuscada << endl;
     }
 }
-                    
+// Método para buscar vehículos por rango de horas
+void ListaCircularHistorial::buscarPorHoras(const std::string& horaInicio, const std::string& horaFin) {
+    if (!cabeza) {
+        std::cout << "El historial está vacío.\n";
+        return;
+    }
+
+    Historial* actual = cabeza;
+    bool encontrado = false;
+
+    std::cout << "Vehículos ingresados entre las " << horaInicio << " y las " << horaFin << ":\n";
+
+    do {
+        // Compara las horas (asegurarse de que estén en formato "HH:MM")
+        if (actual->gethoraIngreso() >= horaInicio && actual->gethoraIngreso() <= horaFin) {
+            encontrado = true;
+            // Mostrar los datos del nodo actual
+            std::cout << "Puesto: " << actual->getPuesto()
+                      << ", Placa: " << actual->getPlaca()
+                      << ", Hora de Ingreso: " << actual->gethoraIngreso()
+                      << ", Fecha: " << actual->getFecha() << std::endl;
+        }
+        actual = actual->getSiguiente();
+    } while (actual != cabeza); // La lista es circular, termina cuando regresa a la cabeza
+
+    if (!encontrado) {
+        std::cout << "No se encontraron vehículos en el rango de horas especificado.\n";
+    }
+}               
 

@@ -53,6 +53,7 @@ public:
     void cambiarFechaSalida(string placa, string hora );
     void agregarAlFinal(Historial* nuevo);
     void buscarPorFecha(const string& fechaBuscada);
+    void buscarPorHoras(const std::string& horaInicio, const std::string& horaFin);
     bool existeVehiculoHistorial(string placa,ListaCircularDoble &parqueadero);
 
    

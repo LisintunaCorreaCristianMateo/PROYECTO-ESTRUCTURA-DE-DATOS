@@ -34,7 +34,7 @@ public:
 	void insertarNodo(int puesto, bool esIzquierda);
 	void dibujarParqueadero();
 	void mostrarPuestosLibres();
-	void ingresarVehiculo(string placa,string cedula,string nombre,string nombre2,string apellido,string apellido2);
+	void ingresarVehiculo(string placa, string cedula, string nombre, string nombre2, string apellido, string apellido2);
 	void retirarVehiculo(int puesto);
     //Metodos para imprimir
 	void mostrarDatos();

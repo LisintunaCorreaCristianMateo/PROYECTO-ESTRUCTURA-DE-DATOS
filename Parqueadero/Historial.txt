@@ -1,2 +1,2 @@
-Transito,Amelia,Lisintuna,ilva,1726403999,12,KSF1452,11/12/2024,05:02:02,05:03:41
-Luis,Andres,Garcia,riones,1726403999,14,QEF4477,11/12/2024,05:03:21,parqueado
+Brayan,,Gualotuna,,1725914236,18,PCO3707,11/12/2024,08:41:02,parqueado
+Patricio,,Gualotuna,,1709362162,2,PCE8765,11/12/2024,08:41:37,parqueado
