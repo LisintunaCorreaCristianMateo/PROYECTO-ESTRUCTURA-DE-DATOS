@@ -53,7 +53,7 @@ void ListaCircularHistorial::mostrarHistorial() {
     cout << left 
          << setw(10) << "Puesto" 
          << setw(15) << "Placa" 
-         << setw(15) << "Cedula" 
+         << setw(15) << "CÃ©dula" 
          << setw(15) << "Nombre" 
          << setw(15) << "Nombre 2" 
          << setw(15) << "Apellido" 
@@ -86,44 +86,6 @@ void ListaCircularHistorial::mostrarHistorial() {
 
     if (!historialEncontrado) {
         cout << "No se ha registrado historial en el parqueadero." << endl;
-    }
-
-    cout << endl;
-}
-  void ListaCircularHistorial::buscarPorHora(const string &fechaInicio, const string &horaInicio, const string &fechaFin, const string &horaFin) {
-    cout << "--- Vehículos en el rango de hora ---" << endl;
-
-    if (!cabeza) {
-        cout << "No hay historial en el parqueadero." << endl;
-        return;
-    }
-
-    // Recorrer la lista circular
-    Historial* actual = cabeza;
-    bool encontrado = false;
-
-    do {
-        // Comparamos las fechas y horas del historial con el rango
-        if ((actual->getFecha() > fechaInicio || (actual->getFecha() == fechaInicio && actual->gethoraIngreso() >= horaInicio)) &&
-            (actual->getFecha() < fechaFin || (actual->getFecha() == fechaFin && actual->gethoraIngreso() <= horaFin))) {
-            // Mostrar los vehículos que están dentro del rango de tiempo
-            cout << setw(10) << actual->getPuesto()
-                 << setw(15) << actual->getPlaca()
-                 << setw(15) << actual->getCedula()
-                 << setw(15) << actual->getNombre()
-                 << setw(15) << actual->getSegundoNombre()
-                 << setw(15) << actual->getApellido()
-                 << setw(15) << actual->getSegundoApellido()
-                 << setw(20) << actual->getFecha()
-                 << setw(20) << actual->gethoraIngreso()
-                 << setw(20) << actual->gethoraSalida() << endl;
-            encontrado = true;
-        }
-        actual = actual->getSiguiente(); // Avanzar al siguiente nodo
-    } while (actual != cabeza);
-
-    if (!encontrado) {
-        cout << "No se han encontrado vehículos en ese rango de tiempo." << endl;
     }
 
     cout << endl;

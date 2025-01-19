@@ -33,16 +33,7 @@ void setCabeza(Historial* _cabeza) {
 
     void mostrarHistorial();
 
-    Historial* buscarPorHora(const string& hora) {
-        Historial* actual = cabeza;
-        do {
-            if (actual->horaIngreso == hora) {
-                return actual; // Retorna el nodo si la hora coincide
-            }
-            actual = actual->siguiente;
-        } while (actual != cabeza);
-        return nullptr; // Si no se encuentra ningún vehículo con esa hora
-    }
+   
 
 };
 

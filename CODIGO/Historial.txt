@@ -3,4 +3,3 @@ Brayan,Patricio,Gualotuna,Gomez,1725914236,15,IYE8795,09/12/2024,07:54:22,parque
 Brayan,Patricio,Gualotuna,Amaguaya,1725914236,9,PCO1707,09/12/2024,08:16:40,parqueado
 Brayan,asdas,asdasdas,asdasdsada,1725914236,16,ABC1234,10/12/2024,21:53:53,parqueado
 Brayan,,Gualotuna,,1725914236,16,PCO3707,10/12/2024,22:07:38,parqueado
-Josue,,Guayasamin,,1709006025,3,PDF1242,10/12/2024,23:13:40,parqueado
