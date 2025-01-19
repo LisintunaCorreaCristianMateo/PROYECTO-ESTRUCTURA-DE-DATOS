@@ -423,10 +423,15 @@
 	
 	    // Buscar historial por fecha
 	    Historial.buscarPorFecha(fechaBuscada);
-	    }else if (opcion == "Busqueda por horas") {
+	    }
+		
+		else if (opcion == "Busqueda por horas") {
 	    string horaInicio, horaFin;
+	    
+	    
 	    cout << "Ingrese la hora de inicio (formato HH:MM): ";
 	    cin >> horaInicio;
+	    
 	    cout << "Ingrese la hora de fin (formato HH:MM): ";
 	    cin >> horaFin;
 	

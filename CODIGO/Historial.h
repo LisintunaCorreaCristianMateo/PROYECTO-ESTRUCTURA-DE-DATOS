@@ -16,6 +16,7 @@ class Historial{
 		string fecha;
 		string horaIngreso;
 		string horaSalida;
+		
 		   
 		Historial* siguiente;         // Apunta al siguiente nodo
 		Historial* anterior;
