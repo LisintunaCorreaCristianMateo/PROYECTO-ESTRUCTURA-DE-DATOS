@@ -23,15 +23,45 @@ private:
     Nodo* izquierda;
     Nodo* derecha;
 
+    string obtenerFechaActual() {
+        time_t now = time(0);
+        tm* tiempo = localtime(&now);
+        char buffer[80];
+        strftime(buffer, sizeof(buffer), "%Y-%m-%d", tiempo);
+        return string(buffer);
+    }
+
+    string obtenerHoraActual() {
+        time_t now = time(0);
+        tm* tiempo = localtime(&now);
+        char buffer[80];
+        strftime(buffer, sizeof(buffer), "%H:%M:%S", tiempo);
+        return string(buffer);
+    }
+
 public:
     Nodo(int valor) : puesto(valor), ocupado(false), izquierda(nullptr), derecha(nullptr) {}
 
-    int getPuesto() { return puesto; }
-    bool isOcupado() { return ocupado; }
     void setOcupado(bool estado) { ocupado = estado; }
 
+    int getPuesto() { return puesto; }
+    bool isOcupado() { return ocupado; }
+    string getPlaca() { return placa; }
+    string getCedula() { return cedula; }
+    string getNombre() { return nombre; }
+    string getSegundoNombre() { return segundoNombre; }
+    string getApellido() { return apellido; }
+    string getSegundoApellido() { return segundoApellido; }
+    string getFecha() { return fecha; }
+    string getHoraIngreso() { return horaIngreso; }
+    string getHoraSalida() { return horaSalida; }
+
+    Nodo* getIzquierda() { return izquierda; }
+    Nodo* getDerecha() { return derecha; }
+    void setIzquierda(Nodo* nodo) { izquierda = nodo; }
+    void setDerecha(Nodo* nodo) { derecha = nodo; }
+
     void llenarDatos() {
-        
         cout << "Placa del vehículo: ";
         cin >> placa;
         cout << "Cédula: ";
@@ -44,10 +74,8 @@ public:
         cin >> apellido;
         cout << "Segundo Apellido: ";
         cin >> segundoApellido;
-        cout << "Fecha de ingreso: ";
-        cin >> fecha;
-        cout << "Hora de ingreso: ";
-        cin >> horaIngreso;
+        fecha = obtenerFechaActual();
+        horaIngreso = obtenerHoraActual();
         ocupado = true;
     }
 
@@ -55,11 +83,6 @@ public:
         ocupado = false;
         placa = cedula = nombre = segundoNombre = apellido = segundoApellido = fecha = horaIngreso = horaSalida = "";
     }
-
-    Nodo* getIzquierda() { return izquierda; }
-    Nodo* getDerecha() { return derecha; }
-    void setIzquierda(Nodo* nodo) { izquierda = nodo; }
-    void setDerecha(Nodo* nodo) { derecha = nodo; }
 
     void imprimirDatos() {
         cout << "Puesto: " << puesto << (ocupado ? " [Ocupado]" : " [Libre]") << "\n";
@@ -73,7 +96,11 @@ public:
         }
     }
 
-    string getPlaca() { return placa; }
+    void mostrarVehiculo() {
+        if (ocupado) {
+            cout << "Puesto: " << puesto << " | Placa: " << placa << "\n";
+        }
+    }
 };
 
 class Parqueadero {
@@ -93,6 +120,21 @@ private:
 
         return raiz;
     }
+        Nodo* buscarPuestoLibre(Nodo* raiz, int& contador, int objetivo) {
+        if (raiz == nullptr) return nullptr;
+
+        Nodo* nodoIzq = buscarPuestoLibre(raiz->getIzquierda(), contador, objetivo);
+        if (nodoIzq != nullptr) return nodoIzq;
+
+        if (!raiz->isOcupado()) {
+            contador++;
+            if (contador == objetivo) return raiz;
+        }
+
+        Nodo* nodoDer = buscarPuestoLibre(raiz->getDerecha(), contador, objetivo);
+        return nodoDer;
+    }
+
 
     Nodo* crearParqueadero(int inicio, int fin) {
         if (inicio > fin) return nullptr;
@@ -106,19 +148,22 @@ private:
         return raiz;
     }
 
-    Nodo* buscarPuestoLibre(Nodo* raiz, int& contador, int objetivo) {
-        if (raiz == nullptr) return nullptr;
+    int contarPuestosLibres(Nodo* raiz) {
+        if (raiz == nullptr) return 0;
+        return (!raiz->isOcupado() ? 1 : 0) + contarPuestosLibres(raiz->getIzquierda()) + contarPuestosLibres(raiz->getDerecha());
+    }
 
-        Nodo* nodoIzq = buscarPuestoLibre(raiz->getIzquierda(), contador, objetivo);
-        if (nodoIzq != nullptr) return nodoIzq;
+    bool existeAutos(Nodo* raiz) {
+        if (raiz == nullptr) return false;
+        if (raiz->isOcupado()) return true;
+        return existeAutos(raiz->getIzquierda()) || existeAutos(raiz->getDerecha());
+    }
 
-        if (!raiz->isOcupado()) {
-            contador++;
-            if (contador == objetivo) return raiz;
-        }
-
-        Nodo* nodoDer = buscarPuestoLibre(raiz->getDerecha(), contador, objetivo);
-        return nodoDer;
+    void mostrarVehiculos(Nodo* raiz) {
+        if (raiz == nullptr) return;
+        mostrarVehiculos(raiz->getIzquierda());
+        raiz->mostrarVehiculo();
+        mostrarVehiculos(raiz->getDerecha());
     }
 
     void imprimirArbol(Nodo* raiz, int nivel) {
@@ -138,11 +183,7 @@ private:
 
         imprimirArbol(raiz->getIzquierda(), nivel + 1);
     }
-
-    int contarPuestosLibres(Nodo* raiz) {
-        if (raiz == nullptr) return 0;
-        return (!raiz->isOcupado() ? 1 : 0) + contarPuestosLibres(raiz->getIzquierda()) + contarPuestosLibres(raiz->getDerecha());
-    }
+    
 
 public:
     Parqueadero(int inicio, int fin) {
@@ -180,18 +221,77 @@ public:
         cout << "\nEstado actual del parqueadero: \n";
         imprimirArbol(raiz, 0);
     }
+
+    void mostrarVehiculos() {
+        cout << "\nVehículos registrados:\n";
+        mostrarVehiculos(raiz);
+    }
+    
+    
+    
+void ImprimirPropietario(Nodo* nodo) {
+    if (nodo == nullptr) return; // Verifica que el nodo no sea nulo
+
+    // Imprimir datos del propietario
+    cout << left << setw(15) << nodo->getCedula() 
+         << setw(20) << (nodo->getNombre() + " " + nodo->getSegundoNombre()) 
+         << setw(20) << (nodo->getApellido() + " " + nodo->getSegundoApellido()) 
+         << setw(10) << nodo->getPlaca() << endl;
+}
+
+void encontrarPropietaro(Nodo* raiz) {
+	if (raiz == nullptr) return;
+	
+	    encontrarPropietaro(raiz->getIzquierda());
+	
+	    // Verifica si el propietario está ocupado antes de mostrarlo
+	    if (raiz->isOcupado()) {
+	        ImprimirPropietario(raiz); // Pasa el nodo actual a la función
+	    }
+	
+	    encontrarPropietaro(raiz->getDerecha());
+}
+
+    void mostrarDatosPropietarios() {
+    
+
+    bool resultado = existeAutos(raiz);
+    if (resultado ==true){
+    	    	
+    	cout << "--- Detalles del Puesto y Vehículo ---\n";
+
+
+    // Encabezados de columnas
+    cout << left << setw(10) << "Puesto" 
+         << setw(10) << "Placa" 
+         << setw(15) << "Cedula" 
+         << setw(20) << "Nombre" 
+         << setw(20) << "Apellido" 
+         << setw(15) << "Fecha" 
+         << setw(10) << "Hora" << endl;
+    cout << string(100, '-') << endl;
+    
+    encontrarPropietaro(raiz);
+	}
+	else{
+		std::cout << "No hay autos en el parqueadero" << std::endl;
+	}
+}
+
 };
 
 int main() {
     Parqueadero parqueadero(1, 40); // Crear el parqueadero con puestos del 1 al 40
     int opcion, puesto;
 
-    do {
+   do {
         cout << "\n--- Menu ---\n";
-        cout << "1. Ocupar un puesto\n";
-        cout << "2. Liberar un puesto\n";
+        cout << "1. Registrar un vehiculo\n";
+        cout << "2. Liberar un vehiculo\n";
         cout << "3. Mostrar parqueadero\n";
-        cout << "4. Salir\n";
+        cout << "4. Mostrar datos de propietarios\n";
+        cout << "5. Mostrar vehículos registrados\n";
+        cout << "6. Salir\n";
         cout << "Elige una opción: ";
         cin >> opcion;
 
@@ -208,12 +308,18 @@ int main() {
                 parqueadero.mostrarParqueadero();
                 break;
             case 4:
+                parqueadero.mostrarDatosPropietarios();
+                break;
+            case 5:
+                parqueadero.mostrarVehiculos();
+                break;
+            case 6:
                 cout << "Saliendo...\n";
                 break;
             default:
                 cout << "Opción no válida, por favor elige otra.\n";
         }
-    } while (opcion != 4);
+    } while (opcion != 6);
 
     return 0;
 }
