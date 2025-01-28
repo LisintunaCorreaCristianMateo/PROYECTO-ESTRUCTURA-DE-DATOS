@@ -2,7 +2,7 @@
 #include "Validaciones.h"
 #include <algorithm>
 #include "ValidacionPlaca.h"
-#include "BST.h"
+#include "Lista.h"
 
 using namespace std;
 

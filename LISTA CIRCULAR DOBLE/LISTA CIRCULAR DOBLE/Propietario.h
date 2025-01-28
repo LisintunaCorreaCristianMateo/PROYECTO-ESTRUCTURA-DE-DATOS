@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "BST.h"
+#include "Lista.h"
 
 using namespace std;
 

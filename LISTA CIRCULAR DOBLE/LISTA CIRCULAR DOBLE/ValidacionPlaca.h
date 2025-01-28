@@ -2,8 +2,8 @@
 
 #include <iostream>
 #include <string>
-#include "BSTNode.h"
-#include "BST.h"
+#include "Nodo.h"
+#include "Lista.h"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ template <typename T>
 class Placa
 {
 public:
-    string ingresarPlaca(BSTNode<T> *aux);
+    string ingresarPlaca(Nodo<T> *aux);
 
 private:
     void convertirAMayusculas(string &placa);

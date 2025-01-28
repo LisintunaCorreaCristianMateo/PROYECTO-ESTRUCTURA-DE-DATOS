@@ -3,7 +3,7 @@
 #include <string>
 #include <chrono>
 #include <ctime>
-#include "BST.h"
+#include "Lista.h"
 #include <sstream>
 
 class Propietario;
@@ -41,6 +41,6 @@ public:
     int getAnio() const;
     chrono::system_clock::time_point getHora() const;
 
-    Coche InsertarDatos(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbolPropietarios);
+    Coche InsertarDatos(ListaCircularDoble<Coche> &lista, ListaCircularDoble<Coche> &listaHistorial, ListaCircularDoble<Propietario> &listaPropietarios);
     friend ostream &operator<<(ostream &os, const Coche &coche);
 };

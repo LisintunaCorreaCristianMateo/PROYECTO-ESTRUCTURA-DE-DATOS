@@ -3,7 +3,7 @@
 #include <conio.h>
 #include "Propietario.h"
 #include "Coche.h"
-#include "BST.h"
+#include "Lista.h"
 #include "Validaciones.h"
 #include "ValidacionPlaca.h"
 #include "Menu.h"
@@ -14,7 +14,7 @@ using namespace std;
 Coche coche;
 
 template <typename T>
-void menuEliminarPlaca(BST<Propietario> &arbolPropietarios)
+void menuEliminarPlaca(ListaCircularDoble<Propietario> &listaPropietarios)
 {
     Placa<Propietario> validador;
     Validaciones validaciones;
@@ -26,50 +26,58 @@ void menuEliminarPlaca(BST<Propietario> &arbolPropietarios)
     cout << "========================================" << endl;
 
     string cedula = validaciones.ingresarCedula("Ingrese la cedula del propietario: ");
-    BSTNode<Propietario>* aux = arbolPropietarios.search(cedula);
+    Nodo<T> *aux = listaPropietarios.getPrimero();
     bool encontrado = false;
 
-    if (aux != nullptr) {
-        encontrado = true;
-        cout << "========================================" << endl;
-        cout << "   PROPIETARIO REGISTRADO" << endl;
-        cout << "========================================" << endl;
-        cout << aux->data << endl;
+    do {
+        if (aux->getDato().getCedula() == cedula) {
+            encontrado = true;
+            cout << "========================================" << endl;
+            cout << "   PROPIETARIO REGISTRADO" << endl;
+            cout << "========================================" << endl;
+            cout << aux->getDato() << endl;
 
-        vector<string> placas = aux->data.getPlacas();
+            vector<string> placas = aux->getDato().getPlacas();
 
-        if (placas.empty()) {
-            cout << "Este propietario no tiene placas asociadas." << endl;
-            return;
+            if (placas.empty()) {
+                cout << "Este propietario no tiene placas asociadas." << endl;
+                return;
+            }
+            
+            vector<string> opcionesPlacas = placas;
+            opcionesPlacas.push_back("Volver");
+            int seleccion = menuInteractivo(opcionesPlacas, "Seleccionar Placa a Eliminar");
+
+            if (seleccion == opcionesPlacas.size() - 1) {
+                return;
+            }
+
+            string placa = placas[seleccion];
+
+            vector<string> placasActualizadas = aux->getDato().eliminarPlaca(placa);
+
+            
+            Propietario propietarioActualizado(aux->getDato().getNombre(), aux->getDato().getApellido(), 
+                                               aux->getDato().getCedula(), aux->getDato().getCorreo());
+
+            propietarioActualizado.setPlacas(placasActualizadas);
+
+            
+            aux->setDato(propietarioActualizado);
+            cout << aux->getDato() << endl;
+
+            listaPropietarios.GuardarPropietarios("propietarios.txt");
+
+            break;
         }
-
-        vector<string> opcionesPlacas = placas;
-        opcionesPlacas.push_back("Volver");
-        int seleccion = menuInteractivo(opcionesPlacas, "Seleccionar Placa a Eliminar");
-
-        if (seleccion == opcionesPlacas.size() - 1) {
-            return;
-        }
-
-        string placa = placas[seleccion];
-
-        vector<string> placasActualizadas = aux->data.eliminarPlaca(placa);
-
-        Propietario propietarioActualizado(aux->data.getNombre(), aux->data.getApellido(),
-                                           aux->data.getCedula(), aux->data.getCorreo());
-
-        propietarioActualizado.setPlacas(placasActualizadas);
-
-        aux->data = propietarioActualizado;
-        cout << aux->data << endl;
-
-        arbolPropietarios.insert(propietarioActualizado);
-    }
+        aux = aux->getSiguiente();
+    } while (aux != listaPropietarios.getPrimero() && !encontrado);
 
     if (!encontrado) {
         cout << "No se encontró un propietario con esa cédula." << endl;
     }
 }
+
 
 
 
@@ -119,8 +127,9 @@ int menuInteractivo(const vector<string> &opciones, const string &titulo)
     }
 }
 
-void menuGestionPropietarios(BST<Propietario> &arbolPropietarios)
+void menuGestionPropietarios(ListaCircularDoble<Propietario> &listaPropietarios)
 { 
+    
     bool salirSubmenu = false;
     while (!salirSubmenu)
     {
@@ -140,17 +149,18 @@ void menuGestionPropietarios(BST<Propietario> &arbolPropietarios)
 
         int seleccionPropietarios = menuInteractivo(opcionesPropietarios, "Menu de Gestion de Propietarios");
        
+       
         switch (seleccionPropietarios)
         {
         case 0:
             {
                 Propietario nuevoPropietario = nuevoPropietario.agregarPropietario();
-                arbolPropietarios.insertar(nuevoPropietario);
-                arbolPropietarios.GuardarPropietarios("propietarios.txt");
+                listaPropietarios.insertar(nuevoPropietario);
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
                 break;
             }
         case 1:
-            arbolPropietarios.mostrar(arbolPropietarios.getRaiz());
+            listaPropietarios.mostrar(listaPropietarios.getPrimero());
             system("pause");
             break;
         case 2:
@@ -159,14 +169,14 @@ void menuGestionPropietarios(BST<Propietario> &arbolPropietarios)
                 cout << "========================================" << endl;
                 cout << "          BUSQUEDA AVANZADA             " << endl;
                 cout << "========================================" << endl;
-                menuBusquedaAvanzadaPropietario(arbolPropietarios);
+                menuBusquedaAvanzadaPropietario(listaPropietarios);
                 system("pause");
                 break;
             }
         case 3:
           {
-            menuEliminarPlaca<Propietario>(arbolPropietarios);
-            break;
+            menuEliminarPlaca<Propietario>(listaPropietarios);
+           
         }
         case 4:
             salirSubmenu = true;
@@ -176,9 +186,11 @@ void menuGestionPropietarios(BST<Propietario> &arbolPropietarios)
         }
     }
 }
-void menuBusquedaAvanzadaPropietario(BST<Propietario> &arbolPropietarios)
+
+void menuBusquedaAvanzadaPropietario(ListaCircularDoble<Propietario> &listaPropietarios)
 {
-    Validaciones validaciones;
+
+  Validaciones validaciones;
     vector<string> opcionesBusqueda = {
         "Buscar por Cedula",
         "Buscar por Correo",
@@ -201,7 +213,7 @@ void menuBusquedaAvanzadaPropietario(BST<Propietario> &arbolPropietarios)
             string cedula;
             cout << "Ingrese la cedula: ";
             cedula = validaciones.ingresarCedula("Ingrese la cedula: ");
-            arbolPropietarios.BusquedaAvanzadaPropietario("cedula", cedula, "");
+            listaPropietarios.BusquedaAvanzadaPropietario("cedula", cedula, "");
             break;
         }
         case 1:
@@ -213,7 +225,7 @@ void menuBusquedaAvanzadaPropietario(BST<Propietario> &arbolPropietarios)
             string correo;
             cout << "Ingrese el correo: ";
             correo = validaciones.ingresarCorreo("Ingrese el correo: ");
-            arbolPropietarios.BusquedaAvanzadaPropietario("correo", correo, "");
+            listaPropietarios.BusquedaAvanzadaPropietario("correo", correo, "");
             break;
         }
         case 2:
@@ -225,7 +237,7 @@ void menuBusquedaAvanzadaPropietario(BST<Propietario> &arbolPropietarios)
             string nombre;
             cout << "Ingrese el nombre: ";
             nombre = validaciones.ingresarString("Ingrese el nombre: ");
-            arbolPropietarios.BusquedaAvanzadaPropietario("nombre", nombre, "");
+            listaPropietarios.BusquedaAvanzadaPropietario("nombre", nombre, "");
             break;
         }
         case 3:
@@ -237,7 +249,7 @@ void menuBusquedaAvanzadaPropietario(BST<Propietario> &arbolPropietarios)
             string apellido;
             cout << "Ingrese el apellido: ";
             apellido = validaciones.ingresarString("Ingrese el apellido: ");
-            arbolPropietarios.BusquedaAvanzadaPropietario("apellido", apellido, "");
+            listaPropietarios.BusquedaAvanzadaPropietario("apellido", apellido, "");
             break;
         }
         case 4:
@@ -252,9 +264,11 @@ void menuBusquedaAvanzadaPropietario(BST<Propietario> &arbolPropietarios)
 
         system("pause");
     }
+
+
 }
 
-void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbolPropietarios)
+void menu(ListaCircularDoble<Coche> &lista, ListaCircularDoble<Coche> &listaHistorial, ListaCircularDoble<Propietario> &listaPropietarios)
 {
     Placa<Coche> validador;
 
@@ -265,7 +279,7 @@ void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbol
         "Busqueda Avanzada",
         "Menu de Gestion de Propietarios",
         "Liberar el parqueadero",
-        "Recorridos",
+        "Ordenar Lista",
         "Ayuda",
         "Salir"};
 
@@ -281,17 +295,17 @@ void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbol
         case 0:
         {
 
-            if (arbolPropietarios.estaVacia())
+            if (listaPropietarios.estaVacia())
             {
                 cout << "No hay propietarios registrados. Por favor, registre un propietario antes de continuar." << endl;
                 break;
             }
 
-            Coche nuevoCoche = nuevoCoche.InsertarDatos(arbol, arbolHistorial, arbolPropietarios);
-            arbol.insertar(nuevoCoche);
-            arbol.GuardarArchivo("autos.txt");
-            arbolHistorial.insertar(nuevoCoche);
-            arbolHistorial.GuardarArchivo("autos_historial.txt");
+            Coche nuevoCoche = nuevoCoche.InsertarDatos(lista, listaHistorial, listaPropietarios);
+            lista.insertar(nuevoCoche);
+            lista.GuardarArchivo("autos.txt");
+            listaHistorial.insertar(nuevoCoche);
+            listaHistorial.GuardarArchivo("autos_historial.txt");
             break;
         }
         case 1:
@@ -322,7 +336,7 @@ void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbol
                     cout << "========================================" << endl;
                     cout << "   LISTA DE COCHES EN EL PARQUEADERO    " << endl;
                     cout << "========================================" << endl;
-                    arbol.mostrar(arbol.getRaiz());
+                    lista.mostrar(lista.getPrimero());
                     system("pause");
                     break;
                 }
@@ -332,7 +346,7 @@ void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbol
                     cout << "========================================" << endl;
                     cout << "   HISTORIAL COMPLETO DE COCHES         " << endl;
                     cout << "========================================" << endl;
-                    arbolHistorial.mostrar(arbolHistorial.getRaiz());
+                    listaHistorial.mostrar(listaHistorial.getPrimero());
                     system("pause");
                     break;
                 }
@@ -380,7 +394,7 @@ void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbol
                     string placa;
                     cout << "Ingrese la placa a buscar(Utilize mayusculas para validar su placa): ";
                     cin >> placa;
-                    arbol.buscarPorPlaca(placa);
+                    lista.buscarPorPlaca(placa);
                     system("pause");
                     break;
                 }
@@ -393,7 +407,7 @@ void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbol
                     string placa;
                     cout << "Ingrese la placa a buscar(Utilize mayusculas para validar su placa): ";
                     cin >> placa;
-                    arbolHistorial.buscarPorPlaca(placa);
+                    listaHistorial.buscarPorPlaca(placa);
                     system("pause");
                     break;
                 }
@@ -420,11 +434,11 @@ void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbol
             cout << "========================================" << endl;
             cout << "========================================" << endl;
 
-            menuBusquedaAvanzada(arbol, arbolHistorial);
+            menuBusquedaAvanzada(lista, listaHistorial);
             break;
         }
         case 4:
-            menuGestionPropietarios(arbolPropietarios);
+            menuGestionPropietarios(listaPropietarios);
             break;
         case 5:
         {
@@ -437,13 +451,13 @@ void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbol
             string placa;
             cout << "Ingrese la placa del coche que  va a  dejar el estacionamiento: ";
             cin >> placa;
-            arbolHistorial.salirDelParqueadero(placa);
-            arbol.eliminarPorPlaca(placa);
+            listaHistorial.salirDelParqueadero(placa);
+            lista.eliminarPorPlaca(placa);
             break;
         }
         case 6:
         {
-            menuMostrarRecorridos(arbol, arbolHistorial, arbolPropietarios);
+            menuOrdenar(lista, listaHistorial, listaPropietarios);
             break;
         }
         case 7:
@@ -473,8 +487,9 @@ void menu(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbol
     }
 }
 
-void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
+void menuBusquedaAvanzada(ListaCircularDoble<Coche> &lista, ListaCircularDoble<Coche> &listaHistorial)
 {
+
     Validaciones validaciones;
     vector<string> opciones = {
         "Buscar en Parqueadero",
@@ -510,7 +525,7 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 string modelo;
                 cout << "Ingrese el modelo: ";
                 modelo = validaciones.ingresarString("Ingrese el modelo: ");
-                arbol.BusquedaAvanzada("modelo", modelo, "");
+                lista.BusquedaAvanzada("modelo", modelo, "");
                 break;
             }
             case 1:
@@ -522,7 +537,8 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 string color;
                 cout << "Ingrese el color: ";
                 color = validaciones.ingresarString("Ingrese el color: ");
-                arbol.BusquedaAvanzada("color", color, "");
+
+                lista.BusquedaAvanzada("color", color, "");
                 break;
             }
             case 2:
@@ -534,7 +550,7 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 string fecha;
                 cout << "Ingrese la fecha (DD-MM-AAAA): ";
                 cin >> fecha;
-                arbol.BusquedaAvanzada("fecha", fecha, "");
+                lista.BusquedaAvanzada("fecha", fecha, "");
                 break;
             }
             case 3:
@@ -546,7 +562,8 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 string marca;
                 cout << "Ingrese la marca: ";
                 marca = validaciones.ingresarString("Ingrese la marca: ");
-                arbol.BusquedaAvanzada("marca", marca, "");
+
+                lista.BusquedaAvanzada("marca", marca, "");
                 break;
             }
             case 4:
@@ -560,7 +577,7 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 cin >> HoraEntrada1;
                 cout << "Ingrese la hora de entrada 2: ";
                 cin >> HoraEntrada2;
-                arbol.BusquedaAvanzada("hora", HoraEntrada1, HoraEntrada2);
+                lista.BusquedaAvanzada("hora", HoraEntrada1, HoraEntrada2);
                 break;
             }
             case 5:
@@ -598,7 +615,7 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 string modelo;
                 cout << "Ingrese el modelo: ";
                 modelo = validaciones.ingresarString("Ingrese el modelo: ");
-                arbolHistorial.BusquedaAvanzada("modelo", modelo, "");
+                listaHistorial.BusquedaAvanzada("modelo", modelo, "");
                 break;
             }
             case 1:
@@ -610,7 +627,7 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 string color;
                 cout << "Ingrese el color: ";
                 color = validaciones.ingresarString("Ingrese el color: ");
-                arbolHistorial.BusquedaAvanzada("color", color, "");
+                listaHistorial.BusquedaAvanzada("color", color, "");
                 break;
             }
             case 2:
@@ -622,7 +639,7 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 string fecha;
                 cout << "Ingrese la fecha (DD-MM-AAAA): ";
                 cin >> fecha;
-                arbolHistorial.BusquedaAvanzada("fecha", fecha, "");
+                listaHistorial.BusquedaAvanzada("fecha", fecha, "");
                 break;
             }
             case 3:
@@ -634,7 +651,7 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 string marca;
                 cout << "Ingrese la marca: ";
                 marca = validaciones.ingresarString("Ingrese la marca: ");
-                arbolHistorial.BusquedaAvanzada("marca", marca, "");
+                listaHistorial.BusquedaAvanzada("marca", marca, "");
                 break;
             }
             case 4:
@@ -648,7 +665,7 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
                 cin >> HoraEntrada1;
                 cout << "Ingrese la hora de entrada 2: ";
                 cin >> HoraEntrada2;
-                arbolHistorial.BusquedaAvanzada("hora", HoraEntrada1, HoraEntrada2);
+                listaHistorial.BusquedaAvanzada("hora", HoraEntrada1, HoraEntrada2);
                 break;
             }
             case 5:
@@ -676,33 +693,455 @@ void menuBusquedaAvanzada(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
     }
 }
 
+void menuOrdenarCoches(ListaCircularDoble<Coche> &lista, ListaCircularDoble<Coche> &listaHistorial)
+{
+    bool salirSubmenu = false;
 
+    while (!salirSubmenu)
+    {
+        system("cls");
+        cout << "========================================" << endl;
+        cout << "           Menu de Ordenamiento de Coches         " << endl;
+        cout << "========================================" << endl;
 
+        vector<string> opcionesMetodo = {
+            "Quick Sort",
+            "Bucket Sort",
+            "Bubble Sort",
+            "Shell Sort",
+            "Radix sort",
+            "Volver al Menu Principal"};
 
-template <typename T>
-void mostrarElementos(const std::vector<T>& lista) {
-    for (const auto& elemento : lista) {
-        std::cout << elemento << std::endl;
+        int seleccionMetodo = menuInteractivo(opcionesMetodo, "Seleccione el metodo de ordenamiento:");
+
+        if (seleccionMetodo == 5)
+        {
+            salirSubmenu = true;
+            continue;
+        }
+
+        vector<string> opcionesOrdenar = {
+            "Ordenar por Placa",
+            "Ordenar por Color",
+            "Ordenar por Modelo",
+            "Ordenar por Marca",
+            "Volver al Menu Principal"};
+
+        int seleccionOrdenar = menuInteractivo(opcionesOrdenar, "Seleccione el criterio de ordenamiento:");
+
+        if (seleccionOrdenar == 4)
+        {
+            continue;
+        }
+
+        system("cls");
+        if (seleccionMetodo == 0)
+        {
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                ordenarLista(lista, [](const Coche &a, const Coche &b)
+                             { return a.getPlaca() < b.getPlaca(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por placa y guardada exitosamente." << endl;
+                break;
+            case 1:
+                ordenarLista(lista, [](const Coche &a, const Coche &b)
+                             { return a.getColor() < b.getColor(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por color y guardada exitosamente." << endl;
+                break;
+            case 2:
+                ordenarLista(lista, [](const Coche &a, const Coche &b)
+                             { return a.getModelo() < b.getModelo(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por modelo y guardada exitosamente." << endl;
+                break;
+            case 3:
+                ordenarLista(lista, [](const Coche &a, const Coche &b)
+                             { return a.getMarca() < b.getMarca(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por marca y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo." << endl;
+            }
+        }
+        else if (seleccionMetodo == 1)
+        {
+            std::function<std::string(const Coche &)> getKeyCoche;
+
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                getKeyCoche = [](const Coche &item)
+                { return item.getPlaca(); };
+                ordenarListaBucket(lista, getKeyCoche);
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por placa y guardada exitosamente." << endl;
+                break;
+            case 1:
+                getKeyCoche = [](const Coche &item)
+                { return item.getColor(); };
+                ordenarListaBucket(lista, getKeyCoche);
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por color y guardada exitosamente." << endl;
+                break;
+            case 2:
+                getKeyCoche = [](const Coche &item)
+                { return item.getModelo(); };
+                ordenarListaBucket(lista, getKeyCoche);
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por modelo y guardada exitosamente." << endl;
+                break;
+            case 3:
+                getKeyCoche = [](const Coche &item)
+                { return item.getMarca(); };
+                ordenarListaBucket(lista, getKeyCoche);
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por marca y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo." << endl;
+                continue;
+            }
+        }
+        else if (seleccionMetodo == 2)
+        {
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                ordenarListaBubbleSort(lista, [](const Coche &a, const Coche &b)
+                                       { return a.getPlaca() < b.getPlaca(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por placa y guardada exitosamente." << endl;
+                break;
+            case 1:
+                ordenarListaBubbleSort(lista, [](const Coche &a, const Coche &b)
+                                       { return a.getColor() < b.getColor(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por color y guardada exitosamente." << endl;
+                break;
+            case 2:
+                ordenarListaBubbleSort(lista, [](const Coche &a, const Coche &b)
+                                       { return a.getModelo() < b.getModelo(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por modelo y guardada exitosamente." << endl;
+                break;
+            case 3:
+                ordenarListaBubbleSort(lista, [](const Coche &a, const Coche &b)
+                                       { return a.getMarca() < b.getMarca(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por marca y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo." << endl;
+                break;
+            }
+        }
+        else if (seleccionMetodo == 3)
+        { // Shell Sort
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                ordenarListaShellSort(lista, [](const Coche &a, const Coche &b)
+                                      { return a.getPlaca() < b.getPlaca(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por placa y guardada exitosamente." << endl;
+                break;
+            case 1:
+                ordenarListaShellSort(lista, [](const Coche &a, const Coche &b)
+                                      { return a.getColor() < b.getColor(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por color y guardada exitosamente." << endl;
+                break;
+            case 2:
+                ordenarListaShellSort(lista, [](const Coche &a, const Coche &b)
+                                      { return a.getModelo() < b.getModelo(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por modelo y guardada exitosamente." << endl;
+                break;
+            case 3:
+                ordenarListaShellSort(lista, [](const Coche &a, const Coche &b)
+                                      { return a.getMarca() < b.getMarca(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por marca y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo." << endl;
+            }
+        }
+        else if (seleccionMetodo == 4)
+        { // Radix
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                ordenarListaPorRadix(lista, [](const Coche &coche)
+                                     { return coche.getPlaca(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por placa y guardada exitosamente." << endl;
+                break;
+            case 1:
+                ordenarListaPorRadix(lista, [](const Coche &coche)
+                                     { return coche.getColor(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por color y guardada exitosamente." << endl;
+                break;
+            case 2:
+                ordenarListaPorRadix(lista, [](const Coche &coche)
+                                     { return coche.getModelo(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por modelo y guardada exitosamente." << endl;
+                break;
+            case 3:
+                ordenarListaPorRadix(lista, [](const Coche &coche)
+                                     { return coche.getMarca(); });
+                lista.GuardarArchivo("autos.txt");
+                cout << "Lista ordenada por marca y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo." << endl;
+            }
+        }
+
+        system("pause");
     }
 }
 
-void menuMostrarRecorridos(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Propietario> &arbolPropietarios)
+
+
+void menuOrdenarPropietarios(ListaCircularDoble<Propietario> &listaPropietarios)
+{
+    bool salirSubmenu = false;
+
+    while (!salirSubmenu)
+    {
+        system("cls");
+        cout << "========================================" << endl;
+        cout << "           Menu de Ordenamiento de Propietarios         " << endl;
+        cout << "========================================" << endl;
+
+        vector<string> opcionesMetodo = {
+            "Quick Sort",
+            "Bucket Sort",
+            "Bubble Sort",
+            "Shell Sort",
+            "Radix sort",
+            "Volver al Menu Principal"};
+
+        int seleccionMetodo = menuInteractivo(opcionesMetodo, "Seleccione el metodo de ordenamiento:");
+
+        if (seleccionMetodo == 5)
+        {
+            salirSubmenu = true;
+            continue;
+        }
+
+        vector<string> opcionesOrdenar = {
+            "Ordenar por Nombre",
+            "Ordenar por Apellido",
+            "Ordenar por Cedula",
+            "Ordenar por Correo",
+            "Volver al Menu Principal"};
+
+        int seleccionOrdenar = menuInteractivo(opcionesOrdenar, "Seleccione el criterio de ordenamiento:");
+
+        if (seleccionOrdenar == 4)
+        {
+            continue;
+        }
+
+        system("cls");
+        if (seleccionMetodo == 0)
+        {
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                ordenarLista(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                             { return a.getNombre() < b.getNombre(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por nombre y guardada exitosamente." << endl;
+                break;
+            case 1:
+                ordenarLista(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                             { return a.getApellido() < b.getApellido(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por apellido y guardada exitosamente." << endl;
+                break;
+            case 2:
+                ordenarLista(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                             { return a.getCedula() < b.getCedula(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por cedula y guardada exitosamente." << endl;
+                break;
+            case 3:
+                ordenarLista(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                             { return a.getCorreo() < b.getCorreo(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por correo y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo." << endl;
+            }
+        }
+        else if (seleccionMetodo == 1)
+        {
+            std::function<std::string(const Propietario &)> getKeyPropietario;
+
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                getKeyPropietario = [](const Propietario &item)
+                { return item.getNombre(); };
+                ordenarListaBucket(listaPropietarios, getKeyPropietario);
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por nombre y guardada exitosamente." << endl;
+                break;
+            case 1:
+                getKeyPropietario = [](const Propietario &item)
+                { return item.getApellido(); };
+                ordenarListaBucket(listaPropietarios, getKeyPropietario);
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por apellido y guardada exitosamente." << endl;
+                break;
+            case 2:
+                getKeyPropietario = [](const Propietario &item)
+                { return item.getCedula(); };
+                ordenarListaBucket(listaPropietarios, getKeyPropietario);
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por cedula y guardada exitosamente." << endl;
+                break;
+            case 3:
+                getKeyPropietario = [](const Propietario &item)
+                { return item.getCorreo(); };
+                ordenarListaBucket(listaPropietarios, getKeyPropietario);
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por correo y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo." << endl;
+                continue;
+            }
+        }
+        else if (seleccionMetodo == 2)
+        {
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                ordenarListaBubbleSort(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                                       { return a.getNombre() < b.getNombre(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por nombre y guardada exitosamente." << endl;
+                break;
+            case 1:
+                ordenarListaBubbleSort(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                                       { return a.getApellido() < b.getApellido(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por apellido y guardada exitosamente." << endl;
+                break;
+            case 2:
+                ordenarListaBubbleSort(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                                       { return a.getCedula() < b.getCedula(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por cedula y guardada exitosamente." << endl;
+                break;
+            case 3:
+                ordenarListaBubbleSort(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                                       { return a.getCorreo() < b.getCorreo(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por correo y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opción invalida. Intente de nuevo." << endl;
+                break;
+            }
+        }
+        else if (seleccionMetodo == 3)
+        { // Shell Sort
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                ordenarListaShellSort(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                                      { return a.getNombre() < b.getNombre(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por nombre y guardada exitosamente." << endl;
+                break;
+            case 1:
+                ordenarListaShellSort(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                                      { return a.getApellido() < b.getApellido(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por apellido y guardada exitosamente." << endl;
+                break;
+            case 2:
+                ordenarListaShellSort(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                                      { return a.getCedula() < b.getCedula(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por cedula y guardada exitosamente." << endl;
+                break;
+            case 3:
+                ordenarListaShellSort(listaPropietarios, [](const Propietario &a, const Propietario &b)
+                                      { return a.getCorreo() < b.getCorreo(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por correo y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo." << endl;
+            }
+        }
+        else if (seleccionMetodo == 4)
+        { // Radix
+            switch (seleccionOrdenar)
+            {
+            case 0:
+                ordenarListaPorRadix(listaPropietarios, [](const Propietario &propietario)
+                                     { return propietario.getNombre(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por nombre y guardada exitosamente." << endl;
+                break;
+            case 1:
+                ordenarListaPorRadix(listaPropietarios, [](const Propietario &propietario)
+                                     { return propietario.getApellido(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por apellido y guardada exitosamente." << endl;
+                break;
+            case 2:
+                ordenarListaPorRadix(listaPropietarios, [](const Propietario &propietario)
+                                     { return propietario.getCedula(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por cedula y guardada exitosamente." << endl;
+                break;
+            case 3:
+                ordenarListaPorRadix(listaPropietarios, [](const Propietario &propietario)
+                                     { return propietario.getCorreo(); });
+                listaPropietarios.GuardarPropietarios("propietarios.txt");
+                cout << "Lista ordenada por correo y guardada exitosamente." << endl;
+                break;
+            default:
+                cout << "Opcion invalida. Intente de nuevo." << endl;
+            }
+        }
+
+        system("pause");
+    }
+}
+
+void menuOrdenar(ListaCircularDoble<Coche> &lista, ListaCircularDoble<Coche> &listaHistorial, ListaCircularDoble<Propietario> &listaPropietarios)
 {
     bool salirMenu = false;
 
     while (!salirMenu)
     {
         system("cls");
-        std::cout << "========================================" << std::endl;
-        std::cout << "           Menu de Recorridos           " << std::endl;
-        std::cout << "========================================" << std::endl;
+        cout << "========================================" << endl;
+        cout << "           Menu de Ordenamiento         " << endl;
+        cout << "========================================" << endl;
 
-        std::vector<std::string> opcionesTipo = {
-            "Mostrar Coches",
-            "Mostrar Propietarios",
+        vector<string> opcionesTipo = {
+            "Ordenar por Coche",
+            "Ordenar por Propietario",
             "Volver al Menu Principal"};
 
-        int seleccionTipo = menuInteractivo(opcionesTipo, "Seleccione el tipo de recorrido:");
+        int seleccionTipo = menuInteractivo(opcionesTipo, "Seleccione el tipo de ordenamiento:");
 
         if (seleccionTipo == 2)
         {
@@ -712,117 +1151,11 @@ void menuMostrarRecorridos(BST<Coche> &arbol, BST<Coche> &arbolHistorial, BST<Pr
 
         if (seleccionTipo == 0)
         {
-            menuMostrarCoches(arbol, arbolHistorial);
+            menuOrdenarCoches(lista, listaHistorial);
         }
         else if (seleccionTipo == 1)
         {
-            menuMostrarPropietarios(arbolPropietarios);
+            menuOrdenarPropietarios(listaPropietarios);
         }
-    }
-}
-
-void menuMostrarCoches(BST<Coche> &arbol, BST<Coche> &arbolHistorial)
-{
-    bool salirSubmenu = false;
-
-    while (!salirSubmenu)
-    {
-        system("cls");
-        std::cout << "========================================" << std::endl;
-        std::cout << "           Menu de Mostrar Coches       " << std::endl;
-        std::cout << "========================================" << std::endl;
-
-        std::vector<std::string> opcionesMostrar = {
-            "Mostrar en Inorden",
-            "Mostrar en Preorden",
-            "Mostrar en Posorden",
-            "Volver al Menu Principal"};
-
-        int seleccionMostrar = menuInteractivo(opcionesMostrar, "Seleccione el tipo de recorrido:");
-
-        if (seleccionMostrar == 3)
-        {
-            salirSubmenu = true;
-            continue;
-        }
-
-        system("cls");
-        std::vector<Coche> lista;
-
-        switch (seleccionMostrar)
-        {
-        case 0:
-            lista = obtenerElementosEnOrden(arbol, "inorden");
-            std::cout << "Lista de coches en Inorden:" << std::endl;
-            break;
-        case 1:
-            lista = obtenerElementosEnOrden(arbol, "preorden");
-            std::cout << "Lista de coches en Preorden:" << std::endl;
-            break;
-        case 2:
-            lista = obtenerElementosEnOrden(arbol, "posorden");
-            std::cout << "Lista de coches en Posorden:" << std::endl;
-            break;
-        default:
-            std::cout << "Opcion invalida. Intente de nuevo." << std::endl;
-            continue;
-        }
-
-        mostrarElementos(lista);
-
-        system("pause");
-    }
-}
-
-void menuMostrarPropietarios(BST<Propietario> &arbolPropietarios)
-{
-    bool salirSubmenu = false;
-
-    while (!salirSubmenu)
-    {
-        system("cls");
-        std::cout << "========================================" << std::endl;
-        std::cout << "       Menu de Mostrar Propietarios     " << std::endl;
-        std::cout << "========================================" << std::endl;
-
-        std::vector<std::string> opcionesMostrar = {
-            "Mostrar en Inorden",
-            "Mostrar en Preorden",
-            "Mostrar en Posorden",
-            "Volver al Menu Principal"};
-
-        int seleccionMostrar = menuInteractivo(opcionesMostrar, "Seleccione el tipo de recorrido:");
-
-        if (seleccionMostrar == 3)
-        {
-            salirSubmenu = true;
-            continue;
-        }
-
-        system("cls");
-        std::vector<Propietario> lista;
-
-        switch (seleccionMostrar)
-        {
-        case 0:
-            lista = obtenerElementosEnOrden(arbolPropietarios, "inorden");
-            std::cout << "Lista de propietarios en Inorden:" << std::endl;
-            break;
-        case 1:
-            lista = obtenerElementosEnOrden(arbolPropietarios, "preorden");
-            std::cout << "Lista de propietarios en Preorden:" << std::endl;
-            break;
-        case 2:
-            lista = obtenerElementosEnOrden(arbolPropietarios, "posorden");
-            std::cout << "Lista de propietarios en Posorden:" << std::endl;
-            break;
-        default:
-            std::cout << "Opcion invalida. Intente de nuevo." << std::endl;
-            continue;
-        }
-
-        mostrarElementos(lista);
-
-        system("pause");
     }
 }

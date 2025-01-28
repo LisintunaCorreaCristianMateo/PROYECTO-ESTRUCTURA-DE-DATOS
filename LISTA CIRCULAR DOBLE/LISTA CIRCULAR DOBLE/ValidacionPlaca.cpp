@@ -5,7 +5,7 @@
 #include <stdexcept>
 
 template <typename T>
-string Placa<T>::ingresarPlaca(BSTNode<T> *aux)
+string Placa<T>::ingresarPlaca(Nodo<T> *aux)
 {
     string placa;
     unordered_set<string> provinciasValidas = {
