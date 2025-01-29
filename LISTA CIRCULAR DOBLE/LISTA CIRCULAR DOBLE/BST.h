@@ -17,8 +17,8 @@ private:
     BSTNode<T>* eliminarPorPlacaRec(BSTNode<T>* node, string placa);
     BSTNode<T>* minValueNode(BSTNode<T>* node);
     void BusquedaAvanzadaRec(BSTNode<T>* node, string criterio, string valorInicio, string valorFin, bool& encontrado);
-    void BST<T>::GuardarArchivoRec(BSTNode<T>* node, std::ofstream& archivo);
-    void BST<T>::GuardarPropietariosRec(BSTNode<T>* node, ofstream& archivo);
+    void GuardarArchivoRec(BSTNode<T>* node, std::ofstream& archivo);
+    void GuardarPropietariosRec(BSTNode<T>* node, ofstream& archivo);
     void BusquedaAvanzadaPropietarioRec(BSTNode<T>* node, string criterio, string valorInicio, string valorFin, bool& encontrado);
 
 

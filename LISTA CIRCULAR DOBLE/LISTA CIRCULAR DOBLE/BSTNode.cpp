@@ -12,7 +12,7 @@ BSTNode<T>::BSTNode(T dato)
 
 template <typename T>
 T BSTNode<T>::getData(){
-    return dato;
+    return data;
 }
 
 template <typename T>

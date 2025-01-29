@@ -285,7 +285,7 @@ void ordenarListaPorRadix(ListaCircularDoble<T>& lista, KeyExtractor getKey) {
     } while (aux != lista.getPrimero());
 
    
-    using KeyType = decltype(std::declval<KeyExtractor>()(std::declval<T>()));
+    using KeyType = typename std::invoke_result<KeyExtractor, T>::type;
     if constexpr (std::is_same<KeyType, std::string>::value) {
        
         radixSortByString(elementos, getKey);
