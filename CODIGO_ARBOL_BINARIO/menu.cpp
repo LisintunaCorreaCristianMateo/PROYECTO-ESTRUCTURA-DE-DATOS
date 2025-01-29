@@ -259,8 +259,8 @@ void procesarSeleccion(const string& opcion) {
 	else if (opcion == "Busqueda por Placa") {
 		
         string placa;
+        placa = validarPlaca();
  
-        placa=ingresar_string("\nIngrese la placa del vehiculo a buscar: ");
         arbol.buscarPlaca(placa);
 
     
