@@ -1,4 +1,0 @@
-11,TEEE,1726403999,Cristian,Mateo,Lisintuna,Correa,29/01/2025,01:43:27
-8,PYU,1111111111,Nataly,Patricia,Cueva,Castillo,29/01/2025,01:44:52
-30,ABR1452,1726403999,Matias,Eduardo,Herrera,Cruz,29/01/2025,03:34:12
-19,UCE,5225254185,Klever,Mauricio,Fausto,Murillo,29/01/2025,02:03:30
