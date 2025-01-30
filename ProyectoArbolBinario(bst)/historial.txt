@@ -1,3 +1,5 @@
 30,ABR1452,1726403999,Matias,Eduardo,Herrera,Cruz,29/01/2025,03:34:12
 7,XER1234,1725914236,Brayan,Patricio,Gualotuna,Castro,29/01/2025,07:24:02
 19,PCO1736,1725914236,Estefania,Eliana,Mendoza,Velez,29/01/2025,08:20:02
+12,PCF7679,1803005071,Lucho,Castro,Castro,Castro,29/01/2025,08:35:43
+19,PCF7679,1803005071,Lucho,Castro,Castro,Castro,29/01/2025,08:38:00
