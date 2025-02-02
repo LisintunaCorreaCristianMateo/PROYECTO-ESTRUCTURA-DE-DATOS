@@ -24,7 +24,7 @@ NodoVehiculo* ArbolParqueadero::insertarRecursivo(NodoVehiculo* nodo, NodoVehicu
     if (nodo == nullptr) {
         return nuevoVehiculo;
     }
-    if (nuevoVehiculo->getPlaca() < nodo->getPlaca()) {
+    if (nuevoVehiculo->getPuesto() < nodo->getPuesto()) { // Cambiar << por <
         nodo->setIzquierda(insertarRecursivo(nodo->getIzquierda(), nuevoVehiculo));
     } else {
         nodo->setDerecha(insertarRecursivo(nodo->getDerecha(), nuevoVehiculo));
@@ -379,10 +379,10 @@ void ArbolParqueadero::graficarArbol(NodoVehiculo* nodo, int espacio, int increm
     graficarArbol(nodo->getDerecha(), espacio);
 
     cout << endl;
-    for (int i = incremento; i < espacio; i++) cout << " ";
-    cout << nodo->getPlaca() << "\n";
+    for (int i = incremento; i < espacio; i++) {
+        cout << " ";
+    }
+    cout << nodo->getPuesto() << "\n";
 
     graficarArbol(nodo->getIzquierda(), espacio);
 }
-
-

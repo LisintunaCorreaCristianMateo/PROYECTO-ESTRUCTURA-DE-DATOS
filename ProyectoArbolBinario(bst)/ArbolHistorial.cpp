@@ -26,7 +26,7 @@ NodoHistorial* ArbolHistorial::insertarRecursivo(NodoHistorial* nodo, NodoHistor
     if (nodo == nullptr) {
         return nuevoVehiculo;
     }
-    if (nuevoVehiculo->getPlaca() < nodo->getPlaca()) {
+    if (nuevoVehiculo->getPuesto() < nodo->getPuesto()) {
         nodo->setIzquierda(insertarRecursivo(nodo->getIzquierda(), nuevoVehiculo));
     } else {
         nodo->setDerecha(insertarRecursivo(nodo->getDerecha(), nuevoVehiculo));
@@ -147,7 +147,7 @@ void ArbolHistorial::graficarArbolHistorialRecursivo(NodoHistorial* nodo, int es
     SetConsoleTextAttribute(hConsole, 10); // Cambiar color a verde
     cout << endl;
     for (int i = incremento; i < espacio; i++) cout << " ";
-    cout << nodo->getPlaca() << "\n";
+    cout << nodo->getPuesto() << "\n";
     SetConsoleTextAttribute(hConsole, 7); // Volver al color normal
 
     graficarArbolHistorialRecursivo(nodo->getIzquierda(), espacio, incremento);
