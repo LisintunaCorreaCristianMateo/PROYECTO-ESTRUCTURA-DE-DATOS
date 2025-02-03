@@ -386,3 +386,20 @@ void ArbolParqueadero::graficarArbol(NodoVehiculo* nodo, int espacio, int increm
 
     graficarArbol(nodo->getIzquierda(), espacio);
 }
+
+int ArbolParqueadero::obtenerAltura(NodoVehiculo* nodo) {
+    if (nodo == nullptr) {
+        return 0;
+    }
+    int alturaIzquierda = obtenerAltura(nodo->getIzquierda());
+    int alturaDerecha = obtenerAltura(nodo->getDerecha());
+    return max(alturaIzquierda, alturaDerecha) + 1;
+}
+
+int ArbolParqueadero::obtenerNivel(NodoVehiculo* nodo) {
+    return obtenerAltura(nodo) - 1;
+}
+
+int ArbolParqueadero::obtenerProfundidad(NodoVehiculo* nodo) {
+    return obtenerAltura(nodo) - 1;
+}

@@ -23,9 +23,9 @@ void menu(){
 
 	
 	
-	const int numOpciones = 13; // Número de opciones actualizado
+	const int numOpciones = 14; // Número de opciones actualizado
     string opciones[numOpciones] = {"Ver Vehiculos Parqueados", "Insertar Coche", "Busqueda por Placa","Busqueda por Nombre",
-                                    "Busqueda por Cedula","Liberar un Vehiculo","Imprimir Preorden","Imprimir Posorden","Ayuda","Mostrar Arbol","Imprimir Historial Inorden","Mostrar Arbol Historial","Salir" };
+                                    "Busqueda por Cedula","Liberar un Vehiculo","Imprimir Preorden","Imprimir Posorden","Ayuda","Mostrar Arbol","Imprimir Historial Inorden","Mostrar Arbol Historial","Mostrar Altura, Nivel y Profundidad del Arbol","Salir" };
     int opcionSeleccionada = 0; // Inicializamos la opción seleccionada en 0
 
     while (true) {
@@ -324,6 +324,15 @@ else if (opcion == "Mostrar Arbol Historial") {
     int espacio = 0; // Define el valor inicial para espacio
     int incremento = 10; // Define el valor para incremento
     arbolHistorial.graficarArbolHistorial(arbolHistorial.getRaiz(), espacio, incremento);
+}
+
+else if (opcion == "Mostrar Altura, Nivel y Profundidad del Arbol") {
+    int altura = arbol.obtenerAltura(arbol.getRaiz());
+    int nivel = arbol.obtenerNivel(arbol.getRaiz());
+    int profundidad = arbol.obtenerProfundidad(arbol.getRaiz());
+    cout << "Altura del arbol: " << altura << endl;
+    cout << "Nivel del arbol: " << nivel << endl;
+    cout << "Profundidad del arbol: " << profundidad << endl;
 }
 
 else if (opcion == "Salir") {

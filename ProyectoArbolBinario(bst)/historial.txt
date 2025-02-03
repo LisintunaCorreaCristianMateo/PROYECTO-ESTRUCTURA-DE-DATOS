@@ -2,3 +2,4 @@
 19,PCO1736,1725914236,Estefania,Eliana,Mendoza,Velez,29/01/2025,08:20:02
 12,PCF7679,1803005071,Lucho,Castro,Castro,Castro,29/01/2025,08:35:43
 19,PCF7679,1803005071,Lucho,Castro,Castro,Castro,29/01/2025,08:38:00
+22,PDF1275,1755740949,Josue,Daniel,Guayasamin,Heredia,02/02/2025,19:36:36

@@ -46,6 +46,10 @@ public:
     bool puestoOcupado(int puesto, const std::unordered_set<int>& puestosOcupados);
     void obtenerPuestosOcupados(NodoVehiculo* nodo, std::unordered_set<int>& puestosOcupados);
     void graficarArbol(NodoVehiculo* nodo, int espacio = 0, int incremento = 10);
+    
+    int obtenerAltura(NodoVehiculo* nodo);
+    int obtenerNivel(NodoVehiculo* nodo);
+    int obtenerProfundidad(NodoVehiculo* nodo);
 
 };
 
