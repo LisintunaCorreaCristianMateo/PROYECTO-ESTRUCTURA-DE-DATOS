@@ -23,9 +23,9 @@ void menu(){
 
 	
 	
-	const int numOpciones = 14; // Número de opciones actualizado
+	const int numOpciones = 15; // Número de opciones actualizado
     string opciones[numOpciones] = {"Ver Vehiculos Parqueados", "Insertar Coche", "Busqueda por Placa","Busqueda por Nombre",
-                                    "Busqueda por Cedula","Liberar un Vehiculo","Imprimir Preorden","Imprimir Posorden","Ayuda","Mostrar Arbol","Imprimir Historial Inorden","Mostrar Arbol Historial","Mostrar Altura, Nivel y Profundidad del Arbol","Salir" };
+                                    "Busqueda por Cedula","Liberar un Vehiculo","Imprimir Preorden","Imprimir Posorden","Ayuda","Mostrar Arbol","Imprimir Historial Inorden","Mostrar Arbol Historial","Mostrar Altura, Nivel y Profundidad del Arbol","Ver Arbol Grafico","Salir" };
     int opcionSeleccionada = 0; // Inicializamos la opción seleccionada en 0
 
     while (true) {
@@ -333,6 +333,10 @@ else if (opcion == "Mostrar Altura, Nivel y Profundidad del Arbol") {
     cout << "Altura del arbol: " << altura << endl;
     cout << "Nivel del arbol: " << nivel << endl;
     cout << "Profundidad del arbol: " << profundidad << endl;
+}
+
+else if (opcion == "Ver Arbol Grafico") {
+    arbol.iniciarGraficacion();
 }
 
 else if (opcion == "Salir") {

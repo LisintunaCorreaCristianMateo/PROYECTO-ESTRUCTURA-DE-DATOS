@@ -1,7 +1,7 @@
 #include "ArbolParqueadero.h"
 #include <iomanip>
 #include <ctime>
-
+#include "graphics.h"
 
 ArbolParqueadero::ArbolParqueadero() {
     raiz = nullptr;
@@ -402,4 +402,39 @@ int ArbolParqueadero::obtenerNivel(NodoVehiculo* nodo) {
 
 int ArbolParqueadero::obtenerProfundidad(NodoVehiculo* nodo) {
     return obtenerAltura(nodo) - 1;
+}
+
+void ArbolParqueadero::graficarArbolGraphics(NodoVehiculo* nodo, int x, int y, int xOffset, int yOffset) {
+    if (nodo == nullptr) return;
+
+    // Dibujar el nodo actual
+    circle(x, y, 20);
+    outtextxy(x - 10, y - 10, const_cast<char*>(std::to_string(nodo->getPuesto()).c_str()));
+
+    // Dibujar la línea y el nodo izquierdo
+    if (nodo->getIzquierda() != nullptr) {
+        line(x, y, x - xOffset, y + yOffset);
+        graficarArbolGraphics(nodo->getIzquierda(), x - xOffset, y + yOffset, xOffset / 2, yOffset);
+    }
+
+    // Dibujar la línea y el nodo derecho
+    if (nodo->getDerecha() != nullptr) {
+        line(x, y, x + xOffset, y + yOffset);
+        graficarArbolGraphics(nodo->getDerecha(), x + xOffset, y + yOffset, xOffset / 2, yOffset);
+    }
+}
+
+void ArbolParqueadero::iniciarGraficacion() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "");
+
+    int xOffset = 200; // Desplazamiento horizontal inicial
+    int yOffset = 50;  // Desplazamiento vertical entre niveles
+    int startX = getmaxx() / 2; // Coordenada X inicial (centro de la pantalla)
+    int startY = 50;            // Coordenada Y inicial
+
+    graficarArbolGraphics(raiz, startX, startY, xOffset, yOffset);
+
+    getch();
+    closegraph();
 }
