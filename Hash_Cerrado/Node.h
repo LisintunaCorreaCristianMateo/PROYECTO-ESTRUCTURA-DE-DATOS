@@ -1,5 +1,4 @@
-#ifndef NODE_H
-#define NODE_H
+#pragma once
 
 #include <string>
 
@@ -33,4 +32,4 @@ public:
     }
 };
 
-#endif // NODE_H
+

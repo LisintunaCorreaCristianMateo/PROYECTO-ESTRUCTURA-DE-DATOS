@@ -1,5 +1,4 @@
-#ifndef CLOSED_HASH_H
-#define CLOSED_HASH_H
+#pragma once
 
 #include <vector>
 #include <functional>
@@ -25,6 +24,6 @@ public:
     int convert_string_to_int(std::string cad);
 };
 
-#include "../src/Closed_Hash.cpp"
 
-#endif // CLOSED_HASH_H
+
+

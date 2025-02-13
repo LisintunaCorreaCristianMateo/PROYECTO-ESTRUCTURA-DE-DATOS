@@ -22,7 +22,8 @@ HWND hwnd;
 HBITMAP hbmKnightBlack, hbmKnightWhite, hbmQueen;  // Imágenes del caballo y la reina
 POINT knightPos = { -1, -1 };  // Posición del caballo (si se usa)
 vector<POINT> queens;         // Posiciones de las reinas
-vector<POINT> knightMoves;    // Movimientos válidos del caballo
+vector<POINT> knightMoves;    // Movimientos válidos del caballo 
+vector<POINT> queenMoves;    
 int BOARD_SIZE = 0;           // Tamaño del tablero (definido en tiempo de ejecución)
 ofstream logFile;             // Archivo de log
 bool isAutoMode = false;      // Modo automático o manual
@@ -36,6 +37,8 @@ void DrawKnightMoves(HDC hdc);
 void DrawKnight(HDC hdc, int x, int y, bool isWhiteSquare);
 void DrawQueen(HDC hdc, int x, int y, bool isWhiteSquare);
 void FindKnightMoves(int x, int y);
+void FindQueenMoves(int x, int y);
+void DrawQueenMoves(HDC hdc);
 bool IsMoveValid(int x, int y);
 bool CheckQueens();
 void ResetBoard();
@@ -173,13 +176,16 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
                 DrawKnight(hdc, knightPos.x, knightPos.y, isWhiteSquare);
                 DrawKnightMoves(hdc);
             }
+            if (!queenMoves.empty()) {
+                DrawQueenMoves(hdc);
+            }     
             EndPaint(hwnd, &ps);
             break;
         }
         case WM_LBUTTONDOWN: {
             if (BOARD_SIZE != 0) {
                 if (isAutoMode) {
-                    MessageBox(hwnd, TEXT("Modo automático en ejecución."), TEXT("Aviso"), MB_OK);
+                    MessageBox(hwnd, TEXT("Modo automatico en ejecucion."), TEXT("Aviso"), MB_OK);
                 } else {
                     // Modo manual: se coloca o retira la reina al hacer clic
                     int xPos = LOWORD(lParam) / CELL_SIZE;
@@ -190,13 +196,17 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
                         });
                         if (it != queens.end()) {
                             queens.erase(it);
+                            queenMoves.clear();
                         } else {
                             POINT newQueen = { xPos, yPos };
                             queens.push_back(newQueen);
+                            queenMoves.clear();
+                            FindQueenMoves(xPos, yPos);
                             // Verificar inmediatamente si se colocó de forma incorrecta
                             if (!CheckQueens()) {
                                 MessageBox(hwnd, TEXT("Ayy, lo siento, está mal"), TEXT("Error"), MB_OK);
                                 queens.pop_back(); // Remover la reina inválida
+                                queenMoves.clear();
                             }
                         }
                         InvalidateRect(hwnd, NULL, TRUE);
@@ -257,6 +267,10 @@ void DrawBoard(HDC hdc) {
             DeleteObject(brush);
         }
     }
+    
+     if (!queenMoves.empty()) {
+        DrawQueenMoves(hdc);
+    }
 }
 
 void DrawQueens(HDC hdc) {
@@ -316,6 +330,49 @@ void FindKnightMoves(int x, int y) {
     }
 }
 
+void FindQueenMoves(int x, int y) {
+    // Movimientos en todas las direcciones (horizontal, vertical y diagonal)
+    for (int i = 0; i < BOARD_SIZE; ++i) {
+        if (i != x) {
+            if (IsMoveValid(i, y)) {
+                queenMoves.push_back({ i, y });
+            }
+        }
+        if (i != y) {
+            if (IsMoveValid(x, i)) {
+                queenMoves.push_back({ x, i });
+            }
+        }
+    }
+    // Movimientos diagonales
+    for (int i = 1; i < BOARD_SIZE; ++i) {
+        if (IsMoveValid(x + i, y + i)) {
+            queenMoves.push_back({ x + i, y + i });
+        }
+        if (IsMoveValid(x - i, y - i)) {
+            queenMoves.push_back({ x - i, y - i });
+        }
+        if (IsMoveValid(x + i, y - i)) {
+            queenMoves.push_back({ x + i, y - i });
+        }
+        if (IsMoveValid(x - i, y + i)) {
+            queenMoves.push_back({ x - i, y + i });
+        }
+    }
+}
+
+void DrawQueenMoves(HDC hdc) {
+    for (const auto& move : queenMoves) {
+        int centerX = move.x * CELL_SIZE + CELL_SIZE / 2;
+        int centerY = move.y * CELL_SIZE + CELL_SIZE / 2;
+        HBRUSH brush = CreateSolidBrush(RGB(255, 0, 0));  // Rojo para los movimientos de la reina
+        SelectObject(hdc, brush);
+        Ellipse(hdc, centerX - QUEEN_RADIUS, centerY - QUEEN_RADIUS,
+                centerX + QUEEN_RADIUS, centerY + QUEEN_RADIUS);
+        DeleteObject(brush);
+    }
+}
+
 bool IsMoveValid(int x, int y) {
     return (x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE);
 }
@@ -336,6 +393,7 @@ void ResetBoard() {
     queens.clear();
     knightPos = { -1, -1 };
     knightMoves.clear();
+    queenMoves.clear();
     InvalidateRect(hwnd, NULL, TRUE);
 }
 
@@ -346,11 +404,11 @@ void LogProcess(const string& message) {
 // Funciones para iniciar los modos (se solicita el tamaño del tablero)
 void StartAutoMode() {
     system("cls");
-    cout << "=== MODO AUTOMATICO ===\nIngrese tamaño del tablero (4-12): ";
+    cout << "=== MODO AUTOMATICO ===\nIngrese tamano del tablero (1-8): ";
     int size;
     cin >> size;
-    if (size < 4 || size > 12) {
-        cout << "Tamaño inválido! Usando 8 por defecto\n";
+    if (size < 1 || size > 8) {
+        cout << "Tamano invalido! Usando 8 por defecto\n";
         size = 8;
         Sleep(1000);
     }
@@ -362,16 +420,17 @@ void StartAutoMode() {
                  SWP_NOMOVE | SWP_NOZORDER);
     ResetBoard();
     queens.clear();
+    queenMoves.clear();
     processCounter = 0;
     SolveNQueens(0);
 }
 
 void StartManualMode() {
     system("cls");
-    cout << "=== MODO MANUAL ===\nIngrese tamaño del tablero (4-12): ";
+    cout << "=== MODO MANUAL ===\nIngrese tamaño del tablero (1-8): ";
     int size;
     cin >> size;
-    if (size < 4 || size > 12) {
+    if (size < 1 || size > 8) {
         cout << "Tamaño inválido! Usando 8 por defecto\n";
         size = 8;
         Sleep(1000);
@@ -383,6 +442,7 @@ void StartManualMode() {
     SetWindowPos(hwnd, NULL, 0, 0, rc.right - rc.left, rc.bottom - rc.top,
                  SWP_NOMOVE | SWP_NOZORDER);
     ResetBoard();
+    queenMoves.clear();
 }
 
 // NUEVO MENÚ CON FLECHAS (estilo plantilla)

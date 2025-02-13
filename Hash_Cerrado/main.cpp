@@ -1,4 +1,4 @@
-# include "../include/Menu.h"
+# include "Menu.h"
 # include <iostream>
 
 int main(){

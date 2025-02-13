@@ -1,18 +1,9 @@
-/*
-Universidad de las Fuerzas Armadas ESPE
-Libreria para la validacion del ingreso de datos
-Alexis Viteri
-Fecha de creacion:  20/11/2024
-Ultima fecha de modificacion:   20/11/2024
-Estructura de Datos
-NRC:  1978
-*/
 #include <iostream>
 #include <conio.h>
 #include <cstdio>
 #include <cstring>
 #include <cstdlib> 
-#include "../include/Validation.h"
+#include "Validation.h"
 
 using namespace std;
 

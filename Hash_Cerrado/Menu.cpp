@@ -1,4 +1,4 @@
-#include "../include/Menu.h"
+#include "Menu.h"
 #include <iostream>
 #include <conio.h>
 #define WIN32_LEAN_AND_MEAN
@@ -11,8 +11,8 @@
 #include <ctime>
 #include <algorithm>
 #include <functional>
-# include "../include/Validation.h"
-# include "../include/Closed_Hash.h"
+#include "Validation.h"
+#include "Closed_Hash.h"
 using namespace std;
 #ifdef _WIN32
 #ifndef NOMINMAX
@@ -98,22 +98,22 @@ void Menu::principal_menu()
     while (running)
     {
         options.clear();
-        addOption("Lineal en enteros");
-        addOption("Lineal en strings");
-        addOption("Cuadratica en enteros");
-        addOption("Cuadratica en strings");
-        addOption("Doble en enteros");
-        addOption("Doble en strings");
+        addOption("Hash cerrado lineal en enteros");
+        addOption("Hash cerrado lineal en strings");
+        addOption("Hash cerrado cuadratico en enteros");
+        addOption("Hash cerrado cuadratico en strings");
+        addOption("Hash cerrado doble en enteros");
+        addOption("Hash cerrado doble en strings");
         addOption("Salir");
-        addTitle("\t Seleccione el tipo de inserción");
+        addTitle("\t Eliga el tipo de hash cerrado");
         displayMenu();
 
         switch (getSelectedOption())
         {
         case 0:
         {
-            cout << " Lineal en enteros " << endl;
-            int num = validation.ingresarInt("INGRESE SU NUMERO:\t");
+            cout << " Hash cerrado lineal en enteros " << endl;
+            int num = validation.ingresarInt("Inserte el numero:\t");
             cout << endl;
             Node node(num, to_string(num));
             hashTableLInt.insert(node);
@@ -123,8 +123,8 @@ void Menu::principal_menu()
         }
         case 1:
         {
-            cout << " Lineal en strings " << endl;
-            string palabra = validation.ingresarString("INGRESE SU PALABRA:\t");
+            cout << " Hash cerrado lineal en strings " << endl;
+            string palabra = validation.ingresarString("Inserte la letra o palabra:\t");
             cout << endl;
             int num = hashTableLString.convert_string_to_int(palabra);
             Node node(num, palabra);
@@ -135,8 +135,8 @@ void Menu::principal_menu()
         }
         case 2:
         {
-            cout << " Cuadratica en enteros " << endl;
-            int num = validation.ingresarInt("INGRESE SU NUMERO:\t");
+            cout << " Hash cerrado cuadratico en enteros " << endl;
+            int num = validation.ingresarInt("Inserte el numero:\t");
             cout << endl;
             Node node(num, to_string(num));
             hashTableCInt.insert(node);
@@ -146,8 +146,8 @@ void Menu::principal_menu()
         }
         case 3:
         {
-            cout << " Cuadratica en strings " << endl;
-            string palabra = validation.ingresarString("INGRESE SU PALABRA:\t");
+            cout << " Hash cerrado cuadratico en strings " << endl;
+            string palabra = validation.ingresarString("Inserte la letra o palabra:\t");
             cout << endl;
             int num = hashTableCString.convert_string_to_int(palabra);
             Node node(num, palabra);
@@ -158,8 +158,8 @@ void Menu::principal_menu()
         }
         case 4:
         {
-            cout << " Doble en enteros " << endl;
-            int num = validation.ingresarInt("INGRESE SU NUMERO:\t");
+            cout << " Hash cerrado doble en enteros " << endl;
+            int num = validation.ingresarInt("Ingrese el numero:\t");
             cout << endl;
             Node node(num, to_string(num));
             hashTableDInt.insert(node);
@@ -169,8 +169,8 @@ void Menu::principal_menu()
         }
         case 5:
         {
-            cout << " Doble en strings " << endl;
-            string palabra = validation.ingresarString("INGRESE SU PALABRA:\t");
+            cout << " Hash cerrado doble en strings " << endl;
+            string palabra = validation.ingresarString("Ingrese la letra o palabra:\t");
             cout << endl;
             int num = hashTableDString.convert_string_to_int(palabra);
             Node node(num, palabra);

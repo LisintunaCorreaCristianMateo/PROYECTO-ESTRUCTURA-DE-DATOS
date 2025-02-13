@@ -1,5 +1,5 @@
-#include "../include/Closed_Hash.h"
-#include "../include/Node.h"
+#include "Closed_Hash.h"
+#include "Node.h"
 
 template <typename T>
 Closed_Hash<T>::Closed_Hash(int size, int method) : size(size), method(method) {

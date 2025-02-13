@@ -1,6 +1,4 @@
-#ifndef MENU_H
-#define MENU_H
-
+#pragma once
 #include <vector>
 #include <string>
 #include <iostream>
@@ -20,4 +18,4 @@ public:
     void auxiliar_menu(int type);
 };
 
-#endif // MENU_H
+
