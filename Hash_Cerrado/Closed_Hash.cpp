@@ -1,6 +1,7 @@
 #include "Closed_Hash.h"
 #include "Node.h"
-
+#include <sstream>
+#include <iomanip>
 template <typename T>
 Closed_Hash<T>::Closed_Hash(int size, int method) : size(size), method(method) {
     table.resize(size, T(-1, "")); // Inicializar con objetos Node inválidos
@@ -49,21 +50,83 @@ void Closed_Hash<T>::insert(T key) {
 
 template <typename T>
 void Closed_Hash<T>::display() {
-    int count = 0;
-    for (int i = 0; i < size; i++) {
-        if (occupied[i]) {
-            std::cout << "(" << i << "): " << table[i].getWord() << "   ";
-        } else {
-            std::cout << "(" << i << "):      ";
+    const int columns = 6;
+    const int cellWidth = 20;
+    const int recuadroWidth = 12;  // "[" + campo de 10 caracteres + "]"
+
+    // Códigos ANSI para color celeste (índices) y reset
+    const std::string colorIndex = "\033[1;36m"; // Celeste
+    const std::string resetColor = "\033[0m";
+
+    // Calcula el ancho total de la línea horizontal (considerando 3 espacios entre celdas)
+    int totalWidth = columns * cellWidth + (columns - 1) * 3;
+    std::string horizontalLine(totalWidth, '-');
+
+    std::cout << "\n" << horizontalLine << std::endl;
+
+    int rows = (size + columns - 1) / columns;
+
+    for (int r = 0; r < rows; r++) {
+        // Primera línea: recuadro con la palabra centrada
+        for (int c = 0; c < columns; c++) {
+            int index = r * columns + c;
+            std::string cellStr;
+            if (index < size) {
+                std::ostringstream cell;
+                int fieldWidth = 10; // Ancho del área para la palabra (se declara aquí para ambos casos)
+                if (occupied[index]) {
+                    std::string word = table[index].getWord();
+                    int leftPadWord = (fieldWidth - static_cast<int>(word.size())) / 2;
+                    int rightPadWord = fieldWidth - static_cast<int>(word.size()) - leftPadWord;
+                    cell << "["
+                         << std::string(leftPadWord, ' ')
+                         << word
+                         << std::string(rightPadWord, ' ')
+                         << "]";
+                } else {
+                    std::string blank(fieldWidth, ' ');
+                    cell << "[" << blank << "]";
+                }
+                cellStr = cell.str();
+            } else {
+                cellStr = "";
+            }
+            // Centra el recuadro en la celda (con cellWidth = 20 y recuadroWidth = 12, quedan 4 espacios a la izquierda)
+            int leftPadding = (cellWidth - recuadroWidth) / 2;
+            std::cout << std::string(leftPadding, ' ')
+                      << cellStr
+                      << std::string(cellWidth - leftPadding - recuadroWidth, ' ');
+            if (c < columns - 1)
+                std::cout << "   "; // separación entre celdas
         }
-        count++;
-        if (count % 3 == 0) {
-            std::cout << std::endl;
+        std::cout << std::endl;
+
+        // Segunda línea: muestra el índice centrado respecto al recuadro, en color celeste
+        for (int c = 0; c < columns; c++) {
+            int index = r * columns + c;
+            std::string indexStr = (index < size) ? std::to_string(index) : "";
+            int leftPadding = (cellWidth - recuadroWidth) / 2;
+            std::cout << std::string(leftPadding, ' ');
+            // Centra el índice dentro del recuadro
+            int indexLeftPadding = (recuadroWidth - static_cast<int>(indexStr.size())) / 2;
+            std::cout << std::string(indexLeftPadding, ' ');
+            if (!indexStr.empty())
+                std::cout << colorIndex << indexStr << resetColor;
+            else
+                std::cout << "";
+            std::cout << std::string(recuadroWidth - indexLeftPadding - static_cast<int>(indexStr.size()), ' ');
+            int remaining = cellWidth - leftPadding - recuadroWidth;
+            std::cout << std::string(remaining, ' ');
+            if (c < columns - 1)
+                std::cout << "   ";
         }
-    }
-    if (count % 3 != 0) {
+        std::cout << std::endl;
+        // Línea en blanco extra para separar filas
+        std::cout << std::endl;
+        std::cout << std::endl;
         std::cout << std::endl;
     }
+    std::cout << horizontalLine << std::endl;
 }
 
 template<typename T>

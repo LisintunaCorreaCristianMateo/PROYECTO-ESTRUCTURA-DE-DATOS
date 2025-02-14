@@ -1,43 +1,40 @@
-[Editor_0]
-CursorCol=1
-CursorRow=21
-TopLine=1
-LeftChar=1
-[Editors]
-Order=2,3,2,3,4,0,1,5,6,7
-Focused=7
-[Editor_1]
-CursorCol=1
-CursorRow=35
-TopLine=1
-LeftChar=1
-[Editor_2]
-CursorCol=5
-CursorRow=16
-TopLine=1
-LeftChar=1
-[Editor_3]
-CursorCol=1
-CursorRow=27
-TopLine=1
-LeftChar=1
-[Editor_4]
-CursorCol=1
-CursorRow=187
-TopLine=22
-LeftChar=1
-[Editor_5]
-CursorCol=1
-CursorRow=1
-TopLine=1
-LeftChar=1
-[Editor_6]
-CursorCol=1
-CursorRow=1
-TopLine=1
-LeftChar=1
-[Editor_7]
-CursorCol=2
-CursorRow=8
-TopLine=1
-LeftChar=1
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<FileVersion major="1" minor="0" />
+	<ActiveTarget name="default" />
+	<File name="Validation.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Closed_Hash.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Closed_Hash.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="-5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1432" topLine="88" />
+		</Cursor>
+	</File>
+	<File name="Menu.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="Menu.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2464" topLine="182" />
+		</Cursor>
+	</File>
+	<File name="Node.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+</CodeBlocks_layout_file>

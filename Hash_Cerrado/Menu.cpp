@@ -88,6 +88,8 @@ void Menu::principal_menu()
     SetConsoleCP(CP_UTF8);
     bool running = true;
     Validation validation;
+
+    // Declaración de las tablas hash para cada combinación:
     Closed_Hash<Node> hashTableLInt(29, 0);
     Closed_Hash<Node> hashTableLString(29, 0);
     Closed_Hash<Node> hashTableCInt(29, 1);
@@ -97,96 +99,117 @@ void Menu::principal_menu()
 
     while (running)
     {
+        // MENÚ PRINCIPAL: Elección de tipo de dato
         options.clear();
-        addOption("Hash cerrado lineal en enteros");
-        addOption("Hash cerrado lineal en strings");
-        addOption("Hash cerrado cuadratico en enteros");
-        addOption("Hash cerrado cuadratico en strings");
-        addOption("Hash cerrado doble en enteros");
-        addOption("Hash cerrado doble en strings");
+        addTitle("\tElija el tipo de dato:");
+        addOption("Entero");
+        addOption("String");
         addOption("Salir");
-        addTitle("\t Eliga el tipo de hash cerrado");
         displayMenu();
 
-        switch (getSelectedOption())
-        {
-        case 0:
-        {
-            cout << " Hash cerrado lineal en enteros " << endl;
-            int num = validation.ingresarInt("Inserte el numero:\t");
-            cout << endl;
-            Node node(num, to_string(num));
-            hashTableLInt.insert(node);
-            hashTableLInt.display();
-            system("pause");
-            break;
-        }
-        case 1:
-        {
-            cout << " Hash cerrado lineal en strings " << endl;
-            string palabra = validation.ingresarString("Inserte la letra o palabra:\t");
-            cout << endl;
-            int num = hashTableLString.convert_string_to_int(palabra);
-            Node node(num, palabra);
-            hashTableLString.insert(node);
-            hashTableLString.display();
-            system("pause");
-            break;
-        }
-        case 2:
-        {
-            cout << " Hash cerrado cuadratico en enteros " << endl;
-            int num = validation.ingresarInt("Inserte el numero:\t");
-            cout << endl;
-            Node node(num, to_string(num));
-            hashTableCInt.insert(node);
-            hashTableCInt.display();
-            system("pause");
-            break;
-        }
-        case 3:
-        {
-            cout << " Hash cerrado cuadratico en strings " << endl;
-            string palabra = validation.ingresarString("Inserte la letra o palabra:\t");
-            cout << endl;
-            int num = hashTableCString.convert_string_to_int(palabra);
-            Node node(num, palabra);
-            hashTableCString.insert(node);
-            hashTableCString.display();
-            system("pause");
-            break;
-        }
-        case 4:
-        {
-            cout << " Hash cerrado doble en enteros " << endl;
-            int num = validation.ingresarInt("Ingrese el numero:\t");
-            cout << endl;
-            Node node(num, to_string(num));
-            hashTableDInt.insert(node);
-            hashTableDInt.display();
-            system("pause");
-            break;
-        }
-        case 5:
-        {
-            cout << " Hash cerrado doble en strings " << endl;
-            string palabra = validation.ingresarString("Ingrese la letra o palabra:\t");
-            cout << endl;
-            int num = hashTableDString.convert_string_to_int(palabra);
-            Node node(num, palabra);
-            hashTableDString.insert(node);
-            hashTableDString.display();
-            system("pause");
-            break;
-        }
-        case 6:
+        int dataTypeOption = getSelectedOption();
+
+        if (dataTypeOption == 2) // Opción "Salir"
         {
             running = false;
             break;
         }
 
-        default:
-            break;
-        }
-    }
+        // SUBMENÚ: Elección del método de hash
+        bool submenuRunning = true;
+        while (submenuRunning)
+        {
+            options.clear();
+            addTitle("\tElija el método de hash:");
+            addOption("Lineal");
+            addOption("Cuadrático");
+            addOption("Doble");
+            addOption("Volver");
+            displayMenu();
+
+            int hashTypeOption = getSelectedOption();
+            if (hashTypeOption == 3) // Opción "Volver" al menú principal
+            {
+                submenuRunning = false;
+                continue;
+            }
+
+            // Procesamos según la combinación de tipo de dato y método de hash
+            if (dataTypeOption == 0) // Entero
+            {
+                switch (hashTypeOption)
+                {
+                case 0:
+                {
+                    cout << "Hash cerrado lineal en enteros" << endl;
+                    int num = validation.ingresarInt("Inserte el número:\t");
+                    Node node(num, to_string(num));
+                    hashTableLInt.insert(node);
+                    hashTableLInt.display();
+                    system("pause");
+                    break;
+                }
+                case 1:
+                {
+                    cout << "Hash cerrado cuadrático en enteros" << endl;
+                    int num = validation.ingresarInt("Inserte el número:\t");
+                    Node node(num, to_string(num));
+                    hashTableCInt.insert(node);
+                    hashTableCInt.display();
+                    system("pause");
+                    break;
+                }
+                case 2:
+                {
+                    cout << "Hash cerrado doble en enteros" << endl;
+                    int num = validation.ingresarInt("Inserte el número:\t");
+                    Node node(num, to_string(num));
+                    hashTableDInt.insert(node);
+                    hashTableDInt.display();
+                    system("pause");
+                    break;
+                }
+                }
+            }
+            else if (dataTypeOption == 1) // String
+            {
+                switch (hashTypeOption)
+                {
+                case 0:
+                {
+                    cout << "Hash cerrado lineal en strings" << endl;
+                    string palabra = validation.ingresarString("Inserte la letra o palabra:\t");
+                    int num = hashTableLString.convert_string_to_int(palabra);
+                    Node node(num, palabra);
+                    hashTableLString.insert(node);
+                    hashTableLString.display();
+                    system("pause");
+                    break;
+                }
+                case 1:
+                {
+                    cout << "Hash cerrado cuadrático en strings" << endl;
+                    string palabra = validation.ingresarString("Inserte la letra o palabra:\t");
+                    int num = hashTableCString.convert_string_to_int(palabra);
+                    Node node(num, palabra);
+                    hashTableCString.insert(node);
+                    hashTableCString.display();
+                    system("pause");
+                    break;
+                }
+                case 2:
+                {
+                    cout << "Hash cerrado doble en strings" << endl;
+                    string palabra = validation.ingresarString("Inserte la letra o palabra:\t");
+                    int num = hashTableDString.convert_string_to_int(palabra);
+                    Node node(num, palabra);
+                    hashTableDString.insert(node);
+                    hashTableDString.display();
+                    system("pause");
+                    break;
+                }
+                }
+            }
+        } // Fin del submenú
+    } // Fin del menú principal
 }

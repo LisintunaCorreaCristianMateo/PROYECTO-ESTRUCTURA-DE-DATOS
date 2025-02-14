@@ -1,0 +1,53 @@
+# depslib dependency file v1.0
+1739476777 source:c:\users\dell\documents\espe_git\proyecto-estructura-de-datos\hash_cerrado\closed_hash.cpp
+	"Closed_Hash.h"
+	"Node.h"
+
+1739476777 c:\users\dell\documents\espe_git\proyecto-estructura-de-datos\hash_cerrado\closed_hash.h
+	<vector>
+	<functional>
+	<iostream>
+	"Node.h"
+
+1739476777 c:\users\dell\documents\espe_git\proyecto-estructura-de-datos\hash_cerrado\node.h
+	<string>
+
+1739476777 source:c:\users\dell\documents\espe_git\proyecto-estructura-de-datos\hash_cerrado\main.cpp
+	"Menu.h"
+	<iostream>
+
+1739476777 c:\users\dell\documents\espe_git\proyecto-estructura-de-datos\hash_cerrado\menu.h
+	<vector>
+	<string>
+	<iostream>
+
+1739476777 source:c:\users\dell\documents\espe_git\proyecto-estructura-de-datos\hash_cerrado\validation.cpp
+	<iostream>
+	<conio.h>
+	<cstdio>
+	<cstring>
+	<cstdlib>
+	"Validation.h"
+
+1739476777 c:\users\dell\documents\espe_git\proyecto-estructura-de-datos\hash_cerrado\validation.h
+	<string>
+	<cstring>
+
+1739487866 source:c:\users\dell\documents\espe_git\proyecto-estructura-de-datos\hash_cerrado\menu.cpp
+	"Menu.h"
+	<iostream>
+	<conio.h>
+	<windows.h>
+	<vector>
+	<string>
+	<fstream>
+	<iomanip>
+	<chrono>
+	<ctime>
+	<algorithm>
+	<functional>
+	"Validation.h"
+	"Closed_Hash.h"
+	<windows.h>
+	<cstdlib>
+
