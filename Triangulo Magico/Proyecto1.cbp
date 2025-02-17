@@ -16,8 +16,6 @@
 			<Add option="-mwindows" />
 		</Compiler>
 		<Unit filename="main.cpp" />
-		<Extensions>
-			<lib_finder disable_auto="1" />
-		</Extensions>
+		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

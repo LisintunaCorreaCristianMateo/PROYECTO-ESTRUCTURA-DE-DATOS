@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1739795525 source:c:\users\dell\documents\espe_git\estructura-de-datos\triangulo magico\main.cpp
+	<windows.h>
+	<string>
+	<vector>
+	<set>
+	<algorithm>
+	<numeric>
+	<sstream>
+
